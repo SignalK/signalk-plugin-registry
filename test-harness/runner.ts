@@ -63,6 +63,36 @@ function installPlugin(
         scripts.postinstall ||
         scripts.prepare
       );
+
+      // Honor `signalk.requires` (mirror of SignalK/signalk-server#2698) so
+      // plugins that declare companion deps can be tested under realistic
+      // conditions. Failure is logged but non-fatal — the plugin's own
+      // load/activate outcome still feeds the score.
+      const requires: string[] = Array.isArray(pkg?.signalk?.requires)
+        ? pkg.signalk.requires.filter(
+            (r: unknown): r is string => typeof r === "string" && r.length > 0,
+          )
+        : [];
+
+      if (requires.length > 0) {
+        console.error(
+          `[runner] Installing signalk.requires companions: ${requires.join(", ")}`,
+        );
+        try {
+          // execFileSync (vs execSync + shell interpolation) keeps untrusted
+          // package.json content off the shell command line.
+          execFileSync(
+            "npm",
+            ["install", "--ignore-scripts", "--", ...requires],
+            { cwd: workDir, timeout: 120_000, stdio: "pipe" },
+          );
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          console.error(
+            `[runner] Companion install failed (continuing): ${msg.slice(0, 300)}`,
+          );
+        }
+      }
     }
 
     return { success: true, hasInstallScripts };

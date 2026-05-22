@@ -2,6 +2,29 @@ import * as path from 'path'
 import { createAppShim, CapturedRegistrations } from './app-shim'
 import { extractSchemaDefaults } from './schema-defaults'
 
+// Mirrors upstream signalk-server's importOrRequire (src/modules.ts):
+// try require() first — Node 20.19+ handles ESM via require(esm) natively —
+// then fall back to dynamic import() resolved through esm-resolve for the
+// cases require() can't handle (top-level await, ESM-only entry shapes).
+async function importOrRequire(moduleDir: string): Promise<unknown> {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const mod = require(moduleDir)
+    return mod?.default ?? mod
+  } catch (err) {
+    // import() of a directory needs a resolved file URL.
+    const { buildResolver } = await import('esm-resolve')
+    const resolver = buildResolver(moduleDir, {
+      isDir: true,
+      resolveToAbsolute: true
+    })
+    const modulePath = resolver('.')
+    if (!modulePath) throw err
+    const module = await import(modulePath)
+    return module.default ?? module
+  }
+}
+
 export interface DetectionResult {
   pluginId: string
   pluginName: string
@@ -27,13 +50,16 @@ async function loadPlugin(
   app: unknown
 ): Promise<{ plugin: Record<string, unknown>; loadError?: string }> {
   try {
-    const resolved = require.resolve(pluginPath)
-    delete require.cache[resolved]
-    let moduleExport = require(resolved)
-
-    if (moduleExport.__esModule && moduleExport.default) {
-      moduleExport = moduleExport.default
+    // Bust any cached CJS entry so re-runs see fresh source.
+    try {
+      const entry = require.resolve(pluginPath)
+      delete require.cache[entry]
+    } catch {
+      // require.resolve fails for ESM-only plugins; importOrRequire will
+      // still find the entry via the dynamic-import fallback path.
     }
+
+    const moduleExport = await importOrRequire(pluginPath)
 
     if (typeof moduleExport !== 'function') {
       return {
