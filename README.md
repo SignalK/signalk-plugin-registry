@@ -127,6 +127,22 @@ This prevents plugin code from making any outbound network requests — no data 
 
 Firejail runs with `--read-only=/home --read-only=/etc --read-only=/var`. Plugin code cannot modify the workspace, git history, results.json, or npm cache. Only `/tmp` (where plugin workdirs live) is writable.
 
+### `SIGNALK_REGISTRY_TEST` env var (for plugin authors)
+
+The harness sets `SIGNALK_REGISTRY_TEST=1` in the environment of every `npm test` invocation (both the tarball pass and the source-fallback pass). Plugin authors whose tests need network or a working container daemon can detect the harness and self-skip those tests:
+
+```js
+// node:test example
+import { describe, it } from "node:test";
+describe("my integration test", () => {
+  it("pulls an image", { skip: !!process.env.SIGNALK_REGISTRY_TEST }, async () => {
+    // …
+  });
+});
+```
+
+`vitest` and `mocha` have equivalent skip mechanisms (`describe.skip(condition)`, `if (cond) this.skip()`). Tests that don't honor the env var still run and are subject to `--net=none`; they typically fail and cost the plugin 30 score points (no `+25` "tested" badge AND a `−5` "tests-failing" penalty). The clean alternative is to split unit and integration tests into separate scripts (e.g. `npm test` for unit, `npm run test:integration` for the rest) so `npm test` is safe to run in any sandbox — that's what `signalk-container` does since 1.10.1.
+
 ### Supply chain protection
 
 All plugin dependency installs use `--ignore-scripts` to block `postinstall`/`preinstall` lifecycle scripts from transitive dependencies. The Signal K server itself is installed normally since it is trusted first-party code.

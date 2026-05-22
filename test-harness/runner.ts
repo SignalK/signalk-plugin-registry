@@ -196,6 +196,7 @@ function checkOwnTests(pluginDir: string): {
         timeout: 75_000,
         stdio: "pipe",
         killSignal: "SIGKILL",
+        env: { ...process.env, SIGNALK_REGISTRY_TEST: "1" },
       });
       return { hasTests: true, pass: true, runnable: true };
     } catch {
@@ -527,6 +528,7 @@ function checkSourceTests(pluginDir: string): {
       timeout: 75_000,
       stdio: "pipe",
       killSignal: "SIGKILL",
+      env: { ...process.env, SIGNALK_REGISTRY_TEST: "1" },
     });
     return { hasTests: true, pass: true, runnable: true };
   } catch (err: unknown) {
