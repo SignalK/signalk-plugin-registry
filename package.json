@@ -14,6 +14,9 @@
     "update-results": "ts-node scripts/update-results.ts",
     "build-api": "ts-node scripts/build-api.ts"
   },
+  "dependencies": {
+    "esm-resolve": "^1.0.11"
+  },
   "devDependencies": {
     "@signalk/server-api": "^2.4.0",
     "@types/node": "^22.0.0",
