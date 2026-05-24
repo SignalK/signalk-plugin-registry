@@ -13,6 +13,20 @@ process.on("unhandledRejection", (reason) => {
   console.error(`[runner] Unhandled rejection (suppressed): ${reason}`);
 });
 
+// execSync surfaces only "Command failed: ..." in err.message; the actual
+// subprocess output is on err.stdout/err.stderr (Buffers, since stdio: "pipe").
+// Pull all three together so log lines show what really went wrong.
+function formatExecError(err: unknown, maxLen = 1500): string {
+  if (!(err instanceof Error)) return String(err).slice(0, maxLen);
+  const e = err as Error & { stdout?: Buffer | string; stderr?: Buffer | string };
+  const parts = [e.message];
+  const stderr = e.stderr?.toString().trim();
+  const stdout = e.stdout?.toString().trim();
+  if (stderr) parts.push(`stderr: ${stderr}`);
+  if (stdout) parts.push(`stdout: ${stdout}`);
+  return parts.join(" | ").slice(0, maxLen);
+}
+
 interface RunResult {
   detection: DetectionResult;
   installs: boolean;
@@ -87,9 +101,8 @@ function installPlugin(
             { cwd: workDir, timeout: 120_000, stdio: "pipe" },
           );
         } catch (err: unknown) {
-          const msg = err instanceof Error ? err.message : String(err);
           console.error(
-            `[runner] Companion install failed (continuing): ${msg.slice(0, 300)}`,
+            `[runner] Companion install failed (continuing): ${formatExecError(err, 300)}`,
           );
         }
       }
@@ -97,8 +110,7 @@ function installPlugin(
 
     return { success: true, hasInstallScripts };
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    return { success: false, error: msg.slice(0, 500), hasInstallScripts };
+    return { success: false, error: formatExecError(err, 500), hasInstallScripts };
   }
 }
 
@@ -278,8 +290,7 @@ function detectProviderssandboxed(pluginDir: string): DetectionResult {
   try {
     execSync(cmd, { timeout: 30_000, stdio: "pipe" });
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.error(`[runner] Sandboxed detection failed: ${msg.slice(0, 200)}`);
+    console.error(`[runner] Sandboxed detection failed: ${formatExecError(err)}`);
   }
 
   if (fs.existsSync(outputFile)) {
@@ -459,8 +470,7 @@ function checkSourceTests(pluginDir: string): {
         stdio: "pipe",
       });
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error(`[runner] Failed to clone repo: ${msg.slice(0, 200)}`);
+      console.error(`[runner] Failed to clone repo: ${formatExecError(err)}`);
       return { hasTests: true, pass: false, runnable: false };
     }
 
@@ -487,9 +497,8 @@ function checkSourceTests(pluginDir: string): {
           stdio: "pipe",
         });
       } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
         console.error(
-          `[runner] npm install failed, tests not runnable: ${msg.slice(0, 200)}`,
+          `[runner] npm install failed, tests not runnable: ${formatExecError(err)}`,
         );
         return { hasTests: true, pass: false, runnable: false };
       }
@@ -514,9 +523,8 @@ function checkSourceTests(pluginDir: string): {
           stdio: "pipe",
         });
       } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
         console.error(
-          `[runner] Build failed, tests not runnable: ${msg.slice(0, 200)}`,
+          `[runner] Build failed, tests not runnable: ${formatExecError(err)}`,
         );
         return { hasTests: true, pass: false, runnable: false };
       }
@@ -532,8 +540,7 @@ function checkSourceTests(pluginDir: string): {
     });
     return { hasTests: true, pass: true, runnable: true };
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.error(`[runner] Source tests failed: ${msg.slice(0, 200)}`);
+    console.error(`[runner] Source tests failed: ${formatExecError(err)}`);
     return { hasTests: true, pass: false, runnable: true };
   } finally {
     fs.rmSync(sourceDir, { recursive: true, force: true });
