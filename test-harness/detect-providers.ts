@@ -95,7 +95,15 @@ export async function detectProviders(pluginPath: string): Promise<DetectionResu
     .replace(/^@/, '')
     .replace(/\//g, '-')
 
-  const { app, captured, cleanup } = createAppShim(shimPluginId)
+  const signalkBlock =
+    typeof pkgJson.signalk === 'object' && pkgJson.signalk !== null
+      ? (pkgJson.signalk as Record<string, unknown>)
+      : {}
+  const requires = Array.isArray(signalkBlock.requires)
+    ? signalkBlock.requires.filter((r): r is string => typeof r === 'string' && r.length > 0)
+    : []
+
+  const { app, captured, cleanup } = createAppShim(shimPluginId, { requires })
 
   const { plugin, loadError } = await loadPlugin(resolvedPath, app)
 
