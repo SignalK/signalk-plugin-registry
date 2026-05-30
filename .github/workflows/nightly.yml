@@ -160,71 +160,95 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git fetch origin master
-          git checkout origin/master -- results.json
-          node -e "
-            const fs = require('fs');
-            const path = require('path');
-            const base = JSON.parse(fs.readFileSync('results.json', 'utf-8'));
-            const dir = '/tmp/results';
-            let updated = 0;
-            let rejected = 0;
-            const VALID_BADGES = new Set([
-              'compatible','loads','activates','has-providers','tested',
-              'tests-failing','npm-audit-ok','audit-moderate','audit-high',
-              'audit-critical','has-changelog','has-screenshots','broken'
-            ]);
-            function validSlot(data) {
-              if (!data || typeof data !== 'object') return false;
-              if (typeof data.composite !== 'number' || data.composite < 0 || data.composite > 100) return false;
-              if (!Array.isArray(data.badges) || !data.badges.every(b => VALID_BADGES.has(b))) return false;
-              if (typeof data.tested !== 'string' || isNaN(Date.parse(data.tested))) return false;
-              if (typeof data.installs !== 'boolean') return false;
-              return true;
-            }
-            function applyEnvelope(f) {
-              const env = JSON.parse(fs.readFileSync(f, 'utf-8'));
-              const { plugin, pluginVersion, slotKey, slotResult } = env;
-              if (!plugin || !pluginVersion || !slotKey || !slotResult) {
-                console.log('Skipped malformed envelope: ' + f);
-                return;
+
+          # Re-apply envelopes onto a fresh base + push, with retries.
+          # Concurrent workflow runs (manual probe overlapping with the
+          # scheduled nightly, or two manual probes back-to-back) used to
+          # produce a rebase conflict on results.json that killed the
+          # entire run and lost every probe's result. Re-read base after
+          # each push failure and re-apply the envelopes — the per-slot
+          # update is idempotent.
+          for attempt in 1 2 3 4 5; do
+            echo "::group::merge attempt $attempt"
+            git fetch origin master
+            git reset --hard origin/master
+            node -e "
+              const fs = require('fs');
+              const path = require('path');
+              const base = JSON.parse(fs.readFileSync('results.json', 'utf-8'));
+              const dir = '/tmp/results';
+              let updated = 0;
+              let rejected = 0;
+              const VALID_BADGES = new Set([
+                'compatible','loads','activates','has-providers','tested',
+                'tests-failing','npm-audit-ok','audit-moderate','audit-high',
+                'audit-critical','has-changelog','has-screenshots','broken'
+              ]);
+              function validSlot(data) {
+                if (!data || typeof data !== 'object') return false;
+                if (typeof data.composite !== 'number' || data.composite < 0 || data.composite > 100) return false;
+                if (!Array.isArray(data.badges) || !data.badges.every(b => VALID_BADGES.has(b))) return false;
+                if (typeof data.tested !== 'string' || isNaN(Date.parse(data.tested))) return false;
+                if (typeof data.installs !== 'boolean') return false;
+                return true;
               }
-              if (!slotKey.startsWith('server@')) {
-                console.log('Skipped non-server slot ' + slotKey + ' in ' + f);
-                return;
+              function applyEnvelope(f) {
+                const env = JSON.parse(fs.readFileSync(f, 'utf-8'));
+                const { plugin, pluginVersion, slotKey, slotResult } = env;
+                if (!plugin || !pluginVersion || !slotKey || !slotResult) {
+                  console.log('Skipped malformed envelope: ' + f);
+                  return;
+                }
+                if (!slotKey.startsWith('server@')) {
+                  console.log('Skipped non-server slot ' + slotKey + ' in ' + f);
+                  return;
+                }
+                if (!validSlot(slotResult)) {
+                  console.log('Rejected invalid slot: ' + plugin + '/' + pluginVersion + '/' + slotKey);
+                  rejected++;
+                  return;
+                }
+                if (!base[plugin]) base[plugin] = {};
+                if (!base[plugin][pluginVersion]) base[plugin][pluginVersion] = {};
+                base[plugin][pluginVersion][slotKey] = slotResult;
+                updated++;
               }
-              if (!validSlot(slotResult)) {
-                console.log('Rejected invalid slot: ' + plugin + '/' + pluginVersion + '/' + slotKey);
-                rejected++;
-                return;
+              // actions/download-artifact@v8 places each artifact under
+              // <path>/<artifact-name>/ when multiple artifacts match the
+              // pattern, but extracts directly into <path> when only one
+              // does — that single-artifact shape happens on every
+              // single_plugin workflow_dispatch run. Walk both shapes.
+              function walk(d) {
+                for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+                  const p = path.join(d, entry.name);
+                  if (entry.isDirectory()) walk(p);
+                  else if (entry.name === 'slot-update.json') applyEnvelope(p);
+                }
               }
-              if (!base[plugin]) base[plugin] = {};
-              if (!base[plugin][pluginVersion]) base[plugin][pluginVersion] = {};
-              base[plugin][pluginVersion][slotKey] = slotResult;
-              updated++;
-            }
-            // actions/download-artifact@v8 places each artifact under
-            // <path>/<artifact-name>/ when multiple artifacts match the
-            // pattern, but extracts directly into <path> when only one
-            // does — that single-artifact shape happens on every
-            // single_plugin workflow_dispatch run. Walk both shapes.
-            function walk(d) {
-              for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
-                const p = path.join(d, entry.name);
-                if (entry.isDirectory()) walk(p);
-                else if (entry.name === 'slot-update.json') applyEnvelope(p);
-              }
-            }
-            if (fs.existsSync(dir)) walk(dir);
-            console.log('Updated ' + updated + ' plugin slots' + (rejected ? ', rejected ' + rejected + ' invalid' : ''));
-            fs.writeFileSync('results.json', JSON.stringify(base, null, 2) + '\n');
-          "
-          git add results.json
-          git diff --cached --quiet && echo 'No changes to commit' || {
+              if (fs.existsSync(dir)) walk(dir);
+              console.log('Updated ' + updated + ' plugin slots' + (rejected ? ', rejected ' + rejected + ' invalid' : ''));
+              fs.writeFileSync('results.json', JSON.stringify(base, null, 2) + '\n');
+            "
+            git add results.json
+            if git diff --cached --quiet; then
+              echo 'No changes to commit'
+              echo '::endgroup::'
+              break
+            fi
             git commit -m "results: update from $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            git pull --rebase origin master
-            git push origin HEAD:master
-          }
+            if git push origin HEAD:master; then
+              echo '::endgroup::'
+              break
+            fi
+            echo 'push rejected (concurrent commit on master); retrying'
+            echo '::endgroup::'
+            if [ "$attempt" -eq 5 ]; then
+              echo '::error::merge-results failed after 5 attempts'
+              exit 1
+            fi
+            # Brief jittered backoff so concurrent runs don't lockstep.
+            sleep $((RANDOM % 5 + 2))
+          done
 
   # ─────────────────────────────────────────────────────────────
   # JOB 4: Publish — deploys to gh-pages, NEVER touches plugin code
