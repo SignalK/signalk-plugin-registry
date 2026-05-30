@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # @types/node major versions track the Node.js major. The
+      # workflow runs on Node 24 (setup-node@v6 with node-version:
+      # '24'). Allow updates within the v24.x line; ignore v25+
+      # until the workflow's node-version bumps.
+      - dependency-name: "@types/node"
+        versions: [">=25"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        update-types:
+          - minor
+          - patch

@@ -1,0 +1,228 @@
+language: en-US
+
+reviews:
+  profile: assertive
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    # Skip mechanical PRs that don't benefit from review.
+    # `chore(release):` PRs are version-bump-only; the substantive
+    # change was already reviewed on its own PR. Dep-bump PRs come from
+    # automation that has its own contract with the registry. WIP and
+    # explicit skip markers are author opt-outs. Nightly results
+    # auto-commits are bot-driven data dumps; reviewing them is noise.
+    ignore_title_keywords:
+      - "chore(release):"
+      - "chore(deps):"
+      - "chore(deps-dev):"
+      - "results: update from"
+      - "[skip review]"
+      - "WIP"
+    ignore_usernames:
+      - "release-please[bot]"
+      - "renovate[bot]"
+      - "dependabot[bot]"
+      - "github-actions[bot]"
+
+  # dist/ is the tsc build output; checked in for the GitHub Pages
+  # deploy path, but never authored. Everything under node_modules and
+  # generated lockfiles are also off-limits to review. results.json
+  # is the persistent data store — content reviews on individual
+  # plugin scores are not meaningful.
+  path_filters:
+    - "!dist/**"
+    - "!**/node_modules/**"
+    - "!**/package-lock.json"
+    - "!**/yarn.lock"
+    - "!**/pnpm-lock.yaml"
+    - "!results.json"
+
+  high_level_summary_instructions: |
+    Write summaries in present tense. Describe what the code does, not
+    what it did. Skip filler like "This PR" — go straight to the change.
+
+  path_instructions:
+    - path: "**/*"
+      instructions: |
+        ## Scope
+
+        Focus on files changed since `master`. Think carefully about
+        how changes interact with the security model, the persisted
+        data shape in `results.json`, and the badge/score contract
+        plugin authors and the GitHub Pages consumers depend on.
+
+        signalk-plugin-registry is an **untrusted-code test harness**.
+        Every plugin it scores is treated as potentially malicious.
+        The threat model is: a compromised plugin must not be able to
+        steal `GITHUB_TOKEN`, exfiltrate data, tamper with
+        `results.json`, attack third parties, or downgrade another
+        plugin's score. Reviews on this repo are first and foremost
+        threat-model reviews.
+
+        Read `AGENTS.md` before suggesting changes to anything under
+        `test-harness/`, `scripts/update-results.ts`, or
+        `.github/workflows/nightly.yml`.
+
+        ## Security invariants
+
+        These are load-bearing. Flag any change that weakens them
+        unless the PR description explicitly says so:
+
+        - **Test-job permissions.** The `test` job in `nightly.yml`
+          runs with `permissions: {}` and `persist-credentials:
+          false`. Plugin code runs here. Flag any non-empty
+          `permissions:` block on this job, or any step that
+          re-introduces a token.
+        - **Firejail wrapping.** Every code path that executes plugin
+          code in `test-harness/runner.ts` must go through
+          `sandboxCmd()` (`firejail --net=none --read-only=/home
+          --read-only=/etc --read-only=/var`). Flag new `execSync`,
+          `spawn`, or `child_process.exec` calls that touch plugin
+          code without `sandboxCmd()`.
+        - **`--ignore-scripts` on every plugin install.** Plugin
+          dependency installs must not run `postinstall` /
+          `preinstall` scripts. Signal K server itself is installed
+          normally — it's trusted first-party code.
+        - **`validSlot` predicate.** The merge job validates every
+          result envelope before commit. Flag PRs that relax
+          `validSlot` to "make a failing test easier to handle".
+          Adding a new badge to `VALID_BADGES` is fine; weakening the
+          type / range checks is not.
+        - **Best-score-wins.** When a slot is retested, the new
+          result only replaces the old one if its composite is equal
+          or higher. The asymmetry lives in
+          `scripts/update-results.ts`. Flag any removal of this
+          asymmetry — a transient CI failure must not be able to
+          downgrade a previously-passing plugin.
+        - **`SIGNALK_REGISTRY_TEST=1` env var.** This is a public
+          contract — plugin authors check it in their tests to
+          self-skip CI-incompatible assertions. Flag renames,
+          removals, or value changes.
+
+        ## Slot-key + score-shape invariants
+
+        - Slot keys follow the `server@<slot>` convention (currently
+          `server@stable` and `server@master`). If a PR adds a new
+          slot, both `validSlot`'s allow-list prefix and
+          `build-api.ts`'s composite picker must be updated. Flag a
+          one-sided change.
+        - The composite score is bounded 0–100 (`Math.max(0,
+          Math.min(100, score))` in `test-harness/score.ts`). Flag
+          new score additions that push it outside that range.
+        - The `Badge` type and `VALID_BADGES` set in the merge job's
+          `node -e` snippet must stay in sync. Both are sources of
+          truth that must list the same names.
+        - The `tested` ISO timestamp is the staleness cache key
+          (`shouldTest` uses `> 7d` as the threshold). Flag PRs that
+          rewrite `tested` out of band — that prevents legitimate
+          retests.
+
+        ## Workflow-file gotchas
+
+        - `actions/download-artifact@v8` has two tree shapes: a
+          subdirectory per artifact when multiple match, or a flat
+          layout when only one matches. The merge step's envelope
+          walker must handle both. Flag any reversion to a
+          single-depth `readdirSync` loop that assumes one fixed
+          shape.
+        - The matrix `test` job has `permissions: {}`. The `merge-
+          results` and `publish` jobs have `contents: write`. Flag
+          any reshuffling that moves plugin-code execution into a
+          permissioned job.
+
+        ## TypeScript style
+
+        - All new code in TypeScript. No new `.js` source files.
+        - `tsconfig` is `strict`. Avoid `any`. The legitimate
+          exception is `test-harness/app-shim.ts`, where untyped
+          plugin code meets typed Signal K interfaces — `unknown`
+          and narrow.
+        - Reuse the types in `test-harness/score.ts` (`Badge`,
+          `TestStatus`, `TestResults`) and the envelope shape in
+          `scripts/update-results.ts`. They are the public
+          vocabulary of the harness.
+
+        ## Echo comments
+
+        Flag any comment that merely restates what the code already
+        says. Examples to flag:
+        - `// Sets the age` above a function named `setAge()`
+        - `// Loop through items` above a `for` loop
+        - `// returns null on failure` next to `return null` in an
+          error branch
+
+        Replace with comments explaining _why_, not _what_. Or delete.
+
+        ## Documentation drift risk
+
+        Flag any `.md` file that contains detailed implementation
+        steps, specific API call sequences, code snippets, or
+        configuration values likely to fall out of sync as the code
+        evolves. Documentation describes architecture and how things
+        work conceptually — not step-by-step instructions that
+        duplicate or shadow the code itself.
+
+        Specifically: the badge / score table in `README.md` must
+        stay aligned with `test-harness/score.ts`'s `computeScore`.
+        Flag new badges in the type that are missing from the README,
+        or README entries whose point values have drifted from the
+        scoring source.
+
+        ## Implementation status / development history
+
+        Flag any `.md` file that describes development history,
+        implementation progress, or build narrative (e.g. "Step 3:
+        implement X", "TODO: add Y", "previously implemented as Z",
+        "added in PR #N"). That belongs in PR descriptions and git
+        history, not in repo docs. Documentation should describe
+        current state and design rationale.
+
+        Same rule applies to source comments.
+
+        ## Leftover crumbs from intermediate commits
+
+        Flag references in the current diff to symbols, files, or
+        approaches that no longer exist on this branch — old
+        function names in comments, stale TODOs from a superseded
+        approach, renamed variables still mentioned in docs.
+
+        ## Unchecked items in test plans / checklists
+
+        If a PR description or any `.md` file contains a checklist
+        with unchecked items, flag it. Either the work isn't done,
+        or the checklist should be removed before merge.
+
+        ## Commit / PR conventions
+
+        - Branch names use **hyphens**, not slashes
+          (`fix-something`, not `fix/something`). Signal K
+          maintainer convention.
+        - Angular conventional commits: `<type>(<scope>): <subject>`.
+          Subject ≤ 50 chars, imperative mood, no period.
+        - No `Co-Authored-By` lines. No "Generated with Claude Code"
+          attribution.
+        - One logical change per commit, one logical change per PR.
+
+        ## What NOT to flag
+
+        These are intentional:
+
+        - The `unstubbed_accesses` field in test results. The app
+          shim **logs** unstubbed method accesses rather than
+          throwing — that's how the maintainer discovers new
+          app-API surface plugins are using.
+        - The walker pattern in `nightly.yml`'s merge step that
+          handles both download-artifact tree shapes — both shapes
+          really do occur depending on artifact count.
+        - The presence of older, lower-scoring slots in
+          `results.json` alongside newer high-scoring slots. The
+          best-score-wins rule means historical data is preserved
+          when a fresh probe is at-best a tie.
+        - The `Math.max(0, ...) ` clamp on the composite — score
+          inputs can produce negative intermediate values when
+          penalties exceed positives. The clamp is correct.
+        - The fact that there is no Jest/Mocha/Vitest test runner
+          for the harness itself. The integration story is
+          "trigger the workflow against a single known plugin and
+          check the slot in `results.json`."
