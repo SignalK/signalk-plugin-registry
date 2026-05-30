@@ -166,3 +166,7 @@ Plugins whose results are older than 7 days are automatically retested on the ni
 - `start()` is tested with schema defaults extracted from the plugin's `schema` property — this matches what the admin UI sends. Plugins that need external services (databases, credentials) will still fail activation.
 - `activates_without_config` is tracked as an informational field (not scored) showing whether `start({})` with empty config succeeds
 - The app shim logs unstubbed method accesses — check `unstubbed_accesses` in results to identify shim gaps
+
+## Contributing
+
+See [AGENTS.md](AGENTS.md) for the contributor / AI agent guide: layout, the security invariants the workflow enforces, slot-key + score-shape rules, and how to reproduce CI failures locally (the firejail-vs-host gotcha is the most common surprise).
