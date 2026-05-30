@@ -49,13 +49,20 @@ async function searchNpm(keyword: string, from: number = 0): Promise<NpmSearchRe
 }
 
 async function fetchPackument(name: string): Promise<NpmPackument | null> {
-  const url = `https://registry.npmjs.org/${encodeURIComponent(name)}`
-  const res = await fetch(url)
-  if (!res.ok) {
-    console.error(`[discover] packument fetch ${res.status} for ${name}`)
+  // One transient fetch reject or malformed JSON must not halt all 450+
+  // plugins — drop the failing entry and let the rest succeed.
+  try {
+    const url = `https://registry.npmjs.org/${encodeURIComponent(name)}`
+    const res = await fetch(url)
+    if (!res.ok) {
+      console.error(`[discover] packument fetch ${res.status} for ${name}`)
+      return null
+    }
+    return (await res.json()) as NpmPackument
+  } catch (err) {
+    console.error(`[discover] packument fetch error for ${name}:`, err)
     return null
   }
-  return res.json()
 }
 
 async function mapWithConcurrency<T, R>(
