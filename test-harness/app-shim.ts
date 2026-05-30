@@ -40,7 +40,25 @@ function createMockBus() {
   return bus
 }
 
-export function createAppShim(pluginId: string): {
+export interface CreateAppShimOptions {
+  /**
+   * Plugin names listed in `package.json` `signalk.requires`. When the list
+   * includes a known cross-plugin API (currently only `signalk-container`),
+   * the shim installs a minimal stub on globalThis so the plugin's `start()`
+   * can complete instead of timing out waiting for the real companion.
+   *
+   * Activates: false for plugins like signalk-doctor / signalk-backup that
+   * `await waitForContainerManager(...)` in start() would otherwise be the
+   * dominant failure mode in the harness — the harness only constructs the
+   * plugin under test, never the companion.
+   */
+  requires?: string[]
+}
+
+export function createAppShim(
+  pluginId: string,
+  options: CreateAppShimOptions = {}
+): {
   app: unknown
   captured: CapturedRegistrations
   cleanup: () => void
@@ -236,8 +254,54 @@ export function createAppShim(pluginId: string): {
 
   const proxiedApp = new Proxy(app as Record<string, unknown>, handler)
 
+  const globalCleanups: Array<() => void> = []
+
+  // Install cross-plugin global stubs the plugin's start() may await. The
+  // harness never instantiates companion plugins, only the one under test,
+  // so without these stubs every consumer plugin that polls
+  // globalThis.__signalk_containerManager would time out at activation.
+  const requires = options.requires ?? []
+  if (requires.includes('signalk-container')) {
+    const sentinelVersionSource = { kind: '__signalk_registry_stub__' }
+    const stub = {
+      // ContainerRuntimeInfo-shaped enough that the polling pattern
+      // `m && m.getRuntime()` resolves truthy. Real plugins read fields
+      // off the result (runtime name, version, isPodmanDockerShim, etc.) —
+      // their downstream logic typically fails open when those are
+      // undefined, which is what we want here.
+      getRuntime: () => ({ runtime: 'stub', version: '0.0.0-harness-stub' }),
+      whenReady: () => Promise.resolve(),
+      // Recreate handlers that may be invoked from start():
+      remove: () => Promise.resolve(),
+      ensureRunning: () => Promise.resolve(),
+      recreate: () => Promise.resolve(),
+      getState: () => Promise.resolve({ state: 'missing' }),
+      getContainerState: () => Promise.resolve({ state: 'missing' }),
+      updates: {
+        register: (_reg: unknown) => {},
+        unregister: (_pluginId: string) => {},
+        checkOne: () => Promise.resolve({ ok: false, fromCache: false }),
+        checkAll: () => Promise.resolve([]),
+        getLastResult: () => null,
+        sources: {
+          githubReleases: (_repo: string) => sentinelVersionSource,
+          dockerHubTags: (_image: string) => sentinelVersionSource
+        }
+      }
+    }
+    const g = globalThis as Record<string, unknown>
+    const priorValue = g.__signalk_containerManager
+    const hadPrior = '__signalk_containerManager' in g
+    g.__signalk_containerManager = stub
+    globalCleanups.push(() => {
+      if (hadPrior) g.__signalk_containerManager = priorValue
+      else delete g.__signalk_containerManager
+    })
+  }
+
   const cleanup = () => {
     for (const handler of onStopHandlers) handler()
+    for (const c of globalCleanups) c()
     try {
       fs.rmSync(tmpDir, { recursive: true, force: true })
     } catch {}
