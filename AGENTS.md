@@ -51,7 +51,7 @@ The README has the table. The invariant: **the `test` job runs with `permissions
 
 Every place that executes plugin code goes through `sandboxCmd()` in `test-harness/runner.ts`. As of writing the sandbox is:
 
-```
+```bash
 firejail --quiet --net=none --read-only=/home --read-only=/etc --read-only=/var
 ```
 
@@ -70,7 +70,7 @@ All plugin dependency installs use `--ignore-scripts` to block `postinstall` / `
 
 ### `npm.requires` companion installs
 
-`runner.ts` (lines ~80–110) reads `signalk.requires` from a plugin's `package.json` and `npm install`s each companion **before** the plugin's own tests run. This mirrors the behaviour upstream signalk-server adopted in [SignalK/signalk-server#2698](https://github.com/SignalK/signalk-server/pull/2698). When you change this code path, keep it aligned with what upstream does — a divergence makes the registry score either harsher or more lenient than the canonical CI.
+`runner.ts` reads `signalk.requires` from a plugin's `package.json` (search for the `signalk.requires` block in `runner.ts`) and `npm install`s each companion **before** the plugin's own tests run. This mirrors the behaviour upstream signalk-server adopted in [SignalK/signalk-server#2698](https://github.com/SignalK/signalk-server/pull/2698). When you change this code path, keep it aligned with what upstream does — a divergence makes the registry score either harsher or more lenient than the canonical CI.
 
 ### Artifact validation in the merge job
 
