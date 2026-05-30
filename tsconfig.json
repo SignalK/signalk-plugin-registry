@@ -8,7 +8,9 @@
     "outDir": "dist",
     "rootDir": ".",
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
+    "types": ["node"]
   },
   "include": ["scripts/**/*", "test-harness/**/*"]
 }
