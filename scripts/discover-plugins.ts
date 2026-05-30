@@ -20,18 +20,26 @@ interface NpmSearchResult {
   objects: Array<{
     package: {
       name: string
-      version: string
-      description?: string
-      keywords?: string[]
-      date?: string
-      links?: { npm?: string; homepage?: string; repository?: string }
     }
   }>
   total: number
 }
 
+interface NpmPackument {
+  name: string
+  description?: string
+  homepage?: string
+  repository?: { url?: string } | string
+  'dist-tags'?: { latest?: string }
+  versions?: Record<string, { version: string; description?: string; keywords?: string[] }>
+}
+
 const PLUGIN_KEYWORD = 'signalk-node-server-plugin'
 const NPM_SEARCH_SIZE = 250
+// The /-/v1/search endpoint's index lags publishes by up to an hour. Use it
+// only to enumerate plugin *names*; resolve each package's authoritative
+// version (and metadata) via the per-package endpoint, which has no lag.
+const NPM_PACKAGE_FETCH_CONCURRENCY = 16
 
 async function searchNpm(keyword: string, from: number = 0): Promise<NpmSearchResult> {
   const url = `https://registry.npmjs.org/-/v1/search?text=keywords:${keyword}&size=${NPM_SEARCH_SIZE}&from=${from}`
@@ -40,32 +48,89 @@ async function searchNpm(keyword: string, from: number = 0): Promise<NpmSearchRe
   return res.json()
 }
 
-async function discoverFromNpm(): Promise<PluginInfo[]> {
-  const plugins: PluginInfo[] = []
-  let from = 0
+async function fetchPackument(name: string): Promise<NpmPackument | null> {
+  const url = `https://registry.npmjs.org/${encodeURIComponent(name)}`
+  const res = await fetch(url)
+  if (!res.ok) {
+    console.error(`[discover] packument fetch ${res.status} for ${name}`)
+    return null
+  }
+  return res.json()
+}
 
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  limit: number,
+  fn: (item: T) => Promise<R>
+): Promise<R[]> {
+  const results: R[] = new Array(items.length)
+  let next = 0
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (true) {
+      const i = next++
+      if (i >= items.length) return
+      results[i] = await fn(items[i])
+    }
+  })
+  await Promise.all(workers)
+  return results
+}
+
+async function discoverNames(): Promise<string[]> {
+  const names: string[] = []
+  let from = 0
   while (true) {
     console.error(`[discover] Searching npm from=${from}...`)
     const result = await searchNpm(PLUGIN_KEYWORD, from)
-
     for (const obj of result.objects) {
-      const pkg = obj.package
-      plugins.push({
-        name: pkg.name,
-        version: pkg.version,
-        description: pkg.description || '',
-        category: inferCategory(pkg.keywords || []),
-        keywords: pkg.keywords || [],
-        homepage: pkg.links?.homepage,
-        repository: pkg.links?.repository
-      })
+      names.push(obj.package.name)
     }
-
     from += result.objects.length
     if (from >= result.total || result.objects.length === 0) break
   }
+  console.error(`[discover] Found ${names.length} plugin names on npm`)
+  return names
+}
 
-  console.error(`[discover] Found ${plugins.length} plugins on npm`)
+function packumentToPluginInfo(name: string, doc: NpmPackument): PluginInfo | null {
+  const latest = doc['dist-tags']?.latest
+  if (!latest) {
+    console.error(`[discover] ${name} has no dist-tags.latest, skipping`)
+    return null
+  }
+  const versionDoc = doc.versions?.[latest]
+  const keywords = versionDoc?.keywords ?? []
+  const repository =
+    typeof doc.repository === 'string' ? doc.repository : doc.repository?.url
+  return {
+    name,
+    version: latest,
+    description: versionDoc?.description ?? doc.description ?? '',
+    category: inferCategory(keywords),
+    keywords,
+    homepage: doc.homepage,
+    repository
+  }
+}
+
+async function discoverFromNpm(): Promise<PluginInfo[]> {
+  const names = await discoverNames()
+  console.error(
+    `[discover] Resolving authoritative versions via per-package endpoint (concurrency=${NPM_PACKAGE_FETCH_CONCURRENCY})...`
+  )
+  const packuments = await mapWithConcurrency(
+    names,
+    NPM_PACKAGE_FETCH_CONCURRENCY,
+    fetchPackument
+  )
+  const plugins: PluginInfo[] = []
+  for (let i = 0; i < names.length; i++) {
+    const doc = packuments[i]
+    if (!doc) continue
+    const info = packumentToPluginInfo(names[i], doc)
+    if (info) plugins.push(info)
+  }
+  console.error(`[discover] Resolved ${plugins.length} plugins`)
   return plugins
 }
 
