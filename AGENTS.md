@@ -132,38 +132,17 @@ Only push after the above pass. Never push without explicit approval.
 
 ## Reproducing Failures Locally
 
-### Single-plugin probe
+Three flows worth knowing about — consult `package.json`'s `scripts` block and `.github/workflows/nightly.yml` for the exact invocations:
 
-```bash
-npm ci
-npx ts-node test-harness/runner.ts <plugin-name> [version]
-```
+- **Single-plugin probe** (`test-harness/runner.ts`) — install / load / activate / score one plugin end-to-end. Use this when reproducing a registry score locally.
+- **Provider detection only** (`test-harness/detect-providers.ts`) — bypasses the install/score flow and just exercises the `require()` + `start()` path with the schema-defaults config. Use this when iterating on the `app-shim.ts` stub surface.
+- **Triggering a CI probe by hand** — the `Nightly Plugin Registry Scan` workflow accepts `mode` (`changed_only` / `all_plugins` / `single_plugin`) and an optional `include_master`. The single-plugin dispatch is the fastest way to validate a fresh publish.
 
-Locally, `hasFirejail()` returns false on most dev boxes, so the harness runs without the sandbox. That changes one thing materially: **plugins that fail under `firejail --net=none` will pass locally**. If you're investigating a "scores 70 with `tests-failing` on CI but pass locally" report, install firejail (`sudo apt-get install firejail`) and re-run — most of those are sandbox-specific. See the [signalk-container 1.12.1 investigation](https://github.com/dirkwa/signalk-container/pull/126) for the canonical example: the env var `container=firejail` flipped the plugin's `isContainerized()` probe and tripped four scripted-exec tests whose stubs assumed a non-containerized host.
+### The firejail-vs-host gotcha
 
-### Provider detection only
+The most common "passes locally, fails on CI" report comes from one source: `hasFirejail()` returns false on dev boxes without firejail installed, so `sandboxCmd()` returns the raw command unwrapped. Plugins that fail under `firejail --net=none` will pass locally on every machine that doesn't have it. Install firejail and re-clone into `/tmp` before concluding a CI failure is a CI bug.
 
-```bash
-npx ts-node test-harness/detect-providers.ts /path/to/local/plugin
-```
-
-This bypasses the install/score flow and just exercises the `require()` + `start()` path with the schema-defaults config. Useful when adding new app-shim stub methods.
-
-### Triggering a CI probe by hand
-
-Go to **Actions → Nightly Plugin Registry Scan → Run workflow** and choose:
-
-- `mode: changed_only` — only plugins with a new published version since the last run.
-- `mode: all_plugins` — retest the whole registry. Expensive; use sparingly.
-- `mode: single_plugin` + fill in `plugin: <npm-name>` — probe one plugin. The fastest way to validate that a fresh publish actually flipped a score.
-- `include_master: true` — also probe against `SignalK/signalk-server` `master` (independent slot, doesn't affect the `server@stable` score).
-
-The workflow can also be triggered from the CLI:
-
-```bash
-gh workflow run "Nightly Plugin Registry Scan" \
-  -f mode=single_plugin -f plugin=<npm-name>
-```
+The canonical worked example is the [signalk-container 1.12.1 investigation](https://github.com/dirkwa/signalk-container/pull/126): the env var `container=firejail` flipped the plugin's `isContainerized()` probe and tripped four scripted-exec tests whose stubs assumed a non-containerized host. The dirkwa SignalK plugin registry CI surfaces this kind of divergence; nothing else in the ecosystem does.
 
 ## Common Pitfalls
 
