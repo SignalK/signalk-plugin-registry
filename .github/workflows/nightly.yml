@@ -203,12 +203,19 @@ jobs:
               base[plugin][pluginVersion][slotKey] = slotResult;
               updated++;
             }
-            if (fs.existsSync(dir)) {
-              for (const sub of fs.readdirSync(dir)) {
-                const envelopePath = path.join(dir, sub, 'slot-update.json');
-                if (fs.existsSync(envelopePath)) applyEnvelope(envelopePath);
+            // actions/download-artifact@v8 places each artifact under
+            // <path>/<artifact-name>/ when multiple artifacts match the
+            // pattern, but extracts directly into <path> when only one
+            // does — that single-artifact shape happens on every
+            // single_plugin workflow_dispatch run. Walk both shapes.
+            function walk(d) {
+              for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+                const p = path.join(d, entry.name);
+                if (entry.isDirectory()) walk(p);
+                else if (entry.name === 'slot-update.json') applyEnvelope(p);
               }
             }
+            if (fs.existsSync(dir)) walk(dir);
             console.log('Updated ' + updated + ' plugin slots' + (rejected ? ', rejected ' + rejected + ' invalid' : ''));
             fs.writeFileSync('results.json', JSON.stringify(base, null, 2) + '\n');
           "
