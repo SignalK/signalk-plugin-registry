@@ -16,7 +16,11 @@ process.on("unhandledRejection", (reason) => {
 // execSync surfaces only "Command failed: ..." in err.message; the actual
 // subprocess output is on err.stdout/err.stderr (Buffers, since stdio: "pipe").
 // Pull all three together so log lines show what really went wrong.
-function formatExecError(err: unknown, maxLen = 1500): string {
+// The default cap is sized to fit vitest's verbose output for ~3 failures
+// (each ~2 KB with stack trace). node:test is terser. Callers that know
+// they only want the first line (companion-install failures, etc.) can
+// pass a smaller cap.
+function formatExecError(err: unknown, maxLen = 16_000): string {
   if (!(err instanceof Error)) return String(err).slice(0, maxLen);
   const e = err as Error & { stdout?: Buffer | string; stderr?: Buffer | string };
   const parts = [e.message];
@@ -507,10 +511,15 @@ function checkSourceTests(pluginDir: string): {
     const sourcePkg = JSON.parse(
       fs.readFileSync(path.join(sourceDir, "package.json"), "utf-8"),
     );
-    const buildScript = sourcePkg.scripts?.["build:all"]
-      ? "build:all"
-      : sourcePkg.scripts?.["build"]
-        ? "build"
+    // Prefer `build` over `build:all`. Some plugins (signalk-container is
+    // the canonical example) define `build:all` as `build && test`, which
+    // would run the test suite outside the firejail sandbox before we get
+    // to the sandboxed `npm test` below — masking real failures and
+    // wasting time.
+    const buildScript = sourcePkg.scripts?.["build"]
+      ? "build"
+      : sourcePkg.scripts?.["build:all"]
+        ? "build:all"
         : sourcePkg.scripts?.["compile"]
           ? "compile"
           : null;
@@ -530,6 +539,14 @@ function checkSourceTests(pluginDir: string): {
       }
     }
 
+    // Log the host-side view of network interfaces so plugin authors
+    // reading a "passes locally, fails on CI" report can see what the
+    // sandboxed test process will inherit. Under firejail --net=none
+    // the sandboxed view collapses to just `lo`; if the host already
+    // shows just `lo` then the divergence is somewhere else.
+    console.error(
+      `[runner] Pre-test host netifs: ${Object.keys(os.networkInterfaces()).join(", ") || "(none)"}`,
+    );
     console.error("[runner] Running tests from source...");
     execSync(sandboxCmd("timeout --kill-after=10s 60s npm test 2>&1"), {
       cwd: sourceDir,
