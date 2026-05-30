@@ -186,7 +186,10 @@ jobs:
               ]);
               function validSlot(data) {
                 if (!data || typeof data !== 'object') return false;
-                if (typeof data.composite !== 'number' || data.composite < 0 || data.composite > 100) return false;
+                // Number.isFinite rejects NaN / Infinity / non-numbers; the
+                // bare `composite < 0 || > 100` check otherwise lets a NaN
+                // composite slip through (NaN comparisons are always false).
+                if (!Number.isFinite(data.composite) || data.composite < 0 || data.composite > 100) return false;
                 if (!Array.isArray(data.badges) || !data.badges.every(b => VALID_BADGES.has(b))) return false;
                 if (typeof data.tested !== 'string' || isNaN(Date.parse(data.tested))) return false;
                 if (typeof data.installs !== 'boolean') return false;
