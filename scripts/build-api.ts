@@ -1001,7 +1001,7 @@ async function main() {
   <div class="api-links">
     <a href="guide.html"><strong>Plugin Quality Guide</strong></a> &middot;
     API: <a href="index.json">index.json</a> &middot;
-    <a href="https://github.com/dirkwa/signalk-plugin-registry">GitHub repo</a>
+    <a href="https://github.com/SignalK/signalk-plugin-registry">GitHub repo</a>
   </div>
 
   <table>
@@ -1203,7 +1203,7 @@ describe('plugin', () => {
     <li><a href="https://demo.signalk.org/documentation/develop/plugins/configuration.html">Plugin Configuration &amp; Schemas</a></li>
     <li><a href="https://demo.signalk.org/documentation/develop/plugins/publishing.html">Publishing to the AppStore</a></li>
     <li><a href="https://nodejs.org/docs/latest-v24.x/api/test.html">Node.js 24 Test Runner documentation</a></li>
-    <li><a href="https://github.com/dirkwa/signalk-plugin-registry">Registry source code</a></li>
+    <li><a href="https://github.com/SignalK/signalk-plugin-registry">Registry source code</a></li>
   </ul>
 
   <div class="back" style="margin-top: 32px"><a href="index.html">&larr; Back to results</a></div>

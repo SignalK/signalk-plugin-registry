@@ -2,7 +2,7 @@
 
 Automated testing and quality scoring for Signal K server plugins.
 
-**Results:** https://dirkwa.github.io/signalk-plugin-registry/
+**Results:** https://signalk.org/signalk-plugin-registry/
 
 ## What It Does
 

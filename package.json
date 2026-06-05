@@ -5,6 +5,14 @@
   "description": "Automated testing and quality scoring for Signal K plugins",
   "author": "Dirk Wahrheit <dirkwahrheit@gmail.com>",
   "license": "Apache-2.0",
+  "homepage": "https://signalk.org/signalk-plugin-registry/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SignalK/signalk-plugin-registry.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SignalK/signalk-plugin-registry/issues"
+  },
   "scripts": {
     "build": "tsc",
     "discover": "ts-node scripts/discover-plugins.ts",
