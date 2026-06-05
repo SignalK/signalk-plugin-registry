@@ -1,6 +1,6 @@
 # signalk-plugin-registry
 
-Automated test harness and quality scorer for the Signal K plugin ecosystem. Runs nightly on GitHub Actions and on manual `workflow_dispatch`, publishes results to GitHub Pages at https://dirkwa.github.io/signalk-plugin-registry/.
+Automated test harness and quality scorer for the Signal K plugin ecosystem. Runs nightly on GitHub Actions and on manual `workflow_dispatch`, publishes results to GitHub Pages at https://signalk.org/signalk-plugin-registry/.
 
 The README covers _what_ this is and how the scoring works. This file is for contributors and AI agents and covers _how it fits together_ and the invariants you can't infer from reading any single file.
 
@@ -142,7 +142,7 @@ Three flows worth knowing about — consult `package.json`'s `scripts` block and
 
 The most common "passes locally, fails on CI" report comes from one source: `hasFirejail()` returns false on dev boxes without firejail installed, so `sandboxCmd()` returns the raw command unwrapped. Plugins that fail under `firejail --net=none` will pass locally on every machine that doesn't have it. Install firejail and re-clone into `/tmp` before concluding a CI failure is a CI bug.
 
-The canonical worked example is the [signalk-container 1.12.1 investigation](https://github.com/dirkwa/signalk-container/pull/126): the env var `container=firejail` flipped the plugin's `isContainerized()` probe and tripped four scripted-exec tests whose stubs assumed a non-containerized host. The dirkwa SignalK plugin registry CI surfaces this kind of divergence; nothing else in the ecosystem does.
+The canonical worked example is the [signalk-container 1.12.1 investigation](https://github.com/dirkwa/signalk-container/pull/126): the env var `container=firejail` flipped the plugin's `isContainerized()` probe and tripped four scripted-exec tests whose stubs assumed a non-containerized host. The SignalK plugin registry CI surfaces this kind of divergence; nothing else in the ecosystem does.
 
 ## Common Pitfalls
 
