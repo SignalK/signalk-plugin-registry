@@ -52,11 +52,12 @@ The README has the table. The invariant: **the `test` job runs with `permissions
 Every place that executes plugin code goes through `sandboxCmd()` in `test-harness/runner.ts`. As of writing the sandbox is:
 
 ```bash
-firejail --quiet --net=none --read-only=/home --read-only=/etc --read-only=/var
+firejail --quiet --net=none --ignore="noexec /tmp" --read-only=/home --read-only=/etc --read-only=/var
 ```
 
 - `--net=none` — no outbound network. Prevents exfiltration, second-stage download, and SSRF / participation in third-party attacks.
 - `--read-only=/home --read-only=/etc --read-only=/var` — plugin code can't tamper with the workspace, git history, or `results.json`. `/tmp` (where plugin workdirs live) is writable.
+- `--ignore="noexec /tmp"` — drops the `noexec /tmp` from firejail's default profile so require-time native addons (`sharp`/libvips, `canvas`, prebuilt `better-sqlite3`) can `mmap` their `.node` binary; otherwise they fail `dlopen` and flatline at ~30. Scoped on purpose: the sandbox already runs the plugin's untrusted JS, so `noexec` adds no real boundary here — `--net=none` and the read-only mounts are the load-bearing isolation. **Do not** remove this without re-introducing the native-addon false-failure (see issue #19).
 
 If you add a new code path that executes plugin code (e.g. a new detection probe), it **must** go through `sandboxCmd()`. The harness can detect firejail's absence (`hasFirejail()`) and degrades gracefully on a dev box without it — that's how local testing works — but in CI firejail is always installed.
 
