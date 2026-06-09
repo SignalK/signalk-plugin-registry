@@ -9,6 +9,10 @@ inputs:
   server-slot:
     required: true
     default: stable
+  server-version:
+    description: Resolved server version (semver) or master SHA, surfaced to plugins via app.config.version
+    required: false
+    default: ''
 
 outputs:
   result-json:
@@ -32,6 +36,8 @@ runs:
     - name: Run test harness
       id: run
       shell: bash
+      env:
+        SIGNALK_SERVER_VERSION: ${{ inputs.server-version }}
       run: |
         cd ${{ github.workspace }}
         node -e "

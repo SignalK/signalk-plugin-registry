@@ -40,6 +40,20 @@ function createMockBus() {
   return bus
 }
 
+// Plugins that gate behaviour on `app.config.version` (e.g.
+// `semver.satisfies(app.config.version, '>=2.x')`) should see the server the
+// slot actually installed, not a frozen constant. The runner forwards the
+// resolved version through `SIGNALK_SERVER_VERSION`. The `master` slot's
+// "version" is a 7-char git SHA, which isn't valid semver and would break any
+// such check, so we only honour values that look like semver and otherwise
+// fall back to the last stable release this harness was pinned to.
+const FALLBACK_SERVER_VERSION = '2.24.0'
+
+function resolveServerVersion(): string {
+  const v = process.env.SIGNALK_SERVER_VERSION?.trim()
+  return v && /^\d+\.\d+\.\d+(?:[-+].+)?$/.test(v) ? v : FALLBACK_SERVER_VERSION
+}
+
 export interface CreateAppShimOptions {
   /**
    * Plugin names listed in `package.json` `signalk.requires`. When the list
@@ -200,7 +214,7 @@ export function createAppShim(
     config: {
       configPath,
       appPath: tmpDir,
-      version: '2.24.0',
+      version: resolveServerVersion(),
       name: 'signalk-server',
       basePath: '/signalk/v1',
       defaults: {}
