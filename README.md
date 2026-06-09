@@ -127,6 +127,8 @@ This prevents plugin code from making any outbound network requests — no data 
 
 Firejail runs with `--read-only=/home --read-only=/etc --read-only=/var`. Plugin code cannot modify the workspace, git history, results.json, or npm cache. Only `/tmp` (where plugin workdirs live) is writable.
 
+The sandbox also runs with `--ignore="noexec /tmp"`, which lifts the `noexec /tmp` that firejail's default profile would otherwise apply. Without it, plugins that load a native addon at require-time (`sharp`/libvips, `canvas`, prebuilt `better-sqlite3`, …) fail `dlopen` with `failed to map segment from shared object` and flatline at ~30 for an environment-only reason. This is a deliberate, scoped relaxation: the sandbox's whole job is to execute the plugin's own untrusted JavaScript, so the attacker already has arbitrary code execution before `/tmp` is touched — `noexec /tmp` only blocks the binary-mmap path while leaving the JS path open, so it adds no real boundary here. The load-bearing containment — `--net=none` and the read-only mounts — is unchanged.
+
 ### `SIGNALK_REGISTRY_TEST` env var (for plugin authors)
 
 The harness sets `SIGNALK_REGISTRY_TEST=1` in the environment of every `npm test` invocation (both the tarball pass and the source-fallback pass). Plugin authors whose tests need network or a working container daemon can detect the harness and self-skip those tests:
@@ -166,6 +168,7 @@ Plugins whose results are older than 7 days are automatically retested on the ni
 - `start()` is tested with schema defaults extracted from the plugin's `schema` property — this matches what the admin UI sends. Plugins that need external services (databases, credentials) will still fail activation.
 - `activates_without_config` is tracked as an informational field (not scored) showing whether `start({})` with empty config succeeds
 - The app shim logs unstubbed method accesses — check `unstubbed_accesses` in results to identify shim gaps
+- Plugins that load a native addon at require-time (`sharp`/libvips, `canvas`, prebuilt `better-sqlite3`, …) are supported — the sandbox lifts `noexec /tmp` so the addon binary can map (see Filesystem isolation above). They still need a prebuilt binary for `linux-x64`/Node 24; addons that compile from source at install time fail because installs run with `--ignore-scripts`.
 
 ## Contributing
 
