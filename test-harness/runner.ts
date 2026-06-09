@@ -268,6 +268,16 @@ function sandboxCmd(cmd: string): string {
   if (!hasFirejail()) return cmd;
   return [
     "firejail --quiet --net=none",
+    // firejail's default profile applies `noexec /tmp` (disable-exec.inc),
+    // which blocks mmap(PROT_EXEC) on the plugin workdir. Plugins that load a
+    // native addon at require-time (sharp/libvips, canvas, prebuilt
+    // better-sqlite3, …) then fail dlopen with "failed to map segment from
+    // shared object", flatlining Load+Activate+Schema to ~30 for an
+    // environment-only reason. The workdir only ever holds the plugin's own
+    // freshly-installed code we are about to execute anyway, so lifting noexec
+    // there costs nothing the probe wasn't already permitting. `--net=none`
+    // remains the load-bearing isolation.
+    '--ignore="noexec /tmp"',
     "--read-only=/home",
     "--read-only=/etc",
     "--read-only=/var",
