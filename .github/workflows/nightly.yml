@@ -120,6 +120,7 @@ jobs:
           plugin-name: ${{ matrix.run.plugin }}
           plugin-version: ${{ matrix.run.pluginVersion }}
           server-slot: ${{ matrix.run.server }}
+          server-version: ${{ steps.server.outputs.server-version }}
 
       - name: Update results.json
         run: |
