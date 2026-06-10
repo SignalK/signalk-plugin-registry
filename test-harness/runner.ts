@@ -386,11 +386,37 @@ function githubSlugFromPackage(
   }
 }
 
+function atomMentionsVersion(body: string, version: string): boolean {
+  // Minimal atom parse: each <entry> has an <id> like
+  // tag:github.com,2008:Repository/…/<tag>  and a <title>.
+  // Accept the version string appearing in any of those.
+  const v = version.trim();
+  if (!v) return false;
+  const patterns = [
+    `>${v}<`,
+    `>v${v}<`,
+    `/${v}<`,
+    `/v${v}<`,
+    `:${v}<`,
+    `:v${v}<`,
+  ];
+  return patterns.some((p) => body.includes(p));
+}
+
 // The GitHub Releases atom feed is public and not rate-limited by the
 // /user-level 60/h that api.github.com imposes. Fetching
 // https://github.com/<owner>/<repo>/releases.atom from the untrusted test
 // job is safe — no token needed — and tells us whether the plugin author
 // publishes per-version release notes (the canonical source per PR #2615).
+//
+// Distinguishes a confirmed answer from an indeterminate one so a transient
+// blip can't be mistaken for "no changelog". A 200 is authoritative (an empty
+// feed genuinely means no release); a 404 means the repo/releases aren't
+// reachable, which we also treat as confirmed-absent. Only network errors,
+// timeouts, and 5xx/429 are indeterminate — those get retried, and if the feed
+// still can't be read we give the benefit of the doubt rather than dock the
+// changelog point (mirrors the best-score-wins "don't let a flake downgrade a
+// plugin" rule, applied at the source).
 async function hasReleaseForVersion(
   pluginDir: string,
   version: string,
@@ -398,30 +424,24 @@ async function hasReleaseForVersion(
   const slug = githubSlugFromPackage(pluginDir);
   if (!slug) return false;
   const url = `https://github.com/${slug.owner}/${slug.repo}/releases.atom`;
-  try {
-    const res = await fetch(url, {
-      signal: AbortSignal.timeout(15_000),
-      headers: { Accept: "application/atom+xml" },
-    });
-    if (!res.ok) return false;
-    const body = await res.text();
-    // Minimal atom parse: each <entry> has an <id> like
-    // tag:github.com,2008:Repository/…/<tag>  and a <title>.
-    // Accept the version string appearing in any of those.
-    const v = version.trim();
-    if (!v) return false;
-    const patterns = [
-      `>${v}<`,
-      `>v${v}<`,
-      `/${v}<`,
-      `/v${v}<`,
-      `:${v}<`,
-      `:v${v}<`,
-    ];
-    return patterns.some((p) => body.includes(p));
-  } catch {
-    return false;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(url, {
+        signal: AbortSignal.timeout(15_000),
+        headers: { Accept: "application/atom+xml" },
+      });
+      if (res.ok) return atomMentionsVersion(await res.text(), version);
+      if (res.status === 404) return false;
+      // Any other status (5xx, 429, 403 abuse-throttling, …) — couldn't read
+      // the feed; treat as indeterminate and fall through to retry.
+    } catch {
+      // network error or timeout — transient; fall through to retry.
+    }
   }
+  console.error(
+    `[runner] releases.atom for ${slug.owner}/${slug.repo} unreachable after retries; not penalizing changelog`,
+  );
+  return true;
 }
 
 async function hasChangelog(
