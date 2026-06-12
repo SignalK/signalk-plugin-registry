@@ -212,7 +212,22 @@ function main() {
     stale: 4,
     nightly: 5
   }
-  runs.sort((a, b) => REASON_PRIORITY[a.reason] - REASON_PRIORITY[b.reason])
+  // Within a tier, retest the longest-untested slot first. Stale demand
+  // (~460 plugins on a 7-day window) exceeds the nightly cap in steady state,
+  // so keeping discovery (popularity) order here would refresh popular plugins
+  // every cycle while the unpopular tail ages without bound (p90 slot age was
+  // 59 days when this landed). Oldest-first turns deferred stale work into a
+  // round-robin bounded by capacity. Runs with no prior slot sort as epoch 0
+  // and the stable sort keeps them in discovery order.
+  const lastTested = (run: PlannedRun): number => {
+    const slot = results[run.plugin]?.[run.pluginVersion]?.[`server@${run.server}`]
+    return slot && typeof slot === 'object' ? new Date(slot.tested).getTime() : 0
+  }
+  runs.sort(
+    (a, b) =>
+      REASON_PRIORITY[a.reason] - REASON_PRIORITY[b.reason] ||
+      lastTested(a) - lastTested(b)
+  )
 
   // Cap per run. With runs ordered by reason above, the cap only ever defers
   // `stale` refreshes — never a new or changed plugin — so deferred work
