@@ -194,7 +194,29 @@ function main() {
     fs.writeFileSync(resultsPath, JSON.stringify(results, null, 2) + '\n')
   }
 
-  // Cap per run — untested plugins are picked up on subsequent runs
+  // Order runs by re-test reason before applying the cap. Staleness (>7d) is a
+  // renewable source of work — in steady state ~1/7 of every already-tested
+  // plugin requalifies each night, which on its own exceeds MAX_MATRIX_JOBS.
+  // Because runs are built in discovery (npm popularity) order and the cap
+  // keeps the front of the list, that stale churn permanently starves the tail:
+  // a newly published, low-download plugin (which sorts last on npm) never
+  // reaches a test slot, so it never lands in results.json or on the site.
+  // Stable-sort the higher-signal reasons ahead of `stale` so new and changed
+  // plugins are always tested first; the cap then only ever defers stale
+  // refreshes, which genuinely are picked up on a later run.
+  const REASON_PRIORITY: Record<TriggerReason, number> = {
+    manual: 0,
+    plugin_version_change: 1,
+    server_version_change: 2,
+    schema_change: 3,
+    stale: 4,
+    nightly: 5
+  }
+  runs.sort((a, b) => REASON_PRIORITY[a.reason] - REASON_PRIORITY[b.reason])
+
+  // Cap per run. With runs ordered by reason above, the cap only ever defers
+  // `stale` refreshes — never a new or changed plugin — so deferred work
+  // really is picked up on a subsequent run.
   const MAX_MATRIX_JOBS = parseInt(process.env.MAX_MATRIX_JOBS || '50', 10)
   if (runs.length > MAX_MATRIX_JOBS) {
     console.error(
