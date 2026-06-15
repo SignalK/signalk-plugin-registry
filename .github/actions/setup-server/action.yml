@@ -37,8 +37,12 @@ runs:
       run: |
         git clone --depth 1 https://github.com/SignalK/signalk-server.git /tmp/sk-master
         cd /tmp/sk-master
-        npm ci
-        npm run build
+        # signalk-server ships no committed package-lock.json, so `npm ci`
+        # fails with EUSAGE — use `npm install`. And the root `build` is
+        # tsc-only; the workspace packages (@signalk/server-api, streams, …)
+        # plugins load against need `build:all`.
+        npm install
+        npm run build:all
         npm link
         SHA=$(git rev-parse --short HEAD)
         echo "version=$SHA" >> $GITHUB_OUTPUT
