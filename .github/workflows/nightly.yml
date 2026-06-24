@@ -50,8 +50,21 @@ jobs:
         id: resolve
         run: npx ts-node scripts/resolve-server.ts >> $GITHUB_OUTPUT
 
+      # single_plugin mode injects the one requested plugin from the lag-free
+      # per-package npm endpoint. discover-plugins.ts relies on the npm search
+      # index, which lags publishes by up to an hour — so a freshly-published
+      # plugin would be absent from the discovered set and the run would
+      # silently produce zero matrix jobs. See scripts/resolve-single-plugin.ts.
       - name: Discover plugins
-        run: npx ts-node scripts/discover-plugins.ts --out /tmp/plugins.json
+        env:
+          MODE: ${{ github.event.inputs.mode }}
+          PLUGIN: ${{ github.event.inputs.plugin }}
+        run: |
+          if [ "$MODE" = "single_plugin" ] && [ -n "$PLUGIN" ]; then
+            npx ts-node scripts/resolve-single-plugin.ts --name "$PLUGIN" --out /tmp/plugins.json
+          else
+            npx ts-node scripts/discover-plugins.ts --out /tmp/plugins.json
+          fi
 
       - name: Build TypeScript
         run: npx tsc
