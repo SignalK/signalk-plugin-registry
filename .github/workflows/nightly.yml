@@ -48,7 +48,7 @@ jobs:
       runs: ${{ steps.plan.outputs.runs }}
       has_runs: ${{ steps.plan.outputs.has_runs }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
@@ -120,7 +120,7 @@ jobs:
     name: ${{ matrix.run.plugin }}@${{ matrix.run.pluginVersion }} x ${{ matrix.run.server }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
@@ -174,7 +174,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Download all result artifacts
         uses: actions/download-artifact@v8
@@ -294,7 +294,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: master
           fetch-depth: 0
@@ -349,7 +349,7 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: master # read the published score for the up/down comparison
           persist-credentials: false
