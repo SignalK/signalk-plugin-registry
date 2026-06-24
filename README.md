@@ -89,9 +89,33 @@ Test against a local plugin source:
 npx ts-node test-harness/detect-providers.ts /path/to/plugin
 ```
 
+## Requesting a Re-Score
+
+If you maintain a plugin and want a fresh score without waiting for the nightly
+run — for example right after publishing a fix — open a re-score request:
+
+1. Go to [**New issue**](https://github.com/SignalK/signalk-plugin-registry/issues/new/choose)
+   and choose **Request a plugin re-score**.
+2. Enter your npm package name (e.g. `signalk-my-plugin` or
+   `@scope/signalk-my-plugin`) and submit.
+
+A bot validates the request, runs a single-plugin scan, comments the new score
+and badges on the issue, then closes it. This usually takes a few minutes.
+
+Your plugin must be published to npm and carry the `signalk-node-server-plugin`
+keyword (the same keyword the Signal K app store uses to discover plugins). If
+it isn't a recognised plugin, the bot replies explaining why and closes the
+issue without running a scan.
+
+To re-run later on the same issue — after shipping another change — comment
+`/rescore <npm-name>`.
+
+You don't need write access to this repository; anyone can open the request.
+
 ## Triggering CI
 
-Go to Actions > "Nightly Plugin Registry Scan" > Run workflow:
+Maintainers can also trigger a scan directly. Go to Actions > "Nightly Plugin
+Registry Scan" > Run workflow:
 
 - **changed_only** — only test plugins with new versions since last run
 - **all_plugins** — retest everything
