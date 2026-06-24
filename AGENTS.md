@@ -69,6 +69,14 @@ Set to `"1"` in every `npm test` invocation (both the tarball pass in `checkOwnT
 
 All plugin dependency installs use `--ignore-scripts` to block `postinstall` / `preinstall` lifecycle scripts. Signal K server itself is installed normally because it's trusted first-party code.
 
+### Action pinning (deliberately by tag, not SHA)
+
+Workflow `uses:` references are pinned to major-version tags (`actions/checkout@v7`), **not** commit SHAs. This is a conscious decision, not an oversight — `zizmor`'s `unpinned-uses` rule and reviewers will flag it, and the answer is recorded here and in `.github/zizmor.yml`.
+
+Every action this repo uses is **first-party GitHub** (`actions/checkout`, `actions/setup-node`, `actions/github-script`, `actions/upload-artifact`, `actions/download-artifact`). There are **no third-party actions** — the supply-chain-attack class SHA-pinning defends against (a compromised third-party action retagging to malicious code, e.g. the `tj-actions/changed-files` incident) does not apply. Meanwhile the one job that runs untrusted plugin code already holds `permissions: {}` + `persist-credentials: false`, so even a hypothetically-compromised action there has no token to steal. The token-bearing jobs (`merge-results`, `publish`, `report-rescore`, the `rescore.yml` front door) run no plugin code and use only these first-party actions.
+
+Given that, full-SHA pinning buys a marginal reduction in trust-in-GitHub-itself at the cost of ~10 opaque hashes to keep current. If a third-party action is ever introduced, pin **that** action to a SHA and revisit this stance.
+
 ### `npm.requires` companion installs
 
 `runner.ts` reads `signalk.requires` from a plugin's `package.json` (search for the `signalk.requires` block in `runner.ts`) and `npm install`s each companion **before** the plugin's own tests run. This mirrors the behaviour upstream signalk-server adopted in [SignalK/signalk-server#2698](https://github.com/SignalK/signalk-server/pull/2698). When you change this code path, keep it aligned with what upstream does — a divergence makes the registry score either harsher or more lenient than the canonical CI.

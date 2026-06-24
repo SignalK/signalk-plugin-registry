@@ -1,0 +1,14 @@
+# zizmor configuration.
+#
+# unpinned-uses: this repo deliberately pins actions to major-version tags
+# (actions/checkout@v7), not commit SHAs. Every action used is first-party
+# GitHub, and the only job that runs untrusted plugin code already has
+# permissions:{} + persist-credentials:false. See "Action pinning" in AGENTS.md
+# for the full rationale. Relax the rule to allow GitHub-owned actions on tags;
+# a third-party action (which this repo has none of) would still be flagged.
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        actions/*: ref-pin
+        "*": hash-pin
