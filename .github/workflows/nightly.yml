@@ -24,6 +24,18 @@ on:
         description: 'Max parallel test jobs (default 50, max 256)'
         type: number
         default: 50
+      rescore_issue:
+        description: 'Issue number to report the result back to (on-demand re-score only)'
+        required: false
+
+# Coalesce duplicate on-demand scans of the SAME plugin: opening several
+# rescore issues for one package must not fan out into parallel runs of that
+# plugin's untrusted code. single_plugin dispatches for a given plugin share a
+# group and queue (cancel-in-progress: false); the scheduled nightly and
+# all_plugins runs keep their own lanes so a rescan never blocks or cancels them.
+concurrency:
+  group: nightly-${{ github.event_name }}-${{ github.event.inputs.mode || 'schedule' }}-${{ github.event.inputs.plugin || 'all' }}
+  cancel-in-progress: false
 
 jobs:
   # ─────────────────────────────────────────────────────────────
@@ -317,3 +329,71 @@ jobs:
             echo "Push attempt $i failed (concurrent update), retrying in ${i}s..."
             sleep "$i"
           done
+
+  # ─────────────────────────────────────────────────────────────
+  # JOB 5: Report — comments the score on an on-demand re-score's
+  # request issue. Only runs for workflow_dispatch with rescore_issue
+  # set; the scheduled nightly skips it. NEVER touches plugin code.
+  # ─────────────────────────────────────────────────────────────
+  report-rescore:
+    needs: [merge-results, publish]
+    # Only report when the pipeline actually succeeded — otherwise this could
+    # comment whatever score is already on master and close the issue as if the
+    # rerun passed. A clean single-plugin run always produces a slot (even a
+    # failing one), so merge-results + publish both succeed on the happy path.
+    if: >-
+      github.event.inputs.rescore_issue != '' &&
+      needs.merge-results.result == 'success' &&
+      needs.publish.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: master # read the published score for the up/down comparison
+          persist-credentials: false
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - run: npm ci --ignore-scripts
+
+      # This run's actual slot outcome (composite/badges/status), independent
+      # of what won the best-score merge. The reporter compares it against the
+      # published score so the comment reflects the rerun, not a stale winner.
+      - name: Download this run's result envelopes
+        uses: actions/download-artifact@v8
+        with:
+          path: /tmp/rescore-results
+          pattern: result-*
+
+      - name: Build result comment
+        id: comment
+        env:
+          PLUGIN: ${{ github.event.inputs.plugin }}
+          ARTIFACTS_DIR: /tmp/rescore-results
+        run: npx ts-node scripts/notify-rescore-result.ts >> "$GITHUB_OUTPUT"
+
+      - name: Comment score and close issue
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const body = process.env.COMMENT
+            const issue_number = Number(process.env.ISSUE)
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body
+            })
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              state: 'closed'
+            })
+        env:
+          COMMENT: ${{ steps.comment.outputs.comment }}
+          ISSUE: ${{ github.event.inputs.rescore_issue }}
