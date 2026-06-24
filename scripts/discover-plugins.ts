@@ -6,7 +6,7 @@ interface RegistryEntry {
   category: string
 }
 
-interface PluginInfo {
+export interface PluginInfo {
   name: string
   version: string
   description: string
@@ -25,7 +25,7 @@ interface NpmSearchResult {
   total: number
 }
 
-interface NpmPackument {
+export interface NpmPackument {
   name: string
   description?: string
   homepage?: string
@@ -34,7 +34,7 @@ interface NpmPackument {
   versions?: Record<string, { version: string; description?: string; keywords?: string[] }>
 }
 
-const PLUGIN_KEYWORD = 'signalk-node-server-plugin'
+export const PLUGIN_KEYWORD = 'signalk-node-server-plugin'
 const NPM_SEARCH_SIZE = 250
 // The /-/v1/search endpoint's index lags publishes by up to an hour. Use it
 // only to enumerate plugin *names*; resolve each package's authoritative
@@ -48,7 +48,7 @@ async function searchNpm(keyword: string, from: number = 0): Promise<NpmSearchRe
   return res.json()
 }
 
-async function fetchPackument(name: string): Promise<NpmPackument | null> {
+export async function fetchPackument(name: string): Promise<NpmPackument | null> {
   // One transient fetch reject or malformed JSON must not halt all 450+
   // plugins — drop the failing entry and let the rest succeed.
   try {
@@ -99,7 +99,7 @@ async function discoverNames(): Promise<string[]> {
   return names
 }
 
-function packumentToPluginInfo(name: string, doc: NpmPackument): PluginInfo | null {
+export function packumentToPluginInfo(name: string, doc: NpmPackument): PluginInfo | null {
   const latest = doc['dist-tags']?.latest
   if (!latest) {
     console.error(`[discover] ${name} has no dist-tags.latest, skipping`)
@@ -197,7 +197,9 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(err)
-  process.exit(1)
-})
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(err)
+    process.exit(1)
+  })
+}

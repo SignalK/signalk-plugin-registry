@@ -1,0 +1,34 @@
+name: Request a plugin re-score
+description: Trigger a fresh quality scan of your own Signal K plugin without waiting for the nightly run.
+title: '[rescore] '
+labels: ['rescore']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this to re-score a plugin **you published** — for example after
+        shipping a fix and wanting the new score right away instead of waiting
+        for the nightly scan.
+
+        Your plugin must be published to npm and carry the
+        `signalk-node-server-plugin` keyword (the same keyword the Signal K app
+        store uses to discover plugins). The bot validates the package, runs the
+        scan, comments the result here, and closes the issue. This usually takes
+        a few minutes.
+
+        To re-run later on the same issue, comment `/rescore <npm-name>`.
+  - type: input
+    id: npm-name
+    attributes:
+      label: npm package name
+      description: Exactly as published, e.g. signalk-my-plugin or @scope/signalk-my-plugin
+      placeholder: signalk-my-plugin
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: This package is published to npm and carries the signalk-node-server-plugin keyword.
+          required: true

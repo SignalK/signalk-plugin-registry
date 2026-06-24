@@ -1,0 +1,119 @@
+name: On-demand plugin re-score
+
+# Lets a plugin author trigger a fresh scan of their own plugin without write
+# access to this repo: they open the "Request a plugin re-score" issue form (or
+# comment `/rescore <name>`), and this workflow validates the npm name and
+# dispatches the nightly scan scoped to that one plugin.
+#
+# SECURITY: this workflow is trusted (it can comment, close issues, and
+# dispatch workflows) but handles only an attacker-controlled *string* (the npm
+# package name) — never attacker-controlled *code*. It does not check out or
+# run plugin code; that stays in nightly.yml's sandboxed, zero-permission test
+# job. The name is regex-validated and proven to be a real published Signal K
+# plugin before it is dispatched into the matrix. Issue/comment text is passed
+# to the validator via env, never interpolated into a run: shell line.
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  # Coalesce a burst of requests on one issue into a single in-flight run.
+  group: rescore-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+# Keep the default token empty at workflow scope; grant write only to the one
+# job that needs it, so any future job starts from zero.
+permissions: {}
+
+jobs:
+  rescore:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout
+      issues: write # comment on / close the request issue
+      actions: write # dispatch nightly.yml (workflow_dispatch, same repo)
+    # Only react to the re-score issue form (which auto-applies the `rescore`
+    # label) or to a `/rescore` comment on such an issue. Every other opened
+    # issue / comment is ignored, so this is not a general issue trigger.
+    if: >-
+      (github.event_name == 'issues' &&
+        contains(github.event.issue.labels.*.name, 'rescore'))
+      ||
+      (github.event_name == 'issue_comment' &&
+        contains(github.event.issue.labels.*.name, 'rescore') &&
+        startsWith(github.event.comment.body, '/rescore'))
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      # --ignore-scripts: this job holds a write-capable token, so block any
+      # dependency lifecycle hook from running here (same supply-chain stance
+      # the harness takes for plugin installs).
+      - run: npm ci --ignore-scripts
+
+      - name: Validate request
+        id: parse
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: npx ts-node scripts/parse-rescore-request.ts >> "$GITHUB_OUTPUT"
+
+      - name: Reject invalid request
+        if: steps.parse.outputs.valid != 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const reason = process.env.REASON
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `Could not start a re-score: ${reason}\n\nThe package must be published to npm and carry the \`signalk-node-server-plugin\` keyword.`
+            })
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed'
+            })
+        env:
+          REASON: ${{ steps.parse.outputs.reason }}
+
+      - name: Dispatch single-plugin scan
+        if: steps.parse.outputs.valid == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PLUGIN: ${{ steps.parse.outputs.name }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          gh workflow run nightly.yml \
+            -f mode=single_plugin \
+            -f plugin="$PLUGIN" \
+            -f include_master=false \
+            -f rescore_issue="$ISSUE"
+
+      - name: Acknowledge
+        if: steps.parse.outputs.valid == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const name = process.env.PLUGIN
+            const version = process.env.VERSION
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `Started a re-score of \`${name}\`@${version}. This usually finishes in a few minutes — I'll comment the result here.`
+            })
+        env:
+          PLUGIN: ${{ steps.parse.outputs.name }}
+          VERSION: ${{ steps.parse.outputs.version }}
