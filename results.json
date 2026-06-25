@@ -475,10 +475,10 @@
     },
     "4.8.0": {
       "server@stable": {
-        "tested": "2026-06-09T05:59:24.131Z",
+        "tested": "2026-06-25T06:02:51.565Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -1847,10 +1847,10 @@
   "bt-sensors-plugin-sk": {
     "1.3.7": {
       "server@stable": {
-        "tested": "2026-06-09T05:58:27.160Z",
+        "tested": "2026-06-25T06:00:29.965Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": false,
         "load_error": "sandboxed detection failed",
@@ -2517,10 +2517,10 @@
   "signalk-to-nmea2000": {
     "2.24.0": {
       "server@stable": {
-        "tested": "2026-06-09T05:58:10.814Z",
+        "tested": "2026-06-25T06:00:59.854Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -2776,10 +2776,10 @@
     },
     "2.0.3": {
       "server@stable": {
-        "tested": "2026-06-09T05:59:00.757Z",
+        "tested": "2026-06-25T06:01:07.570Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activation_error": "Cannot read properties of undefined (reading 'map')",
@@ -3216,10 +3216,10 @@
     },
     "1.4.1": {
       "server@stable": {
-        "tested": "2026-06-09T05:58:27.844Z",
+        "tested": "2026-06-25T06:00:37.437Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -3860,10 +3860,10 @@
     },
     "2.9.2": {
       "server@stable": {
-        "tested": "2026-06-09T05:59:37.522Z",
+        "tested": "2026-06-25T06:01:33.462Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -4518,6 +4518,48 @@
         ],
         "test_status": "passing"
       }
+    },
+    "2.3.3": {
+      "server@stable": {
+        "tested": "2026-06-25T05:58:26.147Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.28.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [
+          "get",
+          "post",
+          "delete"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "@signalk/charts-plugin": {
@@ -4745,10 +4787,10 @@
   "@signalk/set-system-time": {
     "1.5.0": {
       "server@stable": {
-        "tested": "2026-06-09T05:57:54.146Z",
+        "tested": "2026-06-25T06:00:14.970Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -6107,10 +6149,10 @@
   "@signalk/udp-nmea-plugin": {
     "2.0.0": {
       "server@stable": {
-        "tested": "2026-06-09T05:57:54.661Z",
+        "tested": "2026-06-25T06:00:28.059Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -6142,10 +6184,10 @@
   "signalk-n2kais-to-nmea0183": {
     "2.0.3": {
       "server@stable": {
-        "tested": "2026-06-09T05:58:29.208Z",
+        "tested": "2026-06-25T06:01:23.606Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -6178,10 +6220,10 @@
   "@signalk/resources-provider": {
     "1.5.1": {
       "server@stable": {
-        "tested": "2026-06-09T05:57:51.497Z",
+        "tested": "2026-06-25T06:00:11.967Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -6416,10 +6458,10 @@
     },
     "0.2.1": {
       "server@stable": {
-        "tested": "2026-06-09T05:59:41.780Z",
+        "tested": "2026-06-25T06:01:35.473Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -7938,10 +7980,10 @@
     },
     "1.1.2": {
       "server@stable": {
-        "tested": "2026-06-09T05:59:05.502Z",
+        "tested": "2026-06-25T06:01:20.401Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -8008,10 +8050,10 @@
   "signalk-raspberry-pi-sx1262-rx": {
     "0.0.14": {
       "server@stable": {
-        "tested": "2026-06-08T06:29:14.141Z",
+        "tested": "2026-06-25T05:57:53.996Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -8994,10 +9036,10 @@
     },
     "1.0.1": {
       "server@stable": {
-        "tested": "2026-06-09T05:59:31.644Z",
+        "tested": "2026-06-25T06:01:28.873Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": false,
         "load_error": "sandboxed detection failed",
@@ -10225,10 +10267,10 @@
   "signalk-windjs": {
     "0.3.1": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:56.885Z",
+        "tested": "2026-06-25T05:59:33.115Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -10768,10 +10810,10 @@
   "@codekilo/signalk-trigger-event": {
     "1.0.0": {
       "server@stable": {
-        "tested": "2026-06-08T06:29:47.971Z",
+        "tested": "2026-06-25T05:58:42.576Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activation_error": "Cannot read properties of undefined (reading 'forEach')",
@@ -11468,10 +11510,10 @@
   "signalk-multiplex-viewer": {
     "1.2.0": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:05.950Z",
+        "tested": "2026-06-25T05:59:51.609Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -12323,10 +12365,10 @@
   "signalk-route-data": {
     "0.0.4": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:18.731Z",
+        "tested": "2026-06-25T05:59:03.400Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activation_error": "Cannot read properties of undefined (reading 'then')",
@@ -12532,10 +12574,10 @@
   "signalk-junctekkg": {
     "1.0.1": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:59.884Z",
+        "tested": "2026-06-25T05:59:34.297Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activation_error": "Cannot read properties of undefined (reading 'forEach')",
@@ -12602,10 +12644,10 @@
   "@yachteye/signalk-weather-plugin": {
     "1.0.1": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:34.740Z",
+        "tested": "2026-06-25T05:59:13.708Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -13420,13 +13462,13 @@
   "signalk-sbd": {
     "1.0.4": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:07.195Z",
+        "tested": "2026-06-25T05:59:02.144Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": false,
-        "load_error": "Could not locate the bindings file. Tried:\n → /tmp/sk-registry-yl4nlh/node_modules/serialport/build/serialport.node\n → /tmp/sk-registry-yl4nlh/node_modules/serialport/build/Debug/serialport.node\n → /tmp/sk-registry-yl4nlh/node_modules/serialport/build/Release/serialport.node\n → /tmp/sk-registry-yl4nlh/node_modules/serialport/out/Debug/serialport.node\n → /tmp/sk-registry-yl4nlh/node_modules/serialport/Debug/serialport.node\n → /tmp/sk-registry-yl4nlh/node_modules/serialport/out/Release/serialport.node\n → /tmp/sk-registry-yl4nlh/node_modules/serialport/Release/serialport.node\n → /tmp/sk-registry-yl4nlh/node_modules/serialport/build/default/serialport.node\n → /tmp/sk-registry-yl4nlh/node_modules/serialport/compiled/24.16.0/linux/x64/serialport.node",
+        "load_error": "Could not locate the bindings file. Tried:\n → /tmp/sk-registry-rfO27L/node_modules/serialport/build/serialport.node\n → /tmp/sk-registry-rfO27L/node_modules/serialport/build/Debug/serialport.node\n → /tmp/sk-registry-rfO27L/node_modules/serialport/build/Release/serialport.node\n → /tmp/sk-registry-rfO27L/node_modules/serialport/out/Debug/serialport.node\n → /tmp/sk-registry-rfO27L/node_modules/serialport/Debug/serialport.node\n → /tmp/sk-registry-rfO27L/node_modules/serialport/out/Release/serialport.node\n → /tmp/sk-registry-rfO27L/node_modules/serialport/Release/serialport.node\n → /tmp/sk-registry-rfO27L/node_modules/serialport/build/default/serialport.node\n → /tmp/sk-registry-rfO27L/node_modules/serialport/compiled/24.17.0/linux/x64/serialport.node",
         "activates": false,
         "activates_without_config": false,
         "detected_providers": [],
@@ -13963,10 +14005,10 @@
   "signalk-data-logger": {
     "0.1.0": {
       "server@stable": {
-        "tested": "2026-06-08T06:29:53.447Z",
+        "tested": "2026-06-25T05:58:44.548Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -15342,10 +15384,10 @@
   "galadrielmap_sk": {
     "0.13.0": {
       "server@stable": {
-        "tested": "2026-06-09T05:57:57.429Z",
+        "tested": "2026-06-25T06:00:26.303Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -16084,10 +16126,10 @@
     },
     "2.0.3": {
       "server@stable": {
-        "tested": "2026-06-09T05:59:03.638Z",
+        "tested": "2026-06-25T06:01:03.397Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -16516,10 +16558,10 @@
     },
     "5.1.0": {
       "server@stable": {
-        "tested": "2026-06-09T05:58:38.957Z",
+        "tested": "2026-06-25T06:00:44.838Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -16788,6 +16830,41 @@
       "server@stable": {
         "tested": "2026-06-21T06:42:53.878Z",
         "triggered_by": "server_version_change",
+        "node_version": "24",
+        "server_version": "2.28.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "1.3.1": {
+      "server@stable": {
+        "tested": "2026-06-25T05:57:59.043Z",
+        "triggered_by": "plugin_version_change",
         "node_version": "24",
         "server_version": "2.28.0",
         "installs": true,
@@ -18450,10 +18527,10 @@
   "signalk-n2k-switch-alias": {
     "1.0.1": {
       "server@stable": {
-        "tested": "2026-06-08T06:29:46.879Z",
+        "tested": "2026-06-25T05:58:30.359Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -18465,17 +18542,18 @@
         "own_tests_pass": false,
         "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": false,
+        "has_changelog": true,
         "has_screenshots": false,
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 65,
+        "composite": 70,
         "badges": [
           "compatible",
           "loads",
           "activates",
-          "npm-audit-ok"
+          "npm-audit-ok",
+          "has-changelog"
         ],
         "test_status": "none"
       }
@@ -18484,10 +18562,10 @@
   "sk-nmea0183-vdr": {
     "1.0.3": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:52.526Z",
+        "tested": "2026-06-25T05:59:24.497Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -18658,10 +18736,10 @@
   "signalk-maretron-proprietary": {
     "1.0.2": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:27.393Z",
+        "tested": "2026-06-25T05:58:57.052Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -19416,13 +19494,13 @@
   "@signalk/simple-gpx": {
     "0.0.2-1": {
       "server@stable": {
-        "tested": "2026-06-08T06:29:56.271Z",
+        "tested": "2026-06-25T05:58:36.689Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": false,
-        "load_error": "Cannot find module 'xmldom'\nRequire stack:\n- /tmp/sk-registry-WRi2te/node_modules/@signalk/simple-gpx/index.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-providers.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-sandboxed.js",
+        "load_error": "Cannot find module 'xmldom'\nRequire stack:\n- /tmp/sk-registry-wMpFuD/node_modules/@signalk/simple-gpx/index.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-providers.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-sandboxed.js",
         "activates": false,
         "activates_without_config": false,
         "detected_providers": [],
@@ -19896,10 +19974,10 @@
   "@ib236/signalk-prometheus-exporter": {
     "0.0.3": {
       "server@stable": {
-        "tested": "2026-06-08T06:31:37.324Z",
+        "tested": "2026-06-25T06:00:09.226Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activation_error": "app.signalk.on is not a function",
@@ -19913,16 +19991,17 @@
         "own_tests_pass": false,
         "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": false,
+        "has_changelog": true,
         "has_screenshots": false,
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 50,
+        "composite": 55,
         "badges": [
           "compatible",
           "loads",
-          "npm-audit-ok"
+          "npm-audit-ok",
+          "has-changelog"
         ],
         "test_status": "none"
       }
@@ -20065,10 +20144,10 @@
   "@yachteye/signalk-makkah-plugin": {
     "1.0.3": {
       "server@stable": {
-        "tested": "2026-06-08T06:29:32.571Z",
+        "tested": "2026-06-25T05:58:24.117Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -20611,10 +20690,10 @@
   "signalk-rudder-n2k": {
     "1.0.3": {
       "server@stable": {
-        "tested": "2026-06-08T06:29:38.312Z",
+        "tested": "2026-06-25T05:58:28.104Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -20748,13 +20827,13 @@
   "signalk-govee-plugin": {
     "1.0.1": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:16.867Z",
+        "tested": "2026-06-25T05:59:05.357Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": false,
-        "load_error": "Cannot find module '../build/Release/bluetooth_hci_socket.node'\nRequire stack:\n- /tmp/sk-registry-bRaW4C/node_modules/@abandonware/bluetooth-hci-socket/lib/native.js\n- /tmp/sk-registry-bRaW4C/node_modules/@abandonware/bluetooth-hci-socket/index.js\n- /tmp/sk-registry-bRaW4C/node_modules/@abandonware/noble/lib/hci-socket/hci.js\n- /tmp/sk-registry-bRaW4C/node_modules/@abandonware/noble/lib/hci-socket/bindings.js\n- /tmp/sk-registry-bRaW4C/node_modules/@abandonware/noble/lib/resolve-bindings.js\n- /tmp/sk-registry-bRaW4C/node_modules/@abandonware/noble/with-custom-binding.js\n- /tmp/sk-registry-bRaW4C/node_modules/@abandonware/noble/index.js\n- /tmp/sk-registry-bRaW4C/node_modules/signalk-govee-plugin/index.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-providers.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-sandboxed.js",
+        "load_error": "Cannot find module '../build/Release/bluetooth_hci_socket.node'\nRequire stack:\n- /tmp/sk-registry-ae7C7Y/node_modules/@abandonware/bluetooth-hci-socket/lib/native.js\n- /tmp/sk-registry-ae7C7Y/node_modules/@abandonware/bluetooth-hci-socket/index.js\n- /tmp/sk-registry-ae7C7Y/node_modules/@abandonware/noble/lib/hci-socket/hci.js\n- /tmp/sk-registry-ae7C7Y/node_modules/@abandonware/noble/lib/hci-socket/bindings.js\n- /tmp/sk-registry-ae7C7Y/node_modules/@abandonware/noble/lib/resolve-bindings.js\n- /tmp/sk-registry-ae7C7Y/node_modules/@abandonware/noble/with-custom-binding.js\n- /tmp/sk-registry-ae7C7Y/node_modules/@abandonware/noble/index.js\n- /tmp/sk-registry-ae7C7Y/node_modules/signalk-govee-plugin/index.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-providers.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-sandboxed.js",
         "activates": false,
         "activates_without_config": false,
         "detected_providers": [],
@@ -21121,10 +21200,10 @@
   "signalk-yd-alarm-button": {
     "1.0.2": {
       "server@stable": {
-        "tested": "2026-06-08T06:31:16.702Z",
+        "tested": "2026-06-25T05:59:49.651Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -21328,10 +21407,10 @@
   "signalk-mqtt-openhasp": {
     "0.0.3": {
       "server@stable": {
-        "tested": "2026-06-08T06:31:22.808Z",
+        "tested": "2026-06-25T05:59:55.256Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -21879,10 +21958,10 @@
   "signalk-ifttt-notifications": {
     "1.0.3": {
       "server@stable": {
-        "tested": "2026-06-08T06:31:38.014Z",
+        "tested": "2026-06-25T06:00:04.350Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -22259,10 +22338,10 @@
   "signalk-cyclops-gateway": {
     "1.2.0": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:37.051Z",
+        "tested": "2026-06-25T05:59:23.727Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -22980,10 +23059,10 @@
   "dynamo-signalk-fleeter": {
     "1.0.2": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:32.563Z",
+        "tested": "2026-06-25T05:59:03.722Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -23288,10 +23367,10 @@
   "multiple-sow-sources": {
     "0.0.6": {
       "server@stable": {
-        "tested": "2026-06-08T06:31:11.528Z",
+        "tested": "2026-06-25T05:59:40.591Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": false,
         "load_error": "sandboxed detection failed",
@@ -23424,10 +23503,10 @@
   "signalk-ecowitt": {
     "0.0.5": {
       "server@stable": {
-        "tested": "2026-06-08T06:30:54.464Z",
+        "tested": "2026-06-25T05:59:35.039Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -23459,10 +23538,10 @@
   "sk-logs-to-aws-s3": {
     "1.1.0": {
       "server@stable": {
-        "tested": "2026-06-08T06:31:17.269Z",
+        "tested": "2026-06-25T06:00:01.878Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activation_error": "Cannot read properties of undefined (reading 'loggingDirectory')",
@@ -27747,6 +27826,41 @@
         ],
         "test_status": "passing"
       }
+    },
+    "0.6.0": {
+      "server@stable": {
+        "tested": "2026-06-25T05:58:15.313Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.28.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "server"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 90,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-polar-performance": {
@@ -27890,10 +28004,10 @@
     },
     "2.1.3": {
       "server@stable": {
-        "tested": "2026-06-09T05:59:19.814Z",
+        "tested": "2026-06-25T06:01:21.558Z",
         "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -28739,10 +28853,10 @@
     },
     "0.2.5": {
       "server@stable": {
-        "tested": "2026-06-09T05:59:12.723Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-06-25T06:01:23.603Z",
+        "triggered_by": "stale",
         "node_version": "24",
-        "server_version": "2.27.0",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -29054,6 +29168,43 @@
         "triggered_by": "manual",
         "node_version": "24",
         "server_sha": "",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "version"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "0.9.3": {
+      "server@stable": {
+        "tested": "2026-06-25T05:58:06.161Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.28.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -33222,6 +33373,75 @@
           "loads",
           "activates",
           "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "none"
+      }
+    },
+    "0.0.18": {
+      "server@stable": {
+        "tested": "2026-06-25T05:58:00.886Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.28.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "none"
+      }
+    }
+  },
+  "signalk-navico-embedder": {
+    "1.0.0": {
+      "server@stable": {
+        "tested": "2026-06-25T05:57:46.573Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.28.0",
+        "installs": true,
+        "loads": true,
+        "activation_error": "Invalid URL",
+        "activates": false,
+        "activates_without_config": false,
+        "activation_without_config_error": "Invalid URL",
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 2,
+        "composite": 50,
+        "badges": [
+          "compatible",
+          "loads",
+          "audit-moderate",
           "has-changelog"
         ],
         "test_status": "none"
