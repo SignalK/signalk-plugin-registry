@@ -267,17 +267,22 @@ function hasFirejail(): boolean {
 function sandboxCmd(cmd: string): string {
   if (!hasFirejail()) return cmd;
   return [
-    "firejail --quiet --net=none",
-    // firejail's default profile applies `noexec /tmp` (disable-exec.inc),
-    // which blocks mmap(PROT_EXEC) on the plugin workdir. Plugins that load a
-    // native addon at require-time (sharp/libvips, canvas, prebuilt
-    // better-sqlite3, …) then fail dlopen with "failed to map segment from
-    // shared object", flatlining Load+Activate+Schema to ~30 for an
-    // environment-only reason. The workdir only ever holds the plugin's own
-    // freshly-installed code we are about to execute anyway, so lifting noexec
-    // there costs nothing the probe wasn't already permitting. `--net=none`
-    // remains the load-bearing isolation.
-    '--ignore="noexec /tmp"',
+    "firejail --quiet",
+    // --noprofile: run with ONLY the explicit flags below, never an
+    // auto-selected profile. firejail otherwise picks a profile from the
+    // payload's basename, so `node …` loaded the heavy nodejs-common.profile
+    // (seccomp, caps-drop-all, private-dev, private-tmp) while `timeout … npm
+    // test` loaded default.profile — two different sandboxes for the same
+    // threat model, and the profile's private /tmp silently dropped the
+    // detection result file once we wrapped detection in `timeout`. Pinning
+    // --noprofile makes every plugin-code path identical and matches the
+    // documented model in AGENTS.md: the load-bearing isolation is --net=none
+    // plus the read-only mounts, NOT firejail's auto seccomp/caps profile. It
+    // also drops the default profile's `noexec /tmp`, which previously needed
+    // an explicit --ignore so require-time native addons (sharp/libvips,
+    // canvas, prebuilt better-sqlite3) could mmap their .node binary.
+    "--noprofile",
+    "--net=none",
     "--read-only=/home",
     "--read-only=/etc",
     "--read-only=/var",
@@ -293,7 +298,23 @@ function detectProviderssandboxed(pluginDir: string): DetectionResult {
     "detect-sandboxed.js",
   );
 
-  const cmd = sandboxCmd(`node ${sandboxedScript} ${pluginDir} ${outputFile}`);
+  // Under firejail, `timeout` lives *inside* the sandbox wrapper (as in
+  // checkOwnTests) so it bounds — and reaps — firejail's whole PID namespace,
+  // including any subprocess a plugin's start() spawns.
+  // signalk-autopilot-provider-garmin spawns `candump`, which under --net=none
+  // can't open its AF_CAN socket; the plugin's stop() then SIGTERMs it, and
+  // firejail surfaces that 143 up its process group. On a GitHub-hosted runner
+  // that propagating SIGTERM tears down the runner agent itself ("received a
+  // shutdown signal", exit 143), failing the entire matrix on this one plugin.
+  // Wrapping in `timeout` (combined with sandboxCmd's --noprofile, which keeps
+  // the output write on the shared /tmp) contains it: detection exits 0 and
+  // still produces its result file. The wrapper is gated on hasFirejail() so the
+  // unsandboxed local-dev path keeps its raw `node` probe (no GNU `timeout`
+  // dependency, which isn't present by default on e.g. macOS).
+  const probe = `node ${sandboxedScript} ${pluginDir} ${outputFile}`;
+  const cmd = hasFirejail()
+    ? sandboxCmd(`timeout --kill-after=10s 30s ${probe}`)
+    : probe;
 
   if (hasFirejail()) {
     console.error("[runner] Running detection under firejail --net=none");
@@ -302,7 +323,7 @@ function detectProviderssandboxed(pluginDir: string): DetectionResult {
   }
 
   try {
-    execSync(cmd, { timeout: 30_000, stdio: "pipe" });
+    execSync(cmd, { timeout: 45_000, stdio: "pipe", killSignal: "SIGKILL" });
   } catch (err: unknown) {
     console.error(`[runner] Sandboxed detection failed: ${formatExecError(err)}`);
   }
