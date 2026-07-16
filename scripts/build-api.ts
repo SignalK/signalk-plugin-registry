@@ -659,6 +659,7 @@ interface SlotResult {
   has_install_scripts?: boolean
   has_changelog?: boolean
   has_screenshots?: boolean
+  held_back_core_deps?: Array<{ pkg: string; declared: string; latest: string }>
   audit_critical?: number
   audit_high?: number
   audit_moderate?: number
@@ -896,7 +897,13 @@ async function main() {
     'audit-critical': '#dc3545',
     'has-changelog': '#17a2b8',
     'has-screenshots': '#17a2b8',
+    'holds-back-core-deps': '#fd7e14',
     'broken': '#dc3545'
+  }
+
+  const badgeTitles: Record<string, string> = {
+    'holds-back-core-deps':
+      'A declared dependency range pins a core Signal K package below its latest same-major release (-80)'
   }
 
   function esc(s: string): string {
@@ -925,7 +932,9 @@ async function main() {
 
   function badgeSpan(badge: string): string {
     const bg = badgeColors[badge] || '#6c757d'
-    return `<span style="display:inline-block;padding:1px 6px;border-radius:3px;background:${bg};color:#fff;font-size:0.75em;margin:1px">${esc(badge)}</span>`
+    const title = badgeTitles[badge]
+    const titleAttr = title ? ` title="${esc(title)}"` : ''
+    return `<span style="display:inline-block;padding:1px 6px;border-radius:3px;background:${bg};color:#fff;font-size:0.75em;margin:1px"${titleAttr}>${esc(badge)}</span>`
   }
 
   function testStatusCell(status: string): string {
@@ -1077,6 +1086,7 @@ function generateGuide(apiDir: string) {
       <tr><td>Security</td><td>20</td><td><code>npm audit</code> finds no high or critical vulnerabilities</td></tr>
       <tr><td>Changelog</td><td>&minus;5 if missing</td><td>Ship a <code>CHANGELOG.md</code> or publish a <a href="https://github.com/SignalK/signalk-server/pull/2615" target="_blank">GitHub Release</a> matching the version tag</td></tr>
       <tr><td>Screenshots</td><td>&minus;5 if missing</td><td>Declare <code>signalk.screenshots</code> (array of package-relative paths) in <code>package.json</code></td></tr>
+      <tr><td>Core dep freshness</td><td>&minus;80 if held back</td><td>Declare ranges (e.g. <code>^2.9.0</code>, not <code>~2.9.0</code> or <code>2.9.0</code>) that allow the latest same-major release of core Signal K packages such as <code>@signalk/server-api</code></td></tr>
     </tbody>
   </table>
 

@@ -1,5 +1,11 @@
 import { detectProviders, DetectionResult } from "./detect-providers";
 import { computeScore, TestResults } from "./score";
+import {
+  CORE_PACKAGES,
+  HeldBackCoreDep,
+  fetchLatestVersions,
+  findHeldBackCoreDeps,
+} from "./core-deps";
 import * as path from "path";
 import * as fs from "fs";
 import { execSync, execFileSync } from "child_process";
@@ -44,6 +50,7 @@ interface RunResult {
   hasInstallScripts: boolean;
   hasChangelog: boolean;
   hasScreenshots: boolean;
+  heldBackCoreDeps: HeldBackCoreDep[];
   composite: number;
   badges: string[];
   testStatus: string;
@@ -488,6 +495,32 @@ function hasScreenshots(pluginDir: string): boolean {
   }
 }
 
+// Pure metadata check — reads the installed plugin's declared ranges and asks
+// the npm registry for each core package's latest. Runs no plugin code, so no
+// sandboxCmd(). A failed lookup or read yields [] (indeterminate, no penalty).
+async function checkHeldBackCoreDeps(
+  pluginDir: string,
+): Promise<HeldBackCoreDep[]> {
+  try {
+    const pkg = JSON.parse(
+      fs.readFileSync(path.join(pluginDir, "package.json"), "utf-8"),
+    );
+    const declared: Array<{ pkg: string; range: string }> = [];
+    for (const field of ["dependencies", "peerDependencies"]) {
+      for (const [name, range] of Object.entries(pkg?.[field] ?? {})) {
+        if (CORE_PACKAGES.includes(name) && typeof range === "string") {
+          declared.push({ pkg: name, range });
+        }
+      }
+    }
+    if (declared.length === 0) return [];
+    const latest = await fetchLatestVersions(declared.map((d) => d.pkg));
+    return findHeldBackCoreDeps(declared, latest);
+  } catch {
+    return [];
+  }
+}
+
 function hasTestFiles(dir: string): boolean {
   try {
     const output = execSync(
@@ -640,6 +673,7 @@ export async function runPluginTest(
       hasInstallScripts: false,
       hasChangelog: false,
       hasScreenshots: false,
+      heldBackCoreDeps: [],
     });
 
     fs.rmSync(workDir, { recursive: true, force: true });
@@ -671,6 +705,7 @@ export async function runPluginTest(
       hasInstallScripts: false,
       hasChangelog: false,
       hasScreenshots: false,
+      heldBackCoreDeps: [],
       ...score,
     };
   }
@@ -702,6 +737,9 @@ export async function runPluginTest(
   const shots = hasScreenshots(pluginDir);
   const changelog = await hasChangelog(pluginDir, pluginVersion);
 
+  console.error(`[runner] Checking core dependency ranges...`);
+  const heldBack = await checkHeldBackCoreDeps(pluginDir);
+
   const testResults: TestResults = {
     installs: true,
     loads: detection.loads,
@@ -717,6 +755,7 @@ export async function runPluginTest(
     hasInstallScripts: install.hasInstallScripts,
     hasChangelog: changelog,
     hasScreenshots: shots,
+    heldBackCoreDeps: heldBack,
   };
 
   const { composite, badges, testStatus } = computeScore(testResults);
@@ -735,6 +774,7 @@ export async function runPluginTest(
     hasInstallScripts: install.hasInstallScripts,
     hasChangelog: changelog,
     hasScreenshots: shots,
+    heldBackCoreDeps: heldBack,
     composite,
     badges,
     testStatus,
