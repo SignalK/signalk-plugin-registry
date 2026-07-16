@@ -9063,8 +9063,8 @@
     },
     "1.1.1": {
       "server@stable": {
-        "tested": "2026-07-07T05:57:35.550Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-07-16T22:43:46.836Z",
+        "triggered_by": "manual",
         "node_version": "24",
         "server_version": "2.30.0",
         "installs": true,
@@ -9082,15 +9082,23 @@
         "has_install_scripts": false,
         "has_changelog": false,
         "has_screenshots": false,
+        "held_back_core_deps": [
+          {
+            "pkg": "@signalk/server-api",
+            "declared": "2.9",
+            "latest": "2.30.0"
+          }
+        ],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 65,
+        "composite": 0,
         "badges": [
           "compatible",
           "loads",
           "activates",
-          "npm-audit-ok"
+          "npm-audit-ok",
+          "holds-back-core-deps"
         ],
         "test_status": "none"
       }
