@@ -13,6 +13,7 @@ The README covers _what_ this is and how the scoring works. This file is for con
 - **`scripts/build-api.ts`** — the GitHub Pages publisher. Reads `results.json`, fetches upstream informational metrics (stars / open issues / contributors / npm weekly downloads / plugin-CI status), writes `dist/api/{index,plugins/<name>}.json`, and generates the human-facing HTML.
 - **`test-harness/runner.ts`** — the workhorse. Single export `runPluginTest(name, version)` that installs, loads, activates, scores, and packs the slot envelope. Every plugin-code-touching step is wrapped in `sandboxCmd(...)` (firejail) — see the security section below.
 - **`test-harness/score.ts`** — `computeScore(results) → { composite, badges, testStatus }`. The single source of truth for the 0–100 score, the badge set, and the test-status enum.
+- **`test-harness/core-deps.ts`** — the core-dependency freshness check: `CORE_PACKAGES`, the pure `findHeldBackCoreDeps(declared, latestVersions)` evaluator, and the npm `dist-tags.latest` fetcher. Pure metadata — runs no plugin code, so no `sandboxCmd()`. A failed registry lookup means "indeterminate", never a penalty.
 - **`test-harness/detect-providers.ts`** + **`test-harness/detect-sandboxed.ts`** — `require()` the plugin and call `start()` with `schema-defaults`-extracted config, inside a separate firejail subprocess so a `start()`-time crash doesn't take the harness down.
 - **`test-harness/app-shim.ts`** — the fake `app` object Signal K plugins are constructed with. Captures registrations (resource providers, weather, autopilot, history, radar) for the `has-providers` badge. **Unstubbed accesses log to `unstubbedAccesses` rather than throw** — that's how we discover new app-API surface plugins are using.
 - **`test-harness/schema-defaults.ts`** — extracts a default config from a plugin's JSON schema. Matches what the Signal K admin UI generates when you click "Submit" without typing anything. Plugins that need real credentials still fail at `start()` but the failure is on the plugin's terms, not because we passed garbage config.
@@ -37,7 +38,7 @@ Do not add error handling, fallbacks, or validation for scenarios that cannot ha
 
 ### Tests
 
-There is currently no test runner wired up for the harness itself. If you add one, prefer `node:test`. The integration story is "trigger the workflow against a single plugin" — see "Manual testing" below.
+Unit tests use `node:test` against the compiled output: `npm test` runs `tsc` then `node --test "dist/test-harness/*.test.js"`. Keep new tests pure (no network, no plugin installs) — fixture inputs, deterministic assertions. The integration story is "trigger the workflow against a single plugin" — see "Manual testing" below.
 
 ## Security Invariants
 
@@ -88,9 +89,9 @@ Given that, full-SHA pinning buys a marginal reduction in trust-in-GitHub-itself
 
 The `validSlot` predicate in `.github/workflows/nightly.yml`'s merge step is the last line of defence. If a compromised test job somehow produced a malformed envelope, `validSlot` rejects it before commit. **Do not relax `validSlot` to make a failing test "easier to handle"** — add a new badge to `VALID_BADGES`, add a new boolean field to the validator, but don't drop checks.
 
-### Best-score-wins
+### Retests always overwrite
 
-When a slot is retested, the new result only replaces the old one **if its composite is equal or higher**. This is a deliberate asymmetry — a transient CI failure (GitHub 500, npm blip, firejail flake) must not be able to downgrade a plugin that was previously passing. The asymmetry lives in `scripts/update-results.ts`. Do not remove it.
+When a slot is retested, the new result **unconditionally replaces** the old one (`scripts/update-results.ts` — the old composite is only used for the `(was N)` log line). This must stay unconditional: penalties like `holds-back-core-deps` (−80) have to be able to lower a previously good score, and the flake-protection lives elsewhere — checks that depend on external services (releases.atom, npm registry lookups) treat lookup failure as "indeterminate, no penalty" rather than failing the plugin. An earlier revision of this file described a best-score-wins asymmetry; that is not how the code behaves and would be incompatible with penalty rollouts.
 
 ## Runtime Invariants
 
@@ -134,9 +135,9 @@ This repo is maintained by Dirk Wahrheit. Workflow is deliberate.
 
 ### Pre-PR checklist
 
-There is no `npm run format` / `npm run ci-lint` here yet (and no test runner). The minimum bar before push is:
+There is no `npm run format` / `npm run ci-lint` here yet. The minimum bar before push is:
 
-1. `npx tsc` — the build must succeed.
+1. `npm test` — builds with `tsc` and runs the `node:test` unit tests; both must pass.
 2. If you touched the workflow, dry-run the relevant `node -e` snippet locally against representative fixtures (see "Reproducing failures locally" below). YAML changes that only break at runtime are the most common breakage class in this repo.
 3. `cr review --plain | tee /tmp/cr-review-<branch>.txt` for non-trivial PRs. Skip for `chore(release):` and `chore(deps):` PRs.
 

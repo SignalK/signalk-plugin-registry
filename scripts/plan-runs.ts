@@ -65,7 +65,11 @@ function shouldTest(
   // were added with the 0.2.0 scoring tier). Re-test instead of leaving
   // the stored composite stale. Extend this list when new fields are
   // added to the runner output.
-  const REQUIRED_FIELDS = ['has_changelog', 'has_screenshots']
+  const REQUIRED_FIELDS = [
+    'has_changelog',
+    'has_screenshots',
+    'held_back_core_deps'
+  ]
   for (const field of REQUIRED_FIELDS) {
     if (slot[field] === undefined) {
       return { run: true, reason: 'schema_change' }

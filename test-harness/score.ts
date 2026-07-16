@@ -1,3 +1,5 @@
+import { HeldBackCoreDep } from "./core-deps";
+
 export interface TestResults {
   installs: boolean;
   loads: boolean;
@@ -13,6 +15,7 @@ export interface TestResults {
   hasInstallScripts: boolean;
   hasChangelog: boolean;
   hasScreenshots: boolean;
+  heldBackCoreDeps: HeldBackCoreDep[];
 }
 
 export type Badge =
@@ -28,6 +31,7 @@ export type Badge =
   | "audit-critical"
   | "has-changelog"
   | "has-screenshots"
+  | "holds-back-core-deps"
   | "broken";
 
 export type TestStatus = "passing" | "none" | "not-runnable" | "failing";
@@ -120,6 +124,15 @@ export function computeScore(r: TestResults): {
     score -= 5;
   }
 
+  // Core dep freshness: -80 penalty when any declared dependency/peerDependency
+  // range excludes the latest same-major release of a core Signal K package.
+  // Deliberately near-fatal: such a pin holds the package back in every user's
+  // ~/.signalk install (see runner.checkHeldBackCoreDeps).
+  if (r.heldBackCoreDeps.length > 0) {
+    score -= 80;
+    badges.push("holds-back-core-deps");
+  }
+
   return {
     composite: Math.max(0, Math.min(100, score)),
     badges,
@@ -148,6 +161,7 @@ if (require.main === module) {
     hasInstallScripts: get("--has-install-scripts") === "true",
     hasChangelog: get("--has-changelog") === "true",
     hasScreenshots: get("--has-screenshots") === "true",
+    heldBackCoreDeps: JSON.parse(get("--held-back-core-deps") || "[]"),
   };
 
   const { composite, badges } = computeScore(results);

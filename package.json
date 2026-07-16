@@ -18,16 +18,19 @@
     "discover": "ts-node scripts/discover-plugins.ts",
     "resolve": "ts-node scripts/resolve-server.ts",
     "plan": "ts-node scripts/plan-runs.ts",
+    "test": "tsc && node --test \"dist/test-harness/*.test.js\"",
     "test-plugin": "ts-node test-harness/runner.ts",
     "update-results": "ts-node scripts/update-results.ts",
     "build-api": "ts-node scripts/build-api.ts"
   },
   "dependencies": {
-    "esm-resolve": "^1.0.11"
+    "esm-resolve": "^1.0.11",
+    "semver": "^7.8.5"
   },
   "devDependencies": {
     "@signalk/server-api": "^2.28.0",
     "@types/node": "^24.13.2",
+    "@types/semver": "^7.7.1",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
   }

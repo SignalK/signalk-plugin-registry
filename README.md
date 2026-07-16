@@ -26,12 +26,15 @@ Each plugin is scored out of **100 points**:
 | Security | No npm audit vulnerabilities | 20 |
 | Changelog | CHANGELOG file or GitHub Release for the version | −5 if missing |
 | Screenshots | `signalk.screenshots` array in `package.json` | −5 if missing |
+| Core dep freshness | Declared ranges allow the latest same-major release of core Signal K packages | −80 if held back |
 
 Security scoring breakdown: 20 points for a clean audit, 15 if only moderate vulnerabilities, 10 if high (no critical), 0 if any critical vulnerabilities.
 
 Changelog detection prefers a `CHANGELOG.md` (or `CHANGES.md` / `HISTORY.md`) in the published tarball; if absent, falls back to the repository's public GitHub Releases atom feed (`https://github.com/<owner>/<repo>/releases.atom`, no token needed) and looks for a release whose tag matches the installed version. See [signalk-server PR #2615](https://github.com/SignalK/signalk-server/pull/2615) for the release-notes convention.
 
 Screenshots detection requires at least one string entry under `signalk.screenshots` in `package.json`.
+
+Core dep freshness checks the plugin's declared `dependencies` and `peerDependencies` (never `devDependencies` — those don't reach user installs) against the latest npm release of each core Signal K package: `@signalk/server-api`, `@canboat/canboatjs`, `@canboat/ts-pgns`, `@signalk/n2k-signalk`, `@signalk/nmea0183-signalk`, `@signalk/streams`. A range that targets the same major as the latest release but cannot resolve to it (e.g. `~2.9.0` or an exact `2.9.0` when latest is `2.30.0`) holds the package back in every user's `~/.signalk` install and costs −80. Ranges on an older major are not flagged (the plugin may legitimately not support the new major yet), and neither are git/file/URL specs, dist-tags, or invalid ranges. If the npm registry lookup fails, the check is skipped — a registry flake never costs points.
 
 Provider detection (resources, weather, history, autopilot, radar) is tracked as an informational badge but does not affect the score — most plugins are not expected to register providers.
 
@@ -51,6 +54,7 @@ Provider detection (resources, weather, history, autopilot, radar) is tracked as
 | `audit-critical` | Has critical vulnerabilities (0 pts) |
 | `has-changelog` | CHANGELOG file or matching GitHub Release is available |
 | `has-screenshots` | Declares at least one `signalk.screenshots` entry |
+| `holds-back-core-deps` | A declared range pins a core Signal K package below its latest same-major release (−80 penalty) |
 | `broken` | Failed to install |
 
 ## API
