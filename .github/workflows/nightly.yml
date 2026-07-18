@@ -52,7 +52,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: '24'
 
@@ -363,7 +363,7 @@ jobs:
           ref: master # read the published score for the up/down comparison
           persist-credentials: false
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: '24'
 
