@@ -479,8 +479,8 @@
     },
     "3.0.1": {
       "server@stable": {
-        "tested": "2026-07-23T05:03:09.277Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-07-23T23:52:49.392Z",
+        "triggered_by": "manual",
         "node_version": "24",
         "server_version": "2.30.0",
         "installs": true,
@@ -496,8 +496,8 @@
         ],
         "has_schema": true,
         "has_own_tests": true,
-        "own_tests_pass": false,
-        "tests_runnable": false,
+        "own_tests_pass": true,
+        "tests_runnable": true,
         "has_install_scripts": false,
         "has_changelog": true,
         "has_screenshots": true,
@@ -505,16 +505,17 @@
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 75,
+        "composite": 100,
         "badges": [
           "compatible",
           "loads",
           "activates",
+          "tested",
           "npm-audit-ok",
           "has-changelog",
           "has-screenshots"
         ],
-        "test_status": "not-runnable"
+        "test_status": "passing"
       }
     }
   },
