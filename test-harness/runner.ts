@@ -1,4 +1,5 @@
 import { detectProviders, DetectionResult } from "./detect-providers";
+import { parseDeclaredCiCommands } from "./plugin-ci-commands";
 import { computeScore, TestResults } from "./score";
 import {
   CORE_PACKAGES,
@@ -538,6 +539,46 @@ function hasTestFiles(dir: string): boolean {
   }
 }
 
+// Run one sandboxed source-repo step (build or test) with an in-sandbox
+// `timeout` cap. Returns true on success, false on failure.
+//
+// Webapp bundlers are the reason a plugin declares its own build/test commands:
+// plain `ng build` / `ng test` don't terminate, so the plugin's wrappers detect
+// completion and force `process.exit(0)`. But a still-draining esbuild child
+// then writes to the closed pipe and the sandboxed process group exits 141
+// (128 + SIGPIPE) despite the wrapper's clean exit. That 141 is not a failure:
+// vitest/ng exit with an ordinary non-zero code on real build or test failures,
+// so only 0 and 141 count as success here.
+function runSandboxedStep(
+  command: string,
+  capSeconds: number,
+  cwd: string,
+  env: NodeJS.ProcessEnv,
+): boolean {
+  try {
+    execSync(
+      sandboxCmd(`timeout --kill-after=10s ${capSeconds}s ${command} 2>&1`),
+      {
+        cwd,
+        timeout: (capSeconds + 15) * 1000,
+        stdio: "pipe",
+        killSignal: "SIGKILL",
+        env,
+      },
+    );
+    return true;
+  } catch (err: unknown) {
+    if ((err as { status?: number }).status === 141) {
+      console.error(
+        "[runner] Step exited 141 (SIGPIPE from a force-exiting bundler); treating as success",
+      );
+      return true;
+    }
+    console.error(`[runner] Step failed: ${formatExecError(err)}`);
+    return false;
+  }
+}
+
 function checkSourceTests(pluginDir: string): {
   hasTests: boolean;
   pass: boolean;
@@ -595,30 +636,43 @@ function checkSourceTests(pluginDir: string): {
     const sourcePkg = JSON.parse(
       fs.readFileSync(path.join(sourceDir, "package.json"), "utf-8"),
     );
+
+    // Honor the build/test commands the plugin declares to the canonical
+    // SignalK plugin-ci reusable workflow (issue #48). Webapp-class plugins
+    // (Angular/React/Vue) declare terminating wrappers there — e.g. Freeboard-SK
+    // uses `npm run build:all` (exits cleanly) and `npm run test:ci` (a
+    // terminating `ng test`) — while their plain `build`/`test` scripts are the
+    // non-exiting `ng build` and watch-mode `ng test`. Guessing the latter
+    // wrongly scores them not-runnable. Reading the declared commands mirrors
+    // the CI the registry already tracks for the plugin-ci badge, and needs no
+    // GitHub token: the caller workflow file is right here in the clone.
+    const declared = parseDeclaredCiCommands(sourceDir);
+
     // Prefer `build` over `build:all`. Some plugins (signalk-container is
     // the canonical example) define `build:all` as `build && test`, which
     // would run the test suite outside the firejail sandbox before we get
     // to the sandboxed `npm test` below — masking real failures and
-    // wasting time.
-    const buildScript = sourcePkg.scripts?.["build"]
-      ? "build"
+    // wasting time. A plugin's *declared* build-command overrides this
+    // heuristic: it's what the canonical CI runs, so mirroring it is correct.
+    const heuristicBuild = sourcePkg.scripts?.["build"]
+      ? "npm run build"
       : sourcePkg.scripts?.["build:all"]
-        ? "build:all"
+        ? "npm run build:all"
         : sourcePkg.scripts?.["compile"]
-          ? "compile"
+          ? "npm run compile"
           : null;
-    if (buildScript) {
-      console.error(`[runner] Building with npm run ${buildScript}...`);
-      try {
-        execSync(`npm run ${buildScript} 2>&1`, {
-          cwd: sourceDir,
-          timeout: 120_000,
-          stdio: "pipe",
-        });
-      } catch (err: unknown) {
-        console.error(
-          `[runner] Build failed, tests not runnable: ${formatExecError(err)}`,
-        );
+    const buildCommand = declared.build ?? heuristicBuild;
+    if (buildCommand) {
+      // The build runs plugin code, so it goes through the sandbox like the
+      // test step below. A real webapp production build is far heavier than a
+      // tsc compile — @mxtommy/kip's `ng build --configuration=production`
+      // takes ~170s on a fast host, so 180s left no margin for the slower
+      // arm/QEMU CI slots. Give a declared build-command a generous budget;
+      // the heuristic path (tsc/compile) keeps the tighter one.
+      const buildCap = declared.build ? 300 : 120;
+      console.error(`[runner] Building with ${buildCommand}...`);
+      if (!runSandboxedStep(buildCommand, buildCap, sourceDir, process.env)) {
+        console.error("[runner] Build failed, tests not runnable");
         return { hasTests: true, pass: false, runnable: false };
       }
     }
@@ -631,17 +685,23 @@ function checkSourceTests(pluginDir: string): {
     console.error(
       `[runner] Pre-test host netifs: ${Object.keys(os.networkInterfaces()).join(", ") || "(none)"}`,
     );
-    console.error("[runner] Running tests from source...");
-    execSync(sandboxCmd("timeout --kill-after=10s 60s npm test 2>&1"), {
-      cwd: sourceDir,
-      timeout: 75_000,
-      stdio: "pipe",
-      killSignal: "SIGKILL",
-      env: { ...process.env, SIGNALK_REGISTRY_TEST: "1" },
+    // A declared test-command likewise gets a longer in-sandbox `timeout` — a
+    // test-command that has to build a test bundle first won't finish in 60s on
+    // a slow slot.
+    const testCommand = declared.test ?? "npm test";
+    const testCap = declared.test ? 120 : 60;
+    console.error(`[runner] Running tests from source with ${testCommand}...`);
+    const pass = runSandboxedStep(testCommand, testCap, sourceDir, {
+      ...process.env,
+      SIGNALK_REGISTRY_TEST: "1",
     });
-    return { hasTests: true, pass: true, runnable: true };
+    return { hasTests: true, pass, runnable: true };
   } catch (err: unknown) {
-    console.error(`[runner] Source tests failed: ${formatExecError(err)}`);
+    // Safety net: this function must never crash the runner (see the
+    // process-level handlers at the top). The sandboxed steps report failure
+    // via runSandboxedStep's boolean; anything that throws here is an
+    // unexpected harness-side error (e.g. a malformed source package.json).
+    console.error(`[runner] Source-test flow errored: ${formatExecError(err)}`);
     return { hasTests: true, pass: false, runnable: true };
   } finally {
     fs.rmSync(sourceDir, { recursive: true, force: true });
