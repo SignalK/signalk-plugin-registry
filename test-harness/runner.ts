@@ -563,6 +563,10 @@ function runSandboxedStep(
         timeout: (capSeconds + 15) * 1000,
         stdio: "pipe",
         killSignal: "SIGKILL",
+        // Webapp bundlers are verbose (Angular prints a per-chunk bundle
+        // table); the default 1 MB would make execSync kill a completed build
+        // for overflowing the pipe buffer and misreport it as a failure.
+        maxBuffer: 10 * 1024 * 1024,
         env,
       },
     );
@@ -648,12 +652,13 @@ function checkSourceTests(pluginDir: string): {
     // GitHub token: the caller workflow file is right here in the clone.
     const declared = parseDeclaredCiCommands(sourceDir);
 
-    // Prefer `build` over `build:all`. Some plugins (signalk-container is
-    // the canonical example) define `build:all` as `build && test`, which
-    // would run the test suite outside the firejail sandbox before we get
-    // to the sandboxed `npm test` below — masking real failures and
-    // wasting time. A plugin's *declared* build-command overrides this
-    // heuristic: it's what the canonical CI runs, so mirroring it is correct.
+    // Heuristic build when the plugin declares no build-command: prefer plain
+    // `build` over `build:all`. Some plugins (signalk-container) define
+    // `build:all` as `build && test`, so running it as the build step would
+    // run the suite once here and again in the test step below — redundant, and
+    // it wastes the tighter build budget. A plugin's *declared* build-command
+    // overrides this: it's what the canonical CI runs, so mirroring it is
+    // correct (and it runs sandboxed here, same as the test step).
     const heuristicBuild = sourcePkg.scripts?.["build"]
       ? "npm run build"
       : sourcePkg.scripts?.["build:all"]
