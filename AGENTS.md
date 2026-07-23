@@ -85,6 +85,17 @@ Given that, full-SHA pinning buys a marginal reduction in trust-in-GitHub-itself
 
 `runner.ts` reads `signalk.requires` from a plugin's `package.json` (search for the `signalk.requires` block in `runner.ts`) and `npm install`s each companion **before** the plugin's own tests run. This mirrors the behaviour upstream signalk-server adopted in [SignalK/signalk-server#2698](https://github.com/SignalK/signalk-server/pull/2698). When you change this code path, keep it aligned with what upstream does — a divergence makes the registry score either harsher or more lenient than the canonical CI.
 
+### Declared plugin-ci commands in the source fallback
+
+`checkSourceTests` honors the `build-command` / `test-command` a plugin declares to the canonical `SignalK/signalk-server/.github/workflows/plugin-ci.yml` reusable workflow, via `parseDeclaredCiCommands` (`test-harness/plugin-ci-commands.ts`). The point (issue #48) is that the registry stops guessing build/test commands that diverge from the CI it already tracks for the plugin-ci badge — the same alignment rule as the `signalk.requires` note above.
+
+Two invariants constrain how it's read and run:
+
+- **Read from the clone, never the GitHub API.** `checkSourceTests` already has the repo on disk, and the test job holds `permissions: {}` + no token — reaching for the API here would break the job-permissions invariant. The parser is a small structural scanner, deliberately **not** a YAML library: no runtime dep is added to the untrusted test job. Keep it that way.
+- **Declared commands run plugin code, so they go through `sandboxCmd()`** like every other plugin-code path (build included, via `runSandboxedStep`). They're validated at the boundary — a value that isn't a plain npm-script invocation is rejected and the heuristic is used instead — but the sandbox, not the validation, is the load-bearing containment.
+
+`runSandboxedStep` treats exit **141** (128 + SIGPIPE) as success. Webapp bundlers don't self-terminate, so a plugin's build/test wrapper detects completion and force-`exit(0)`s; a still-draining esbuild child then writes to the closed pipe and the sandboxed group exits 141 despite the clean wrapper exit. A genuinely broken build/test exits with an ordinary code (vitest/ng exit 1), so 141 is unambiguous — **do not "fix" it back to a strict `=== 0` check**, that's the whole reason webapp-class plugins were scored not-runnable (issue #48). The test step is the real gate regardless: a build that only half-completed fails the tests.
+
 ### Artifact validation in the merge job
 
 The `validSlot` predicate in `.github/workflows/nightly.yml`'s merge step is the last line of defence. If a compromised test job somehow produced a malformed envelope, `validSlot` rejects it before commit. **Do not relax `validSlot` to make a failing test "easier to handle"** — add a new badge to `VALID_BADGES`, add a new boolean field to the validator, but don't drop checks.
