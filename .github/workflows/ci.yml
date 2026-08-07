@@ -1,0 +1,50 @@
+name: CI
+
+# Runs on pull requests and on pushes to master. This is the repo's only
+# PR-triggered workflow: nightly.yml fires on schedule/workflow_dispatch and
+# rescore.yml on issues, so before this existed nothing verified that a PR even
+# compiled. `npm test` runs `tsc` first, so a type error or a broken build fails
+# here rather than at 02:00 in the plan job — where a throw skips the whole scan.
+#
+# Pull requests are gated unconditionally — no paths filter — so a
+# workflow-only or config-only PR still has to build. The push trigger skips
+# results.json because the merge job commits it on every scan (20 of the last
+# 21 pushes to master were that bot, touching nothing else) and no test reads
+# it, so those runs would only ever burn minutes to re-prove the same tree.
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'results.json'
+
+# Superseded pushes to the same PR are wasted work; cancel them. master keeps
+# its own lane so a merge never cancels a PR run and vice versa.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # This job builds and runs the repo's own unit tests. It never executes
+    # plugin code (that only happens in nightly.yml's sandboxed test job) and
+    # writes nothing back, so it needs no token scopes at all.
+    permissions: {}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+
+      # --ignore-scripts matches the supply-chain posture used elsewhere in the
+      # repo: no dependency lifecycle script runs in CI.
+      - run: npm ci --ignore-scripts
+
+      # `tsc` then the node:test suite — see package.json's `test` script.
+      - run: npm test
