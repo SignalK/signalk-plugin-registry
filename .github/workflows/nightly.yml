@@ -58,8 +58,15 @@ jobs:
 
       - run: npm ci
 
+      # Authenticates the signalk-server master SHA lookup. Unauthenticated
+      # api.github.com is 60 req/hour per IP and runners share a NAT pool, so
+      # the quota is often already drained by co-tenants (403). Reading a public
+      # repo's commit SHA needs no scope beyond the default token's public read,
+      # so this job keeps `permissions: {}` above. It runs no plugin code.
       - name: Resolve server versions
         id: resolve
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx ts-node scripts/resolve-server.ts >> $GITHUB_OUTPUT
 
       # single_plugin mode injects the one requested plugin from the lag-free

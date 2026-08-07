@@ -141,6 +141,18 @@ function parseArgs(): {
 function main() {
   const args = parseArgs()
 
+  // resolve-server.ts emits an empty master_sha when the GitHub lookup fails,
+  // which is harmless unless this run actually plans master slots. Planning
+  // them against an empty serverVersion would poison the slotKey and its
+  // `tested` cache entry, so fail loudly instead.
+  if (args.includeMaster && !args.masterSha) {
+    console.error(
+      'include_master was requested but master_sha is empty — the ' +
+        'signalk-server master SHA lookup failed upstream in resolve-server.ts'
+    )
+    process.exit(1)
+  }
+
   const resultsPath = path.resolve(__dirname, '..', 'results.json')
   const results: PluginResults = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
 
