@@ -19,7 +19,8 @@ The README covers _what_ this is and how the scoring works. This file is for con
 - **`test-harness/schema-defaults.ts`** — extracts a default config from a plugin's JSON schema. Matches what the Signal K admin UI generates when you click "Submit" without typing anything. Plugins that need real credentials still fail at `start()` but the failure is on the plugin's terms, not because we passed garbage config.
 - **`results.json`** — the persistent store. Schema: `{ [pluginName]: { [pluginVersion]: { "server@stable": SlotResult, "server@master"?: SlotResult, outdated?: boolean, superseded_by?: string } } }`. Committed by the `merge-results` job. Each `SlotResult` is validated against the merge-job's `validSlot` predicate before commit (see "Artifact validation" in the README).
 - **`registry.json`** — curated list of plugins to test that don't carry the `signalk-node-server-plugin` keyword (e.g. `@signalk/tracks-plugin`). Edit this to add a plugin discovery missed.
-- **`.github/workflows/nightly.yml`** — the only workflow file. Four jobs: `plan` → `test` (matrix, no secrets) → `merge-results` (commits `results.json`) → `publish` (deploys to `gh-pages`).
+- **`.github/workflows/nightly.yml`** — the scan itself. Four jobs: `plan` → `test` (matrix, no secrets) → `merge-results` (commits `results.json`) → `publish` (deploys to `gh-pages`).
+- **`.github/workflows/ci.yml`** — the PR gate. Runs `npm test` (which builds with `tsc` first, so it catches build breakage as well as test failures) on every pull request. Two things here are deliberate rather than incidental: it holds `permissions: {}` because it runs no plugin code and writes nothing back, and its push trigger ignores `results.json` — the merge job commits that after every scan, and no test reads it, so gating those pushes would only re-prove an unchanged tree.
 - **`.github/actions/setup-server/`** + **`.github/actions/run-plugin-tests/`** — composite actions used inside the matrix. Pulled out so the test job's steps stay readable.
 
 ## Code Quality Principles
@@ -146,11 +147,11 @@ This repo is maintained by Dirk Wahrheit. Workflow is deliberate.
 
 ### Pre-PR checklist
 
-There is no `npm run format` / `npm run ci-lint` here yet. The minimum bar before push is:
+`ci.yml` runs `npm test` on every pull request, so build breakage and test failures are caught there. There is still no `npm run format` / `npm run ci-lint` — prettier and eslint have no config in this repo, so formatting is not enforced. Run the checks locally anyway; a red PR wastes a round trip:
 
-1. `npm test` — builds with `tsc` and runs the `node:test` unit tests; both must pass.
-2. If you touched the workflow, dry-run the relevant `node -e` snippet locally against representative fixtures (see "Reproducing failures locally" below). YAML changes that only break at runtime are the most common breakage class in this repo.
-3. `cr review --plain | tee /tmp/cr-review-<branch>.txt` for non-trivial PRs. Skip for `chore(release):` and `chore(deps):` PRs.
+1. `npm test` — builds with `tsc` and runs the `node:test` unit tests; both must pass. This is what CI runs.
+2. If you touched the workflow, dry-run the relevant `node -e` snippet locally against representative fixtures (see "Reproducing failures locally" below). YAML changes that only break at runtime are the most common breakage class in this repo, and `ci.yml` does not exercise `nightly.yml`.
+3. `cr review` for non-trivial PRs; skip for `chore(release):` and `chore(deps):` PRs. Pass an explicit base (`--base upstream/master`) — without one it diffs against the local `master`, which silently produces a misleading review when that ref is stale. Check `cr review --help` for current flags rather than trusting a command copied from here; they have changed before.
 
 Only push after the above pass. Never push without explicit approval.
 
