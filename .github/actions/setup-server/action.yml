@@ -12,7 +12,12 @@ inputs:
 outputs:
   server-version:
     description: Resolved version (stable) or SHA (master)
-    value: ${{ steps.resolve.outputs.version }}
+    # Exactly one of the two install steps runs, and the other is skipped —
+    # a skipped step's outputs are the empty string, so this coalesces to
+    # whichever one actually ran. Referencing only `steps.resolve` here meant
+    # the master slot always reported an empty string, because that branch
+    # writes its SHA to `steps.resolve-master`.
+    value: ${{ steps.resolve.outputs.version || steps.resolve-master.outputs.version }}
 
 runs:
   using: composite
