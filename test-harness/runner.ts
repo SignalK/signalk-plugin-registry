@@ -38,6 +38,30 @@ function formatExecError(err: unknown, maxLen = 16_000): string {
   return parts.join(" | ").slice(0, maxLen);
 }
 
+// Compact reason for a detection subprocess that left no result file behind.
+// In-process crashes write their own crash result (detect-sandboxed.ts), so
+// this only has to explain the ways the process can die without one: the
+// sandbox-internal `timeout` (124, or 137 once kill-after escalates), the
+// runner's own execSync SIGKILL, or firejail/node failing outright — where
+// the first error-looking stderr line is the best available evidence.
+function summarizeDetectionFailure(err: unknown): string {
+  const e = err as Error & {
+    status?: number;
+    signal?: string;
+    stderr?: Buffer | string;
+  };
+  if (e?.status === 124) return "detection timed out after 30s";
+  if (e?.status === 137) return "detection killed (timeout enforcement or OOM)";
+  if (e?.signal === "SIGKILL") return "detection killed after 45s (runner timeout)";
+  const lines = (e?.stderr?.toString() ?? "")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+  const line = lines.find((l) => /error/i.test(l)) ?? lines[0];
+  if (line) return line.slice(0, 300);
+  return e instanceof Error ? e.message.slice(0, 300) : String(err).slice(0, 300);
+}
+
 interface RunResult {
   detection: DetectionResult;
   installs: boolean;
@@ -330,10 +354,12 @@ function detectProviderssandboxed(pluginDir: string): DetectionResult {
     console.error("[runner] firejail not available, running detection without network isolation");
   }
 
+  let execFailure: string | undefined;
   try {
     execSync(cmd, { timeout: 45_000, stdio: "pipe", killSignal: "SIGKILL" });
   } catch (err: unknown) {
     console.error(`[runner] Sandboxed detection failed: ${formatExecError(err)}`);
+    execFailure = summarizeDetectionFailure(err);
   }
 
   if (fs.existsSync(outputFile)) {
@@ -354,7 +380,9 @@ function detectProviderssandboxed(pluginDir: string): DetectionResult {
     httpRoutes: [],
     unstubbedAccesses: [],
     loads: false,
-    loadError: "sandboxed detection failed",
+    loadError: execFailure
+      ? `sandboxed detection failed: ${execFailure}`
+      : "sandboxed detection failed",
     activates: false,
     activatesWithoutConfig: false,
     statusMessages: [],
