@@ -9,6 +9,7 @@ export interface CapturedRegistrations {
     autopilot?: unknown
     resources?: unknown
     radar?: unknown
+    ble?: unknown
   }
   putHandlers: Array<{ context: string; path: string }>
   httpRoutes: string[]
@@ -186,6 +187,10 @@ export function createAppShim(
       captured.providers.radar = provider
       onStopHandlers.push(() => { captured.providers.radar = undefined })
     },
+    registerBLEProvider: (provider: unknown) => {
+      captured.providers.ble = provider
+      onStopHandlers.push(() => { captured.providers.ble = undefined })
+    },
 
     streambundle: {
       getSelfBus: (_path: string) => createMockBus(),
@@ -251,6 +256,38 @@ export function createAppShim(
       register: (_pluginId: string, provider: unknown, _devices?: string[]) => {
         captured.providers.autopilot = provider
       }
+    },
+
+    // BLE API (server >= 2.31.0). Models a server with the BLE API enabled
+    // but no hardware behind it: no adapter managed, no providers, no
+    // devices visible. Advertisement subscriptions succeed and never emit;
+    // GATT calls reject with upstream's no-provider errors so a consumer
+    // plugin fails on its own terms, exactly as on a hardware-less server.
+    bleApi: {
+      localBluetoothManaged: false,
+      register: (_pluginId: string, provider: unknown) => {
+        captured.providers.ble = provider
+        onStopHandlers.push(() => { captured.providers.ble = undefined })
+      },
+      unRegister: (_pluginId: string) => {
+        captured.providers.ble = undefined
+      },
+      onAdvertisement: (_pluginId: string, _callback: unknown) => () => {},
+      getDevices: () => Promise.resolve([]),
+      getDevice: (_mac: string) => Promise.resolve(null),
+      subscribeGATT: (descriptor: unknown, _pluginId: string, _callback: unknown) => {
+        const mac =
+          descriptor && typeof descriptor === 'object'
+            ? (descriptor as Record<string, unknown>).mac
+            : undefined
+        return Promise.reject(
+          new Error(`No provider with GATT support and available slots can see ${mac}`)
+        )
+      },
+      connectGATT: (mac: string, _pluginId: string) =>
+        Promise.reject(new Error(`No provider with GATT support can see ${mac}`)),
+      releaseGATTDevice: (_mac: string, _pluginId: string) => Promise.resolve(),
+      getGATTClaims: () => new Map<string, string>()
     }
   }
 
