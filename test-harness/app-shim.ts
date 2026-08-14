@@ -100,6 +100,17 @@ export function createAppShim(
 
   const onStopHandlers: Array<() => void> = []
 
+  // A consumer may fire-and-forget a rejecting stub (no await, no .catch).
+  // The detection subprocess treats unhandled rejections as fatal
+  // (detect-sandboxed.ts), so hand out rejections that already carry a
+  // no-op handler — awaiting callers still see the error, but a dangling
+  // one can't kill detection and mislabel a loaded plugin as loads: false.
+  const preHandledRejection = (err: Error): Promise<never> => {
+    const p = Promise.reject(err)
+    p.catch(() => {})
+    return p
+  }
+
   const app = {
     getSelfPath: (_path: string) => undefined,
     getPath: (_path: string) => undefined,
@@ -280,12 +291,12 @@ export function createAppShim(
           descriptor && typeof descriptor === 'object'
             ? (descriptor as Record<string, unknown>).mac
             : undefined
-        return Promise.reject(
+        return preHandledRejection(
           new Error(`No provider with GATT support and available slots can see ${mac}`)
         )
       },
       connectGATT: (mac: string, _pluginId: string) =>
-        Promise.reject(new Error(`No provider with GATT support can see ${mac}`)),
+        preHandledRejection(new Error(`No provider with GATT support can see ${mac}`)),
       releaseGATTDevice: (_mac: string, _pluginId: string) => Promise.resolve(),
       getGATTClaims: () => new Map<string, string>()
     }

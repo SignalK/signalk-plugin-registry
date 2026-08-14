@@ -71,6 +71,25 @@ module.exports = function (app) {
 }
 `;
 
+// Calls a rejecting GATT stub without await or .catch. The dangling
+// rejection must not surface as an unhandled rejection — in production
+// that would kill the detection subprocess (detect-sandboxed.ts treats
+// those as fatal) and mislabel a loaded plugin as loads: false; in this
+// in-process test it would kill the test run itself.
+const FIRE_AND_FORGET_PLUGIN = `
+module.exports = function (app) {
+  return {
+    id: "ble-fixture",
+    name: "ble fixture",
+    schema: {},
+    start: () => {
+      app.bleApi.connectGATT("aa:bb:cc:dd:ee:ff", "ble-fixture")
+    },
+    stop: () => {}
+  }
+}
+`;
+
 const GATT_CONSUMER_PLUGIN = `
 module.exports = function (app) {
   return {
@@ -105,6 +124,12 @@ test("a BLE consumer activates against the stubbed API", async () => {
   assert.equal(result.activates, true, result.activationError);
   assert.ok(!result.unstubbedAccesses.includes("bleApi"));
   assert.deepEqual(result.providers, []);
+});
+
+test("a fire-and-forget GATT call cannot kill detection", async () => {
+  const result = await detectFixture(FIRE_AND_FORGET_PLUGIN);
+  assert.equal(result.loads, true);
+  assert.equal(result.activates, true, result.activationError);
 });
 
 test("GATT calls fail on the plugin's terms with upstream's no-provider error", async () => {
