@@ -2519,18 +2519,19 @@
   "bt-sensors-plugin-sk": {
     "1.3.7": {
       "server@stable": {
-        "tested": "2026-08-14T18:00:54.533Z",
+        "tested": "2026-08-14T19:03:08.838Z",
         "triggered_by": "manual",
         "node_version": "24",
         "server_version": "2.31.0",
         "installs": true,
-        "loads": false,
-        "load_error": "unhandled rejection: Cannot find module '/tmp/sk-plugin-test-JF0MR8dist/modules.js' imported from /tmp/sk-registry-nuVi0R/node_modules/bt-sensors-plugin-sk/classLoader.js",
+        "loads": true,
+        "activation_error": "The name org.bluez was not provided by any .service files",
         "activates": false,
         "activates_without_config": false,
+        "activation_without_config_error": "The name org.bluez was not provided by any .service files",
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": false,
+        "has_schema": true,
         "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
@@ -2541,9 +2542,10 @@
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 30,
+        "composite": 50,
         "badges": [
           "compatible",
+          "loads",
           "npm-audit-ok"
         ],
         "test_status": "none"
