@@ -55,6 +55,25 @@ function resolveServerVersion(): string {
   return v && /^\d+\.\d+\.\d+(?:[-+].+)?$/.test(v) ? v : FALLBACK_SERVER_VERSION
 }
 
+// On a real server `app.config.appPath` is the signalk-server install root,
+// and plugins resolve server internals through it (bt-sensors' classLoader
+// imports `${appPath}dist/modules.js`). The CI slots install a real server
+// and forward its path through `SIGNALK_SERVER_PATH`; without it (local
+// dev) the shim keeps its tmpdir. Upstream computes
+// `path.normalize(__dirname + '/../../')`, which keeps a trailing
+// separator that plugins string-concatenate against — so it is preserved
+// here too.
+function resolveServerPath(): string | undefined {
+  const p = process.env.SIGNALK_SERVER_PATH?.trim()
+  if (!p) return undefined
+  try {
+    if (!fs.statSync(p).isDirectory()) return undefined
+  } catch {
+    return undefined
+  }
+  return p.endsWith(path.sep) ? p : p + path.sep
+}
+
 export interface CreateAppShimOptions {
   /**
    * Plugin names listed in `package.json` `signalk.requires`. When the list
@@ -229,7 +248,9 @@ export function createAppShim(
 
     config: {
       configPath,
-      appPath: tmpDir,
+      // Both modes end with a separator — the contract plugins rely on
+      // when they string-concatenate against appPath.
+      appPath: resolveServerPath() ?? tmpDir + path.sep,
       version: resolveServerVersion(),
       name: 'signalk-server',
       basePath: '/signalk/v1',

@@ -13,6 +13,10 @@ inputs:
     description: Resolved server version (semver) or master SHA, surfaced to plugins via app.config.version
     required: false
     default: ''
+  server-path:
+    description: Install root of a real signalk-server, surfaced to plugins via app.config.appPath
+    required: false
+    default: ''
 
 outputs:
   result-json:
@@ -38,6 +42,7 @@ runs:
       shell: bash
       env:
         SIGNALK_SERVER_VERSION: ${{ inputs.server-version }}
+        SIGNALK_SERVER_PATH: ${{ inputs.server-path }}
       run: |
         cd ${{ github.workspace }}
         node -e "

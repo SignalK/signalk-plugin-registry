@@ -18,6 +18,9 @@ outputs:
     # the master slot always reported an empty string, because that branch
     # writes its SHA to `steps.resolve-master`.
     value: ${{ steps.resolve.outputs.version || steps.resolve-master.outputs.version }}
+  server-path:
+    description: Install root of the server (the directory containing dist/)
+    value: ${{ steps.resolve.outputs.server-path || steps.resolve-master.outputs.server-path }}
 
 runs:
   using: composite
@@ -34,14 +37,29 @@ runs:
       run: |
         VERSION=$(npm show signalk-server version)
         echo "version=$VERSION" >> $GITHUB_OUTPUT
+        # Plugins resolve server internals through app.config.appPath
+        # (e.g. bt-sensors' classLoader imports dist/modules.js), so the
+        # shim needs a real install to point at. Trusted first-party code,
+        # installed normally — outside the plugin sandbox, before any
+        # plugin code runs. Installed under $HOME, which the sandbox
+        # mounts read-only: plugin code can read the server tree it is
+        # probed against but never tamper with it.
+        mkdir -p "$HOME/sk-stable"
+        cd "$HOME/sk-stable"
+        npm init -y > /dev/null
+        npm install signalk-server@$VERSION
+        echo "server-path=$HOME/sk-stable/node_modules/signalk-server" >> $GITHUB_OUTPUT
 
     - name: Build master server
       if: inputs.server-slot == 'master'
       shell: bash
       id: resolve-master
       run: |
-        git clone --depth 1 https://github.com/SignalK/signalk-server.git /tmp/sk-master
-        cd /tmp/sk-master
+        # Cloned under $HOME for the same read-only-in-sandbox reason as
+        # the stable install above — this path is exposed to plugin code
+        # via app.config.appPath.
+        git clone --depth 1 https://github.com/SignalK/signalk-server.git "$HOME/sk-master"
+        cd "$HOME/sk-master"
         # signalk-server ships no committed package-lock.json, so `npm ci`
         # fails with EUSAGE — use `npm install`. And the root `build` is
         # tsc-only; the workspace packages (@signalk/server-api, streams, …)
@@ -51,3 +69,4 @@ runs:
         npm link
         SHA=$(git rev-parse --short HEAD)
         echo "version=$SHA" >> $GITHUB_OUTPUT
+        echo "server-path=$HOME/sk-master" >> $GITHUB_OUTPUT
