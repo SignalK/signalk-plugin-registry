@@ -19,11 +19,12 @@ if (!pluginPath || !outputFile) {
 // generic "sandboxed detection failed". Writing a crash result here puts
 // the plugin's real error into the published record instead.
 function crashResult(kind: string, err: unknown): DetectionResult {
-  // The crash value is plugin-controlled and stringifying it can itself
-  // throw (hostile toString/getters); a crash handler must never throw.
+  // The crash value is plugin-controlled: stringifying it can throw
+  // (hostile toString/getters) and its length is unbounded, but it flows
+  // into the published record — so guard the conversion and cap the size.
   let msg: string;
   try {
-    msg = err instanceof Error ? String(err.message) : String(err);
+    msg = (err instanceof Error ? String(err.message) : String(err)).slice(0, 500);
   } catch {
     msg = "unprintable crash value";
   }
@@ -46,10 +47,15 @@ function crashResult(kind: string, err: unknown): DetectionResult {
 
 function dieWith(kind: string): (err: unknown) => void {
   return (err: unknown) => {
+    // The result file is the payload — write it before anything that could
+    // conceivably throw. A throw inside an uncaughtException listener
+    // aborts the process with nothing written.
     const result = crashResult(kind, err);
-    console.error(`[detect-sandboxed] ${result.loadError}`);
     try {
       fs.writeFileSync(outputFile, JSON.stringify(result));
+    } catch {}
+    try {
+      console.error(`[detect-sandboxed] ${result.loadError}`);
     } catch {}
     process.exit(1);
   };

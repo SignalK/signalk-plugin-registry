@@ -68,6 +68,43 @@ module.exports = function (app) {
 }
 `;
 
+// Rejects with a value whose every stringification path throws — the
+// crash handler must still write a result rather than dying unwritten.
+const HOSTILE_VALUE_PLUGIN = `
+module.exports = function (app) {
+  return {
+    id: "crash-fixture",
+    name: "crash fixture",
+    schema: {},
+    start: () => {
+      setTimeout(() => {
+        Promise.reject({
+          toString() { throw new Error("nope") },
+          [Symbol.toPrimitive]() { throw new Error("nope") }
+        })
+      }, 10)
+      return new Promise((resolve) => setTimeout(resolve, 100))
+    },
+    stop: () => {}
+  }
+}
+`;
+
+const HUGE_MESSAGE_PLUGIN = `
+module.exports = function (app) {
+  return {
+    id: "crash-fixture",
+    name: "crash fixture",
+    schema: {},
+    start: () => {
+      setTimeout(() => { Promise.reject(new Error("x".repeat(100000))) }, 10)
+      return new Promise((resolve) => setTimeout(resolve, 100))
+    },
+    stop: () => {}
+  }
+}
+`;
+
 const HEALTHY_PLUGIN = `
 module.exports = function (app) {
   return {
@@ -97,6 +134,24 @@ test("uncaught exception from a plugin timer still writes a result with the real
   assert.equal(result.loads, false);
   assert.match(String(result.loadError), /^uncaught exception: /);
   assert.match(String(result.loadError), /fixture sync boom/);
+});
+
+test("a crash value that throws on stringification still yields a result", () => {
+  const { status, result } = runDetection(HOSTILE_VALUE_PLUGIN);
+  assert.equal(status, 1);
+  assert.ok(result, "crash result file was written");
+  assert.equal(result.loadError, "unhandled rejection: unprintable crash value");
+});
+
+test("an oversized crash message is capped before publication", () => {
+  const { status, result } = runDetection(HUGE_MESSAGE_PLUGIN);
+  assert.equal(status, 1);
+  assert.ok(result, "crash result file was written");
+  assert.ok(
+    String(result.loadError).length <= 600,
+    `loadError not capped: ${String(result.loadError).length} chars`,
+  );
+  assert.match(String(result.loadError), /^unhandled rejection: x+/);
 });
 
 test("a healthy plugin is unaffected by the crash handlers", () => {
