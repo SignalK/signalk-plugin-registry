@@ -416,7 +416,12 @@ jobs:
           ARTIFACTS_DIR: /tmp/rescore-results
         run: npx ts-node scripts/notify-rescore-result.ts >> "$GITHUB_OUTPUT"
 
-      - name: Comment score and close issue
+      # Close only when a real score came back. The reporter sets scored=false
+      # when this run produced no stable envelope — ambiguous between "the
+      # plugin failed to load" and the documented N=0 envelope-walker path, so
+      # the request stays open for a maintainer rather than being closed as if
+      # it had been answered.
+      - name: Comment score
         if: needs.merge-results.result == 'success' && needs.publish.result == 'success'
         uses: actions/github-script@v9
         with:
@@ -429,14 +434,17 @@ jobs:
               issue_number,
               body
             })
-            await github.rest.issues.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number,
-              state: 'closed'
-            })
+            if (process.env.SCORED === 'true') {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number,
+                state: 'closed'
+              })
+            }
         env:
           COMMENT: ${{ steps.comment.outputs.comment }}
+          SCORED: ${{ steps.comment.outputs.scored }}
           ISSUE: ${{ github.event.inputs.rescore_issue }}
 
       # The scan did not complete, so there is no trustworthy score to post.
