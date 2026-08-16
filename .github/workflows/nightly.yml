@@ -354,33 +354,47 @@ jobs:
   # ─────────────────────────────────────────────────────────────
   report-rescore:
     needs: [merge-results, publish]
-    # Only report when the pipeline actually succeeded — otherwise this could
-    # comment whatever score is already on master and close the issue as if the
-    # rerun passed. A clean single-plugin run always produces a slot (even a
-    # failing one), so merge-results + publish both succeed on the happy path.
-    if: >-
-      github.event.inputs.rescore_issue != '' &&
-      needs.merge-results.result == 'success' &&
-      needs.publish.result == 'success'
+    # Always reach this job for an on-demand re-score, then decide inside what
+    # to say. `always()` is load-bearing: a *skipped* dependency short-circuits
+    # a job before its `if:` is evaluated, and merge-results is skipped whenever
+    # the test job produced nothing (plugin wouldn't install, empty matrix,
+    # sandbox death) — precisely the failures worth reporting. Without it the
+    # author got the "Started a re-score…" ack and then permanent silence, with
+    # the issue left open forever.
+    #
+    # The happy/unhappy split moves to the steps below, each gated on the same
+    # pair of results this `if:` used to carry: merge-results wrote
+    # results.json, publish refreshed the page the comment links to. A pipeline
+    # that did not complete must never post a score — results.json would still
+    # hold the previous run's number, and closing on it would report the rerun
+    # as passed. It stays open for a maintainer instead.
+    if: always() && github.event.inputs.rescore_issue != ''
     runs-on: ubuntu-latest
+    # issues: write is the whole grant, and it only ever posts the re-score
+    # outcome. Plugin code ran in the unprivileged test job and never executes
+    # here, so the write token is not exposed to it.
     permissions:
       issues: write
     steps:
       - uses: actions/checkout@v7
+        if: needs.merge-results.result == 'success' && needs.publish.result == 'success'
         with:
           ref: master # read the published score for the up/down comparison
           persist-credentials: false
 
       - uses: actions/setup-node@v7
+        if: needs.merge-results.result == 'success' && needs.publish.result == 'success'
         with:
           node-version: '24'
 
       - run: npm ci --ignore-scripts
+        if: needs.merge-results.result == 'success' && needs.publish.result == 'success'
 
       # This run's actual slot outcome (composite/badges/status), independent
       # of what won the best-score merge. The reporter compares it against the
       # published score so the comment reflects the rerun, not a stale winner.
       - name: Download this run's result envelopes
+        if: needs.merge-results.result == 'success' && needs.publish.result == 'success'
         uses: actions/download-artifact@v8
         with:
           path: /tmp/rescore-results
@@ -388,12 +402,14 @@ jobs:
 
       - name: Build result comment
         id: comment
+        if: needs.merge-results.result == 'success' && needs.publish.result == 'success'
         env:
           PLUGIN: ${{ github.event.inputs.plugin }}
           ARTIFACTS_DIR: /tmp/rescore-results
         run: npx ts-node scripts/notify-rescore-result.ts >> "$GITHUB_OUTPUT"
 
       - name: Comment score and close issue
+        if: needs.merge-results.result == 'success' && needs.publish.result == 'success'
         uses: actions/github-script@v9
         with:
           script: |
@@ -414,3 +430,31 @@ jobs:
         env:
           COMMENT: ${{ steps.comment.outputs.comment }}
           ISSUE: ${{ github.event.inputs.rescore_issue }}
+
+      # The scan did not complete, so there is no trustworthy score to post.
+      # Say so plainly and leave the issue OPEN — closing it here would strand
+      # a valid request, which is the failure mode this job exists to prevent.
+      - name: Report incomplete scan
+        if: needs.merge-results.result != 'success' || needs.publish.result != 'success'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const issue_number = Number(process.env.ISSUE)
+            const plugin = process.env.PLUGIN
+            const runUrl = `${process.env.SERVER_URL}/${process.env.REPOSITORY}/actions/runs/${process.env.RUN_ID}`
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body:
+                `The re-score of \`${plugin}\` did not complete, so no score was produced. ` +
+                `This is a problem with the scan itself, not necessarily with the plugin.\n\n` +
+                `Run log: ${runUrl}\n\n` +
+                `Leaving this open for a maintainer to look at.`
+            })
+        env:
+          ISSUE: ${{ github.event.inputs.rescore_issue }}
+          PLUGIN: ${{ github.event.inputs.plugin }}
+          SERVER_URL: ${{ github.server_url }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
