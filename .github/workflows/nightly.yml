@@ -341,8 +341,16 @@ jobs:
           cp -r api/* .
           git add -A
           git commit -m "api: update from $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          # Fail the step if every attempt failed. Without the explicit exit the
+          # loop's last `sleep` returns 0, the step and the publish job report
+          # success, and report-rescore then posts a score linking to a page
+          # that was never deployed.
           for i in 1 2 3; do
             git push origin gh-pages-tmp:gh-pages --force && break
+            if [ "$i" = 3 ]; then
+              echo "Push failed after 3 attempts" >&2
+              exit 1
+            fi
             echo "Push attempt $i failed (concurrent update), retrying in ${i}s..."
             sleep "$i"
           done
