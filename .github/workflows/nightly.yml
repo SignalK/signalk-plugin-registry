@@ -384,6 +384,51 @@ jobs:
     permissions:
       issues: write
     steps:
+      # rescore.yml proves the *plugin name* is a real Signal K package before
+      # dispatching, but nothing proves the *issue number* belongs to a re-score
+      # request. `rescore_issue` is a free-text workflow_dispatch input, so
+      # anyone holding actions: write can aim this job at an arbitrary issue or
+      # PR and have the bot comment on it — and, on the scored path, close it.
+      # Require the target to look like a re-score request before writing to it.
+      # A rejected target fails the job loudly rather than silently writing to
+      # the wrong place; the real request, if any, is still open for a human.
+      - name: Verify the target is a re-score request
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const issue_number = Number(process.env.ISSUE)
+            if (!Number.isInteger(issue_number) || issue_number <= 0) {
+              core.setFailed(`rescore_issue is not a positive integer: "${process.env.ISSUE}"`)
+              return
+            }
+            const { data: issue } = await github.rest.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number
+            })
+            // The issues API also returns pull requests, and issues.update
+            // would happily close one. A re-score request is never a PR, so
+            // reject them outright rather than relying on the markers below —
+            // a PR whose title happened to start with [rescore] would other-
+            // wise pass and be closed by the scored path.
+            if (issue.pull_request) {
+              core.setFailed(`#${issue_number} is a pull request, not a re-score request. Refusing to comment on it.`)
+              return
+            }
+            // Either marker is enough, mirroring rescore.yml's own trigger: the
+            // form applies the label, but GitHub drops it for openers without
+            // triage/write, leaving the title prefix as the only survivor.
+            const labelled = issue.labels.some((l) => (l.name || l) === 'rescore')
+            const titled = (issue.title || '').startsWith('[rescore]')
+            if (!labelled && !titled) {
+              core.setFailed(
+                `Issue #${issue_number} is not a re-score request ` +
+                  `(no \`rescore\` label, no \`[rescore]\` title prefix). Refusing to comment on it.`
+              )
+            }
+        env:
+          ISSUE: ${{ github.event.inputs.rescore_issue }}
+
       - uses: actions/checkout@v7
         if: needs.merge-results.result == 'success' && needs.publish.result == 'success'
         with:
