@@ -99,26 +99,41 @@ function trend(thisRun: number, published: number | null): string {
   return ' (unchanged)'
 }
 
-function buildComment(plugin: string, artifactsDir: string): string {
+// A comment plus whether it represents a real score. `scored: false` means no
+// slot came back from this run, which is ambiguous — the plugin may have failed
+// to install, or the envelope walker may have found nothing (the documented
+// N=0 path). The caller must not close the issue on that.
+interface Report {
+  comment: string
+  scored: boolean
+}
+
+function buildComment(plugin: string, artifactsDir: string): Report {
   const thisRun = findThisRunStableSlot(artifactsDir, plugin)
 
   if (!thisRun || typeof thisRun.composite !== 'number') {
-    // No slot from this run means the plugin couldn't even be scored on stable
-    // (install/load failure). Be honest rather than echoing a stale score.
-    return (
-      `The re-score of \`${plugin}\` finished but produced no result on the stable server — ` +
-      `usually the plugin could not be installed or loaded. ` +
-      `See the registry page for details: ${PUBLISHED_BASE}/`
-    )
+    // No slot from this run. Don't assert why: "couldn't be installed" reads as
+    // the author's fault, but a missing envelope is just as often ours. State
+    // the fact and leave the issue open for a maintainer.
+    return {
+      scored: false,
+      comment:
+        `The re-score of \`${plugin}\` produced no result for the stable server, ` +
+        `so there is no score to report. That usually means the plugin could not ` +
+        `be installed or loaded, but it can also mean the scan itself did not ` +
+        `complete.\n\nLeaving this open for a maintainer to check: ${PUBLISHED_BASE}/`
+    }
   }
 
   const published = publishedStableComposite(plugin)
   const badges = (thisRun.badges ?? []).join(', ') || 'none'
-  return (
-    `\`${plugin}\` scored **${thisRun.composite}/100**${trend(thisRun.composite, published)}.\n\n` +
-    `Badges: ${badges}\n\n` +
-    `Full report: ${PUBLISHED_BASE}/ (machine-readable detail: ${detailUrl(plugin)})`
-  )
+  return {
+    scored: true,
+    comment:
+      `\`${plugin}\` scored **${thisRun.composite}/100**${trend(thisRun.composite, published)}.\n\n` +
+      `Badges: ${badges}\n\n` +
+      `Full report: ${PUBLISHED_BASE}/ (machine-readable detail: ${detailUrl(plugin)})`
+  }
 }
 
 function main() {
@@ -130,14 +145,16 @@ function main() {
   // Where the report job downloaded this run's result-* artifacts.
   const artifactsDir = process.env.ARTIFACTS_DIR || '/tmp/rescore-results'
 
-  const comment = buildComment(plugin, artifactsDir)
+  const { comment, scored } = buildComment(plugin, artifactsDir)
   if (process.env.GITHUB_OUTPUT) {
-    // Multiline value via the heredoc form $GITHUB_OUTPUT supports.
+    // Multiline value via the heredoc form $GITHUB_OUTPUT supports. `scored`
+    // gates whether the caller closes the issue.
     fs.appendFileSync(
       process.env.GITHUB_OUTPUT,
-      `comment<<RESCORE_EOF\n${comment}\nRESCORE_EOF\n`
+      `scored=${scored}\ncomment<<RESCORE_EOF\n${comment}\nRESCORE_EOF\n`
     )
   } else {
+    console.log(`scored=${scored}`)
     console.log(comment)
   }
 }
