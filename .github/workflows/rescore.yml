@@ -35,15 +35,21 @@ jobs:
       contents: read # checkout
       issues: write # comment on / close the request issue
       actions: write # dispatch nightly.yml (workflow_dispatch, same repo)
-    # Only react to the re-score issue form (which auto-applies the `rescore`
-    # label) or to a `/rescore` comment on such an issue. Every other opened
-    # issue / comment is ignored, so this is not a general issue trigger.
+    # Only react to the re-score issue form or to a `/rescore` comment. The form
+    # declares BOTH `labels: ['rescore']` and `title: '[rescore] '`, but GitHub
+    # drops the label when the opener lacks triage/write — which is every
+    # outside plugin author who files via `gh issue create` / the API (issues
+    # #40, #45 and #74 arrived unlabelled and were silently skipped). The title
+    # prefix survives regardless, so accept either marker. Neither marker is a
+    # trust decision: parse-rescore-request.ts still gates on npm grammar +
+    # published-package + signalk-node-server-plugin keyword, so a forged
+    # `[rescore]` title gets a rejection comment, not a scan.
     if: >-
       (github.event_name == 'issues' &&
-        contains(github.event.issue.labels.*.name, 'rescore'))
+        (contains(github.event.issue.labels.*.name, 'rescore') ||
+         startsWith(github.event.issue.title, '[rescore]')))
       ||
       (github.event_name == 'issue_comment' &&
-        contains(github.event.issue.labels.*.name, 'rescore') &&
         startsWith(github.event.comment.body, '/rescore'))
     steps:
       - uses: actions/checkout@v7
@@ -66,6 +72,24 @@ jobs:
           ISSUE_BODY: ${{ github.event.issue.body }}
           COMMENT_BODY: ${{ github.event.comment.body }}
         run: npx ts-node scripts/parse-rescore-request.ts >> "$GITHUB_OUTPUT"
+
+      # The form declares `labels: ['rescore']` but GitHub silently drops it for
+      # openers without triage/write. Apply it ourselves so the label stays a
+      # truthful index of re-score requests; the trigger no longer depends on
+      # it. Best-effort: addLabels fails if the label is absent from the repo,
+      # and that must not sink a request that already validated.
+      - name: Ensure rescore label
+        if: github.event_name == 'issues'
+        continue-on-error: true
+        uses: actions/github-script@v9
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['rescore']
+            })
 
       - name: Reject invalid request
         if: steps.parse.outputs.valid != 'true'
