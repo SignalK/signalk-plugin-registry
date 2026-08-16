@@ -76,10 +76,17 @@ jobs:
       # The form declares `labels: ['rescore']` but GitHub silently drops it for
       # openers without triage/write. Apply it ourselves so the label stays a
       # truthful index of re-score requests; the trigger no longer depends on
-      # it. Best-effort: addLabels fails if the label is absent from the repo,
-      # and that must not sink a request that already validated.
+      # it.
+      #
+      # Gated on `valid` so the label means "a scan was dispatched" rather than
+      # "something entered the flow": an invalid request is commented on and
+      # closed immediately below, and labelling it first would leave the closed
+      # reject sitting in `label:rescore` alongside real requests.
+      #
+      # Best-effort: addLabels fails if the label is absent from the repo, and
+      # that must not sink a request that already validated.
       - name: Ensure rescore label
-        if: github.event_name == 'issues'
+        if: github.event_name == 'issues' && steps.parse.outputs.valid == 'true'
         continue-on-error: true
         uses: actions/github-script@v9
         with:
