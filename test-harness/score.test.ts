@@ -101,6 +101,17 @@ test("legacy baconjs and React stack to 30", () => {
   assert.ok(badges.includes("legacy-react"));
 });
 
+test("legacy penalty is per library, not per entry", () => {
+  const results = fullMarks();
+  results.legacyDeps = [
+    { pkg: "baconjs", found: "^0.7.88", required: ">=3" },
+    { pkg: "baconjs", found: "^1.0.1", required: ">=3" },
+  ];
+  const { composite, badges } = computeScore(results);
+  assert.equal(composite, 85);
+  assert.equal(badges.filter((b) => b === "legacy-baconjs").length, 1);
+});
+
 test("legacy deps do not apply to a broken install", () => {
   const results = fullMarks();
   results.installs = false;

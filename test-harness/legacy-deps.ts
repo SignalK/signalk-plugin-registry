@@ -35,7 +35,10 @@ export interface LegacyDep {
 }
 
 // A baconjs range is legacy when it cannot resolve to any 3.x release. "*",
-// ">=1", dist-tags and invalid ranges are not flagged.
+// ">=1", dist-tags and invalid ranges are not flagged. The lower bound is
+// 3.0.0-0 so a 3.x prerelease pin counts as 3.x.
+const BACONJS_OK_RANGE = `>=${BACONJS_MIN_MAJOR}.0.0-0`;
+
 export function findLegacyBaconjs(
   declared: Array<{ pkg: string; range: string }>,
 ): LegacyDep | null {
@@ -43,7 +46,7 @@ export function findLegacyBaconjs(
     if (pkg !== "baconjs") continue;
     if (!isRegistryRange(range)) continue;
     if (semver.validRange(range) === null) continue;
-    if (!semver.intersects(range, `>=${BACONJS_MIN_MAJOR}.0.0`)) {
+    if (!semver.intersects(range, BACONJS_OK_RANGE)) {
       return {
         pkg: "baconjs",
         found: range,
@@ -60,10 +63,12 @@ export function findLegacyBaconjs(
 // same distinction the admin UI's containerUsesLegacyReact() draws.
 //   webpack:  l("react","16.14.0",factory)  or the curried form newer webpack
 //             emits, ((n,v)=>{...})("react","16.14.0")  — so no trailing comma
-//             can be required; this is the admin UI's exact regex.
+//             can be required. This is the admin UI's regex plus optional
+//             whitespace, so an unminified (development) build matches too.
 //   vite MF:  name:`react`,version:`19.2.8`  (or the same with double quotes)
-const WEBPACK_SHARED_REACT = /\("react","(\d+)\.\d+\.\d+"/g;
-const VITE_SHARED_REACT = /name:[`"']react[`"'],version:[`"'](\d+)\.\d+\.\d+[`"']/g;
+const WEBPACK_SHARED_REACT = /\(\s*"react"\s*,\s*"(\d+)\.\d+\.\d+"/g;
+const VITE_SHARED_REACT =
+  /name\s*:\s*[`"']react[`"']\s*,\s*version\s*:\s*[`"'](\d+)\.\d+\.\d+[`"']/g;
 
 export function findSharedReactMajors(source: string): number[] {
   const majors = new Set<number>();
@@ -93,7 +98,10 @@ export function findLegacyReact(sources: Iterable<string>): LegacyDep | null {
 }
 
 // The server serves an embedded webapp from <plugin>/public/ when it exists,
-// otherwise from the package root (src/interfaces/webapps.ts).
+// otherwise from the package root (src/interfaces/webapps.ts), and injects
+// <root>/remoteEntry.js into the admin UI (src/serverroutes.ts).
+const REMOTE_ENTRY = "remoteEntry.js";
+
 function webappRoot(pluginDir: string): string {
   const pub = path.join(pluginDir, "public");
   try {
@@ -104,40 +112,57 @@ function webappRoot(pluginDir: string): string {
   return pluginDir;
 }
 
-// Built bundles only — a vite MF remote registers shared versions in a chunk
-// next to remoteEntry.js, not in remoteEntry.js itself. The tarball is
-// untrusted, so the walk is bounded: symlinks are never followed, and files
-// past the count cap, deeper than the depth limit, larger than the per-file
-// limit, or beyond the total byte budget are skipped (indeterminate).
+// Only what the admin UI can actually execute is inspected: remoteEntry.js
+// and the relative .js paths reachable from it. webpack registers shared
+// versions in remoteEntry.js itself; a vite MF remote registers them in a
+// chunk (the localSharedImportMap virtual module) that remoteEntry.js reaches
+// through one or more imports, depending on the @module-federation/vite
+// version. Files under public/ that nothing references — stale builds,
+// unrelated entries — are not consulted, exactly as the browser never loads
+// them. The tarball is untrusted, so the traversal is bounded: regular files
+// only (symlinks are never followed), inside the webapp root, at most
+// MAX_BUNDLE_FILES files, MAX_BUNDLE_BYTES per file and MAX_BUNDLE_TOTAL_BYTES
+// overall; anything past a limit is skipped (indeterminate).
 export const MAX_BUNDLE_FILES = 500;
-export const MAX_BUNDLE_DEPTH = 8;
 export const MAX_BUNDLE_BYTES = 16 * 1024 * 1024;
 export const MAX_BUNDLE_TOTAL_BYTES = 64 * 1024 * 1024;
 
-function* readBundleFiles(root: string): Generator<string> {
-  let seen = 0;
+const RELATIVE_JS_REF = /["'`](\.{1,2}\/[^"'`\s]+\.m?js)["'`]/g;
+
+function* readRemoteBundles(root: string): Generator<string> {
   let totalBytes = 0;
-  const stack: Array<{ dir: string; depth: number }> = [{ dir: root, depth: 0 }];
-  while (stack.length > 0) {
-    const { dir, depth } = stack.pop()!;
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (entry.name === "node_modules" || entry.isSymbolicLink()) continue;
-      const full = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        if (depth < MAX_BUNDLE_DEPTH) stack.push({ dir: full, depth: depth + 1 });
-      } else if (entry.isFile() && /\.m?js$/.test(entry.name)) {
-        if (++seen > MAX_BUNDLE_FILES) return;
-        const size = fs.statSync(full).size;
-        if (size > MAX_BUNDLE_BYTES) continue;
-        if ((totalBytes += size) > MAX_BUNDLE_TOTAL_BYTES) return;
-        yield fs.readFileSync(full, "utf-8");
-      }
+  const readBounded = (file: string): string | null => {
+    let stat: fs.Stats;
+    try {
+      stat = fs.lstatSync(file);
+    } catch {
+      return null;
+    }
+    if (!stat.isFile() || stat.size > MAX_BUNDLE_BYTES) return null;
+    if ((totalBytes += stat.size) > MAX_BUNDLE_TOTAL_BYTES) return null;
+    return fs.readFileSync(file, "utf-8");
+  };
+
+  const queue = [path.join(root, REMOTE_ENTRY)];
+  const visited = new Set<string>();
+  while (queue.length > 0) {
+    const file = queue.shift()!;
+    if (visited.has(file)) continue;
+    if (visited.size >= MAX_BUNDLE_FILES) return;
+    visited.add(file);
+    const source = readBounded(file);
+    if (source === null) continue;
+    yield source;
+    // References resolve relative to the importing file, like the browser.
+    for (const match of source.matchAll(RELATIVE_JS_REF)) {
+      const full = path.resolve(path.dirname(file), match[1]);
+      if (full.startsWith(root + path.sep)) queue.push(full);
     }
   }
 }
 
 // Reads the installed plugin's package.json and, for embedded webapps, its
-// shipped bundles. Any read failure yields [] (indeterminate, no penalty).
+// remote entry. Any read failure yields [] (indeterminate, no penalty).
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);
 }
@@ -164,9 +189,11 @@ export function checkLegacyDeps(pluginDir: string): LegacyDep[] {
     const keywords = pkg.keywords;
     const embedded =
       Array.isArray(keywords) &&
-      keywords.some((k) => EMBEDDED_WEBAPP_KEYWORDS.includes(k));
+      keywords.some(
+        (k) => typeof k === "string" && EMBEDDED_WEBAPP_KEYWORDS.includes(k),
+      );
     if (embedded) {
-      const react = findLegacyReact(readBundleFiles(webappRoot(pluginDir)));
+      const react = findLegacyReact(readRemoteBundles(webappRoot(pluginDir)));
       if (react) found.push(react);
     }
   } catch {

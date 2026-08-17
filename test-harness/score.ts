@@ -137,13 +137,13 @@ export function computeScore(r: TestResults): {
     badges.push("holds-back-core-deps");
   }
 
-  // Legacy runtime deps: -15 each for baconjs <3 in dependencies/
+  // Legacy runtime deps: -15 per library, for baconjs <3 in dependencies/
   // peerDependencies and for an embedded webapp built against React <19.
   // Both only work today through server compatibility shims that are slated
   // for removal (see legacy-deps.ts).
-  for (const dep of r.legacyDeps) {
+  for (const pkg of new Set(r.legacyDeps.map((dep) => dep.pkg))) {
     score -= 15;
-    badges.push(dep.pkg === "baconjs" ? "legacy-baconjs" : "legacy-react");
+    badges.push(pkg === "baconjs" ? "legacy-baconjs" : "legacy-react");
   }
 
   return {
