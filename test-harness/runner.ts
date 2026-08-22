@@ -1,5 +1,11 @@
 import { detectProviders, DetectionResult } from "./detect-providers";
 import { parseDeclaredCiCommands } from "./plugin-ci-commands";
+import { atomMentionsVersion } from "./atom-version";
+import {
+  sanitizeRepoDirectory,
+  resolveWithinClone,
+  isWorkspaceLinked,
+} from "./repo-directory";
 import { computeScore, TestResults } from "./score";
 import {
   CORE_PACKAGES,
@@ -255,7 +261,15 @@ function checkOwnTests(pluginDir: string): {
   }
 }
 
-function getGitHubRepoUrl(pluginDir: string): string | null {
+// The repository a plugin was published from. `directory` is npm's standard
+// field for a package that lives in a subdirectory of a monorepo; it is null
+// for the ordinary one-package-per-repo case.
+interface PluginRepo {
+  url: string;
+  directory: string | null;
+}
+
+function getGitHubRepoUrl(pluginDir: string): PluginRepo | null {
   try {
     const pkg = JSON.parse(
       fs.readFileSync(path.join(pluginDir, "package.json"), "utf-8"),
@@ -281,7 +295,10 @@ function getGitHubRepoUrl(pluginDir: string): string | null {
       .replace(/\.git$/, "");
 
     if (!url.includes("github.com")) return null;
-    return url;
+    // The shorthand string form carries no subdirectory.
+    const directory =
+      typeof repo === "string" ? null : sanitizeRepoDirectory(repo.directory);
+    return { url, directory };
   } catch {
     return null;
   }
@@ -443,23 +460,6 @@ function githubSlugFromPackage(
   }
 }
 
-function atomMentionsVersion(body: string, version: string): boolean {
-  // Minimal atom parse: each <entry> has an <id> like
-  // tag:github.com,2008:Repository/…/<tag>  and a <title>.
-  // Accept the version string appearing in any of those.
-  const v = version.trim();
-  if (!v) return false;
-  const patterns = [
-    `>${v}<`,
-    `>v${v}<`,
-    `/${v}<`,
-    `/v${v}<`,
-    `:${v}<`,
-    `:v${v}<`,
-  ];
-  return patterns.some((p) => body.includes(p));
-}
-
 // The GitHub Releases atom feed is public and not rate-limited by the
 // /user-level 60/h that api.github.com imposes. Fetching
 // https://github.com/<owner>/<repo>/releases.atom from the untrusted test
@@ -616,17 +616,17 @@ function checkSourceTests(pluginDir: string): {
   pass: boolean;
   runnable: boolean;
 } {
-  const repoUrl = getGitHubRepoUrl(pluginDir);
-  if (!repoUrl) {
+  const repo = getGitHubRepoUrl(pluginDir);
+  if (!repo) {
     console.error("[runner] No GitHub repo URL found, tests not runnable");
     return { hasTests: true, pass: false, runnable: false };
   }
 
   const sourceDir = fs.mkdtempSync(path.join(os.tmpdir(), "sk-source-"));
   try {
-    console.error(`[runner] Cloning source from ${repoUrl}...`);
+    console.error(`[runner] Cloning source from ${repo.url}...`);
     try {
-      execSync(`git clone --depth 1 ${repoUrl} ${sourceDir} 2>&1`, {
+      execSync(`git clone --depth 1 ${repo.url} ${sourceDir} 2>&1`, {
         timeout: 60_000,
         stdio: "pipe",
       });
@@ -635,7 +635,32 @@ function checkSourceTests(pluginDir: string): {
       return { hasTests: true, pass: false, runnable: false };
     }
 
-    if (!hasTestFiles(sourceDir)) {
+    // A monorepo package lives in a subdirectory of its repository. Its tests,
+    // scripts and manifest are all down there, so everything except the clone
+    // itself, the dependency install and the workflow parse has to be scoped to
+    // it — at the root, a sibling package's tests get mistaken for this
+    // plugin's. The clone is a boundary: a `directory` that no longer exists
+    // (renamed since the version under test was published) falls back to the
+    // root, which is exactly the behaviour that predates this field.
+    // Resolved so the subdirectory comparison below can't be fooled by a
+    // symlinked temp root (/tmp -> /private/tmp on macOS).
+    const cloneRoot = fs.realpathSync(sourceDir);
+    let packageDir = cloneRoot;
+    if (repo.directory) {
+      const resolved = resolveWithinClone(cloneRoot, repo.directory);
+      if (resolved && fs.existsSync(path.join(resolved, "package.json"))) {
+        packageDir = resolved;
+        console.error(
+          `[runner] Plugin lives in subdirectory ${repo.directory}/`,
+        );
+      } else {
+        console.error(
+          `[runner] repository.directory "${repo.directory}" not usable in clone, falling back to repo root`,
+        );
+      }
+    }
+
+    if (!hasTestFiles(packageDir)) {
       console.error(
         "[runner] No test files found in source repo, treating as no tests",
       );
@@ -665,8 +690,38 @@ function checkSourceTests(pluginDir: string): {
       }
     }
 
+    // The root install covers the subdirectory only when it is a real npm
+    // workspace — then npm hoists the deps to the root and links the package
+    // back in at <root>/node_modules/<name>. That symlink is the reliable
+    // discriminator: a workspace package has *no* node_modules of its own
+    // (deps hoist), so checking for one would wrongly re-install the very case
+    // it is meant to skip. Without the link the root install said nothing
+    // about this package — it may even have succeeded vacuously, as it does
+    // for a repo with no root manifest at all — so install the subdirectory
+    // on its own. `install`, not `ci`: a non-workspace subdirectory usually
+    // ships no lockfile. The budget is deliberately tighter than the root's:
+    // this installs one package's devDependencies, and the whole matrix leg
+    // has 10 minutes for everything (see nightly.yml).
+    if (packageDir !== cloneRoot && !isWorkspaceLinked(cloneRoot, packageDir)) {
+      console.error(
+        "[runner] Subdirectory is not an npm workspace, installing it directly...",
+      );
+      try {
+        execSync("npm install --ignore-scripts 2>&1", {
+          cwd: packageDir,
+          timeout: 90_000,
+          stdio: "pipe",
+        });
+      } catch (err: unknown) {
+        console.error(
+          `[runner] Subdirectory install failed, tests not runnable: ${formatExecError(err)}`,
+        );
+        return { hasTests: true, pass: false, runnable: false };
+      }
+    }
+
     const sourcePkg = JSON.parse(
-      fs.readFileSync(path.join(sourceDir, "package.json"), "utf-8"),
+      fs.readFileSync(path.join(packageDir, "package.json"), "utf-8"),
     );
 
     // Honor the build/test commands the plugin declares to the canonical
@@ -704,7 +759,7 @@ function checkSourceTests(pluginDir: string): {
       // the heuristic path (tsc/compile) keeps the tighter one.
       const buildCap = declared.build ? 300 : 120;
       console.error(`[runner] Building with ${buildCommand}...`);
-      if (!runSandboxedStep(buildCommand, buildCap, sourceDir, process.env)) {
+      if (!runSandboxedStep(buildCommand, buildCap, packageDir, process.env)) {
         console.error("[runner] Build failed, tests not runnable");
         return { hasTests: true, pass: false, runnable: false };
       }
@@ -724,7 +779,7 @@ function checkSourceTests(pluginDir: string): {
     const testCommand = declared.test ?? "npm test";
     const testCap = declared.test ? 120 : 60;
     console.error(`[runner] Running tests from source with ${testCommand}...`);
-    const pass = runSandboxedStep(testCommand, testCap, sourceDir, {
+    const pass = runSandboxedStep(testCommand, testCap, packageDir, {
       ...process.env,
       SIGNALK_REGISTRY_TEST: "1",
     });

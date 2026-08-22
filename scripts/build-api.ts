@@ -625,6 +625,16 @@ async function enrichSummariesWithMetrics(
 // they actually work on Linux/macOS/Windows/Cerbo. Apply a flat -10
 // penalty to nudge authors to opt in. Applied at publish time so that
 // score changes propagate without re-running tests.
+//
+// Known limitation: a plugin published from a monorepo subdirectory
+// (npm's `repository.directory`) cannot currently satisfy this. The
+// reusable plugin-ci.yml takes no working-directory input and every step
+// resolves package.json from the repository root, so the workflow cannot
+// be pointed at the package. Those plugins therefore sit 10 below their
+// peers however good they are. The fix belongs upstream in
+// SignalK/signalk-server, not here: suppressing the penalty for a
+// self-declared, unverified npm field would both publish compatibility
+// data we don't have and hand out 10 points to anyone who adds the field.
 const PLUGIN_CI_PENALTY = 10
 
 function applyPluginCiPenalty(
