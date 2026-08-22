@@ -38,7 +38,7 @@ test("does not match a longer version that merely starts the same", () => {
 
 test("does not match a version embedded in surrounding digits", () => {
   assert.equal(atomMentionsVersion(">10.1.4<", "0.1.4"), false);
-  assert.equal(atomMentionsVersion("<id>x/11.0.1.40</id>", "1.2.3"), false);
+  assert.equal(atomMentionsVersion("<id>x/11.2.3</id>", "1.2.3"), false);
 });
 
 // A prerelease is a different version: the release check must not accept it.
