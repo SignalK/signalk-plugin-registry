@@ -30,7 +30,7 @@ Each plugin is scored out of **100 points**:
 
 Security scoring breakdown: 20 points for a clean audit, 15 if only moderate vulnerabilities, 10 if high (no critical), 0 if any critical vulnerabilities.
 
-Changelog detection prefers a `CHANGELOG.md` (or `CHANGES.md` / `HISTORY.md`) in the published tarball; if absent, falls back to the repository's public GitHub Releases atom feed (`https://github.com/<owner>/<repo>/releases.atom`, no token needed) and looks for a release whose tag matches the installed version. Tags may carry a package-name prefix, so the monorepo conventions (`pkg@1.2.3`, `pkg-v1.2.3`, `pkg/v1.2.3`) are recognised alongside a plain `v1.2.3`. See [signalk-server PR #2615](https://github.com/SignalK/signalk-server/pull/2615) for the release-notes convention.
+Changelog detection prefers a `CHANGELOG.md` (or `CHANGES.md` / `HISTORY.md`) in the published tarball; if absent, falls back to the repository's public GitHub Releases atom feed (`https://github.com/<owner>/<repo>/releases.atom`, no token needed) and looks for a release whose tag or entry title carries the installed version. Tags may carry a package-name prefix, so the monorepo conventions (`pkg@1.2.3`, `pkg-v1.2.3`, `pkg/v1.2.3`) are recognised alongside a plain `v1.2.3`. The version must stand on its own, so `1.2.3` never matches a `1.2.30` or `1.2.3-beta.1` release. See [signalk-server PR #2615](https://github.com/SignalK/signalk-server/pull/2615) for the release-notes convention.
 
 Screenshots detection requires at least one string entry under `signalk.screenshots` in `package.json`.
 
