@@ -57024,5 +57024,41 @@
         "test_status": "passing"
       }
     }
+  },
+  "signalk-portainer": {
+    "0.1.0": {
+      "server@stable": {
+        "tested": "2026-08-23T18:43:19.619Z",
+        "triggered_by": "manual",
+        "node_version": "24",
+        "server_version": "2.31.1",
+        "installs": true,
+        "loads": false,
+        "load_error": "Cannot find module 'express'\nRequire stack:\n- /tmp/sk-registry-tKzvmF/node_modules/signalk-portainer/dist/facade.js\n- /tmp/sk-registry-tKzvmF/node_modules/signalk-portainer/dist/index.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-providers.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-sandboxed.js",
+        "activates": false,
+        "activates_without_config": false,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": false,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 60,
+        "badges": [
+          "compatible",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      }
+    }
   }
 }
