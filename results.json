@@ -3081,6 +3081,38 @@
         ],
         "test_status": "passing"
       }
+    },
+    "2.9.3": {
+      "server@stable": {
+        "tested": "2026-09-04T06:41:32.437Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.31.1",
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": false,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 0,
+        "badges": [
+          "broken"
+        ],
+        "test_status": "none"
+      }
     }
   },
   "signalk-vaarweginformatie-blocked": {
@@ -3653,6 +3685,38 @@
           "has-screenshots"
         ],
         "test_status": "passing"
+      }
+    },
+    "2.3.2": {
+      "server@stable": {
+        "tested": "2026-09-04T06:45:28.887Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.31.1",
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": false,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 0,
+        "badges": [
+          "broken"
+        ],
+        "test_status": "none"
       }
     }
   },
@@ -7168,17 +7232,19 @@
   "@signalk/set-system-time": {
     "1.5.0": {
       "server@stable": {
-        "tested": "2026-08-21T02:59:47.687Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T06:56:24.702Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
+        "has_schema": false,
         "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
@@ -7189,12 +7255,9 @@
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 65,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "npm-audit-ok"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -9714,37 +9777,34 @@
     },
     "2.1.0": {
       "server@stable": {
-        "tested": "2026-08-22T02:44:48.502Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-09-04T06:57:43.828Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
-        "has_own_tests": true,
-        "own_tests_pass": true,
-        "tests_runnable": true,
+        "has_schema": false,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": true,
+        "has_changelog": false,
         "has_screenshots": false,
         "held_back_core_deps": [],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 95,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "tested",
-          "npm-audit-ok",
-          "has-changelog"
+          "broken"
         ],
-        "test_status": "passing"
+        "test_status": "none"
       }
     }
   },
@@ -13912,16 +13972,16 @@
   "smart-grid-controller": {
     "1.1.2": {
       "server@stable": {
-        "tested": "2026-08-22T02:48:08.691Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:23:20.808Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activation_error": "app.signalk.on is not a function",
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
         "activates": false,
         "activates_without_config": false,
-        "activation_without_config_error": "app.signalk.on is not a function",
         "detected_providers": [],
         "unstubbed_accesses": [],
         "has_schema": false,
@@ -13935,11 +13995,9 @@
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 45,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "npm-audit-ok"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -17023,13 +17081,14 @@
   "signalk-raspberry-pi-4ch-ina219": {
     "0.0.9": {
       "server@stable": {
-        "tested": "2026-08-22T02:48:58.444Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:27:00.697Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
         "loads": false,
-        "load_error": "Could not locate the bindings file. Tried:\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/build/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/build/Debug/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/build/Release/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/out/Debug/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/Debug/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/out/Release/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/Release/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/build/default/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/compiled/24.19.0/linux/x64/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/addon-build/release/install-root/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/addon-build/debug/install-root/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/addon-build/default/install-root/i2c.node\n → /tmp/sk-registry-zmVS0c/node_modules/i2c-bus/lib/binding/node-v137-linux-x64/i2c.node",
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
         "activates": false,
         "activates_without_config": false,
         "detected_providers": [],
@@ -17045,10 +17104,9 @@
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 30,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "npm-audit-ok"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -21190,20 +21248,19 @@
   "galadrielmap_sk": {
     "0.13.0": {
       "server@stable": {
-        "tested": "2026-08-21T02:59:50.398Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T06:56:08.802Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT | stdout: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\nnpm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may b",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT | stdout: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\nnpm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may b",
+        "activates": false,
         "activates_without_config": false,
-        "activation_without_config_error": "Cannot read properties of undefined (reading 'speedProp')",
         "detected_providers": [],
-        "unstubbed_accesses": [
-          "get"
-        ],
-        "has_schema": true,
+        "unstubbed_accesses": [],
+        "has_schema": false,
         "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
@@ -21211,15 +21268,12 @@
         "has_changelog": false,
         "has_screenshots": false,
         "held_back_core_deps": [],
-        "audit_critical": 1,
-        "audit_high": 4,
-        "audit_moderate": 3,
-        "composite": 45,
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "audit-critical"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -25433,8 +25487,8 @@
     },
     "1.1.9": {
       "server@stable": {
-        "tested": "2026-08-22T02:45:59.008Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:03:25.403Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
         "installs": true,
@@ -26418,19 +26472,19 @@
   "signalk-raspberry-pi-sht31": {
     "1.0.5": {
       "server@stable": {
-        "tested": "2026-08-22T02:47:50.541Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:20:30.463Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activation_error": "SHT31 is not a constructor",
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
         "activates": false,
         "activates_without_config": false,
-        "activation_without_config_error": "SHT31 is not a constructor",
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
+        "has_schema": false,
         "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
@@ -26441,11 +26495,9 @@
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 50,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "npm-audit-ok"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -26454,17 +26506,19 @@
   "signalk-peplink-monitor": {
     "1.0.3": {
       "server@stable": {
-        "tested": "2026-08-22T02:48:46.129Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:27:12.780Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
+        "has_schema": false,
         "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
@@ -26475,12 +26529,9 @@
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 65,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "npm-audit-ok"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -26834,36 +26885,32 @@
   "signalk-triangle-tank-calculator": {
     "1.0.10": {
       "server@stable": {
-        "tested": "2026-08-22T02:48:31.814Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:18:41.817Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
-        "unstubbed_accesses": [
-          "setProviderStatus"
-        ],
-        "has_schema": true,
+        "unstubbed_accesses": [],
+        "has_schema": false,
         "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": true,
+        "has_changelog": false,
         "has_screenshots": false,
         "held_back_core_deps": [],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 70,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "npm-audit-ok",
-          "has-changelog"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -27650,35 +27697,32 @@
   "@ib236/signalk-prometheus-exporter": {
     "0.0.3": {
       "server@stable": {
-        "tested": "2026-08-21T02:59:43.684Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T06:51:08.042Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activation_error": "app.signalk.on is not a function",
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
         "activates": false,
         "activates_without_config": false,
-        "activation_without_config_error": "app.signalk.on is not a function",
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
+        "has_schema": false,
         "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": true,
+        "has_changelog": false,
         "has_screenshots": false,
         "held_back_core_deps": [],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 55,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "npm-audit-ok",
-          "has-changelog"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -27687,34 +27731,34 @@
   "signalk-pebble-mydata": {
     "0.6.10": {
       "server@stable": {
-        "tested": "2026-08-22T02:48:55.107Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:29:34.748Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT | stdout: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\nnpm warn deprecated glob@7.1.2: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may b",
         "loads": false,
-        "load_error": "Cannot find module 'express'\nRequire stack:\n- /tmp/sk-registry-jZUldg/node_modules/signalk-pebble-mydata/index.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-providers.js\n- /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-sandboxed.js",
+        "load_error": "spawnSync /bin/sh ETIMEDOUT | stdout: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\nnpm warn deprecated glob@7.1.2: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may b",
         "activates": false,
         "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
         "has_schema": false,
-        "has_own_tests": true,
+        "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
         "has_install_scripts": false,
         "has_changelog": false,
         "has_screenshots": false,
         "held_back_core_deps": [],
-        "audit_critical": 3,
-        "audit_high": 1,
+        "audit_critical": 0,
+        "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 10,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "audit-critical"
+          "broken"
         ],
-        "test_status": "not-runnable"
+        "test_status": "none"
       }
     }
   },
@@ -29089,18 +29133,20 @@
   "signalk-plugin-internet-speed": {
     "0.0.9": {
       "server@stable": {
-        "tested": "2026-08-22T02:46:55.734Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:12:08.054Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
-        "has_own_tests": true,
+        "has_schema": false,
+        "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
         "has_install_scripts": false,
@@ -29110,14 +29156,11 @@
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 65,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "npm-audit-ok"
+          "broken"
         ],
-        "test_status": "not-runnable"
+        "test_status": "none"
       }
     }
   },
@@ -29585,34 +29628,32 @@
   "signalk-spectra-plugin": {
     "1.0.1": {
       "server@stable": {
-        "tested": "2026-08-22T02:46:53.788Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:11:30.399Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
+        "has_schema": false,
         "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": true,
+        "has_changelog": false,
         "has_screenshots": false,
         "held_back_core_deps": [],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 70,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "npm-audit-ok",
-          "has-changelog"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -31341,8 +31382,8 @@
   "sk-logs-to-aws-s3": {
     "1.1.0": {
       "server@stable": {
-        "tested": "2026-08-21T02:59:15.468Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T06:55:44.262Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
         "installs": true,
@@ -31519,8 +31560,8 @@
   "posmv_input_plugin": {
     "1.0.0": {
       "server@stable": {
-        "tested": "2026-08-22T02:47:33.568Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:14:28.708Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
         "installs": true,
@@ -50465,38 +50506,34 @@
     },
     "1.1.0": {
       "server@stable": {
-        "tested": "2026-08-22T02:45:43.861Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:03:48.913Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
-        "has_own_tests": true,
-        "own_tests_pass": true,
-        "tests_runnable": true,
-        "has_install_scripts": true,
-        "has_changelog": true,
-        "has_screenshots": true,
+        "has_schema": false,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
         "held_back_core_deps": [],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 100,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "tested",
-          "npm-audit-ok",
-          "has-changelog",
-          "has-screenshots"
+          "broken"
         ],
-        "test_status": "passing"
+        "test_status": "none"
       }
     }
   },
@@ -57380,34 +57417,32 @@
     },
     "0.2.0": {
       "server@stable": {
-        "tested": "2026-08-22T02:45:53.657Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-09-04T06:59:43.994Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
+        "has_schema": false,
         "has_own_tests": false,
         "own_tests_pass": false,
         "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": true,
+        "has_changelog": false,
         "has_screenshots": false,
         "held_back_core_deps": [],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 70,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "npm-audit-ok",
-          "has-changelog"
+          "broken"
         ],
         "test_status": "none"
       }
@@ -57595,8 +57630,8 @@
     },
     "1.0.1": {
       "server@stable": {
-        "tested": "2026-08-22T02:44:48.130Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-09-04T06:56:48.066Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
         "installs": true,
@@ -57852,37 +57887,34 @@
     },
     "0.3.0": {
       "server@stable": {
-        "tested": "2026-08-22T02:46:31.838Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:03:17.123Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
-        "has_own_tests": true,
-        "own_tests_pass": true,
-        "tests_runnable": true,
+        "has_schema": false,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": true,
+        "has_changelog": false,
         "has_screenshots": false,
         "held_back_core_deps": [],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 95,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "tested",
-          "npm-audit-ok",
-          "has-changelog"
+          "broken"
         ],
-        "test_status": "passing"
+        "test_status": "none"
       }
     }
   },
@@ -58036,8 +58068,8 @@
     },
     "1.0.5": {
       "server@stable": {
-        "tested": "2026-08-22T02:46:12.493Z",
-        "triggered_by": "server_version_change",
+        "tested": "2026-09-04T07:03:42.011Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
         "installs": true,
@@ -58886,43 +58918,34 @@
     },
     "2.3.1": {
       "server@stable": {
-        "tested": "2026-08-22T02:44:54.450Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-09-04T07:03:37.825Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
-        "detected_providers": [
-          "resources"
-        ],
-        "unstubbed_accesses": [
-          "get"
-        ],
-        "has_schema": true,
-        "has_own_tests": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT | stdout: npm warn deprecated text-encoding@0.6.4: no longer maintained",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT | stdout: npm warn deprecated text-encoding@0.6.4: no longer maintained",
+        "activates": false,
+        "activates_without_config": false,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": false,
+        "has_own_tests": false,
         "own_tests_pass": false,
-        "tests_runnable": true,
+        "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": true,
-        "has_screenshots": true,
+        "has_changelog": false,
+        "has_screenshots": false,
         "held_back_core_deps": [],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 70,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "has-providers",
-          "tests-failing",
-          "npm-audit-ok",
-          "has-changelog",
-          "has-screenshots"
+          "broken"
         ],
-        "test_status": "failing"
+        "test_status": "none"
       }
     }
   },
@@ -59277,6 +59300,38 @@
         ],
         "test_status": "none"
       }
+    },
+    "0.5.0": {
+      "server@stable": {
+        "tested": "2026-09-04T06:41:24.916Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.31.1",
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT | stdout: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\nnpm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.\nnpm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely public",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT | stdout: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\nnpm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.\nnpm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely public",
+        "activates": false,
+        "activates_without_config": false,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": false,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 0,
+        "badges": [
+          "broken"
+        ],
+        "test_status": "none"
+      }
     }
   },
   "signalk-hwt3100-calibration": {
@@ -59317,37 +59372,34 @@
     },
     "0.3.1": {
       "server@stable": {
-        "tested": "2026-08-22T02:44:45.168Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-09-04T06:59:54.163Z",
+        "triggered_by": "stale",
         "node_version": "24",
         "server_version": "2.31.1",
-        "installs": true,
-        "loads": true,
-        "activates": true,
-        "activates_without_config": true,
+        "installs": false,
+        "install_error": "spawnSync /bin/sh ETIMEDOUT",
+        "loads": false,
+        "load_error": "spawnSync /bin/sh ETIMEDOUT",
+        "activates": false,
+        "activates_without_config": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
-        "has_schema": true,
-        "has_own_tests": true,
-        "own_tests_pass": true,
-        "tests_runnable": true,
+        "has_schema": false,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
         "has_install_scripts": false,
-        "has_changelog": true,
+        "has_changelog": false,
         "has_screenshots": false,
         "held_back_core_deps": [],
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 95,
+        "composite": 0,
         "badges": [
-          "compatible",
-          "loads",
-          "activates",
-          "tested",
-          "npm-audit-ok",
-          "has-changelog"
+          "broken"
         ],
-        "test_status": "passing"
+        "test_status": "none"
       }
     }
   },
