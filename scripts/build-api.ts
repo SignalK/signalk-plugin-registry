@@ -251,10 +251,35 @@ const PLUGIN_CI_REUSABLE = 'SignalK/signalk-server/.github/workflows/plugin-ci.y
 // as "test / <name>"). Strip an optional leading "<word> / " prefix
 // before matching the canonical job name.
 const CALLER_PREFIX_RE = /^[A-Za-z0-9_-]+ \/ /
-const DESKTOP_JOB_RE = /^(Linux|Linux arm64|macOS|Windows) \/ Node (\d+)$/
-const ARMV7_JOB_RE = /^armv7 \(Cerbo GX\) \/ Node (\d+)$/
-const INTEGRATION_JOB_RE =
-  /^Integration \/ signalk-server ([\w.-]+) \/ Node (\d+)$/
+// The reusable workflow publishes two job-name forms: "<os> / Node <n>"
+// and, from the build-once workflow (SignalK/signalk-server#2853),
+// "Install & Test: <os> (Node <n>)". Both are accepted; capture-group order
+// is the same within each pair. Every pattern is anchored at both ends on
+// purpose — an advisory lane such as "Linux / Node 26 (experimental)" must
+// not parse as a platform result.
+const DESKTOP_JOB_RES = [
+  /^(Linux|Linux arm64|macOS|Windows) \/ Node (\d+)$/,
+  /^Install & Test: (Linux|Linux arm64|macOS|Windows) \(Node (\d+)\)$/
+]
+const ARMV7_JOB_RES = [
+  /^armv7 \(Cerbo GX\) \/ Node (\d+)$/,
+  /^Install & Test: armv7 \(Cerbo GX, Node (\d+)\)$/
+]
+const INTEGRATION_JOB_RES = [
+  /^Integration \/ signalk-server ([\w.-]+) \/ Node (\d+)$/,
+  /^Integration Test: SK ([\w.-]+) \(Node (\d+)\)$/
+]
+
+function firstMatch(
+  name: string,
+  patterns: readonly RegExp[]
+): RegExpExecArray | null {
+  for (const re of patterns) {
+    const m = re.exec(name)
+    if (m) return m
+  }
+  return null
+}
 
 function osLabelToPlatform(label: string): PluginCiPlatform | undefined {
   switch (label) {
@@ -271,7 +296,7 @@ function osLabelToPlatform(label: string): PluginCiPlatform | undefined {
   }
 }
 
-function parseJobName(name: string):
+export function parseJobName(name: string):
   | {
       platform: PluginCiPlatform
       node: number
@@ -281,7 +306,7 @@ function parseJobName(name: string):
   // Strip leading "<callerJobKey> / " prefix added by GitHub when a
   // workflow calls the reusable plugin-ci.yml.
   const stripped = name.replace(CALLER_PREFIX_RE, '')
-  const desk = DESKTOP_JOB_RE.exec(stripped)
+  const desk = firstMatch(stripped, DESKTOP_JOB_RES)
   if (desk) {
     const platform = osLabelToPlatform(desk[1])
     if (!platform) return undefined
@@ -289,13 +314,13 @@ function parseJobName(name: string):
     if (Number.isNaN(node)) return undefined
     return { platform, node }
   }
-  const armv7 = ARMV7_JOB_RE.exec(stripped)
+  const armv7 = firstMatch(stripped, ARMV7_JOB_RES)
   if (armv7) {
     const node = parseInt(armv7[1], 10)
     if (Number.isNaN(node)) return undefined
     return { platform: 'armv7-cerbo', node }
   }
-  const integ = INTEGRATION_JOB_RE.exec(stripped)
+  const integ = firstMatch(stripped, INTEGRATION_JOB_RES)
   if (integ) {
     const node = parseInt(integ[2], 10)
     if (Number.isNaN(node)) return undefined
