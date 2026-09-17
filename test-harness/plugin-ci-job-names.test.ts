@@ -102,3 +102,17 @@ test("parseJobName: experimental lanes are ignored in both forms", () => {
     assert.equal(parseJobName(name), undefined, name);
   }
 });
+
+// A skipped matrix job is emitted with its expressions unexpanded, so its
+// name carries no real version. It must be ignored, never recorded as a
+// platform result — in either form.
+test("parseJobName: skipped matrix jobs with unexpanded expressions are ignored", () => {
+  for (const name of [
+    "test / Integration / signalk-server ${{ matrix.signalk-server-version }} / Node ${{ matrix.node-version }}",
+    "test / Integration Test: SK ${{ matrix.signalk-server-version }} (Node ${{ matrix.node-version }})",
+    "test / Linux / Node ${{ matrix.node }}",
+    "test / Install & Test: Linux (Node ${{ matrix.node }})",
+  ]) {
+    assert.equal(parseJobName(name), undefined, name);
+  }
+});
