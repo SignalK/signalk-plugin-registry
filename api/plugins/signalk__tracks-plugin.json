@@ -1,0 +1,185 @@
+{
+  "name": "@signalk/tracks-plugin",
+  "versions": {
+    "2.1.0": {
+      "server@stable": {
+        "tested": "2026-09-21T07:22:19.645Z",
+        "triggered_by": "stale",
+        "node_version": "24",
+        "server_version": "2.32.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "getHistoryApi"
+        ],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok"
+        ],
+        "test_status": "none"
+      }
+    },
+    "3.0.0-beta.0": {
+      "server@stable": {
+        "tested": "2026-09-07T21:41:46.797Z",
+        "triggered_by": "manual",
+        "node_version": "24",
+        "server_version": "2.31.1",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "registerTrackApiProvider",
+          "getHistoryApi"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 95,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "3.0.0": {
+      "server@stable": {
+        "tested": "2026-09-21T23:22:03.502Z",
+        "triggered_by": "manual",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "registerTrackApiProvider"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
+    }
+  },
+  "stars": 2,
+  "open_issues": 3,
+  "contributors": 7,
+  "downloads_per_week": 356,
+  "github_url": "https://github.com/SignalK/tracks",
+  "plugin_ci": {
+    "status": "ok",
+    "head_sha": "6e639a1dcc54a62a54c87c17c4d0c5a7403a7f81",
+    "commit_url": "https://github.com/SignalK/tracks/commit/6e639a1dcc54a62a54c87c17c4d0c5a7403a7f81",
+    "workflow_run_url": "https://github.com/SignalK/tracks/actions/runs/35654240520",
+    "tested_at": "2026-09-21T21:00:09Z",
+    "workflow_ref": "refs/heads/main",
+    "jobs": [
+      {
+        "platform": "linux-x64",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/SignalK/tracks/actions/runs/35654240520/job/106513810652"
+      },
+      {
+        "platform": "macos",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/SignalK/tracks/actions/runs/35654240520/job/106513810656"
+      },
+      {
+        "platform": "linux-x64",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/SignalK/tracks/actions/runs/35654240520/job/106513810662"
+      },
+      {
+        "platform": "macos",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/SignalK/tracks/actions/runs/35654240520/job/106513810694"
+      },
+      {
+        "platform": "windows",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/SignalK/tracks/actions/runs/35654240520/job/106513810705"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/SignalK/tracks/actions/runs/35654240520/job/106513810773"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/SignalK/tracks/actions/runs/35654240520/job/106513810778"
+      },
+      {
+        "platform": "windows",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/SignalK/tracks/actions/runs/35654240520/job/106513810805"
+      },
+      {
+        "platform": "armv7-cerbo",
+        "node": 20,
+        "conclusion": "skipped",
+        "job_url": "https://github.com/SignalK/tracks/actions/runs/35654240520/job/106513812793"
+      }
+    ]
+  }
+}
