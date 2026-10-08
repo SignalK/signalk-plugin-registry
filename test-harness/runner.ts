@@ -703,7 +703,7 @@ function checkSourceTests(pluginDir: string): {
     // on its own. `install`, not `ci`: a non-workspace subdirectory usually
     // ships no lockfile. The budget is deliberately tighter than the root's:
     // this installs one package's devDependencies, and the whole matrix leg
-    // has 10 minutes for everything (see nightly.yml).
+    // has 15 minutes for everything (see nightly.yml).
     if (packageDir !== cloneRoot && !isWorkspaceLinked(cloneRoot, packageDir)) {
       console.error(
         "[runner] Subdirectory is not an npm workspace, installing it directly...",
@@ -777,9 +777,10 @@ function checkSourceTests(pluginDir: string): {
     );
     // A declared test-command likewise gets a longer in-sandbox `timeout` — a
     // test-command that has to build a test bundle first won't finish in 60s on
-    // a slow slot.
+    // a slow slot. Webapp suites are the heavy case: Freeboard-SK's `ng test`
+    // (~135 jsdom spec files) takes ~175s on a 4-vCPU runner.
     const testCommand = declared.test ?? "npm test";
-    const testCap = declared.test ? 120 : 60;
+    const testCap = declared.test ? 240 : 60;
     console.error(`[runner] Running tests from source with ${testCommand}...`);
     const pass = runSandboxedStep(testCommand, testCap, packageDir, {
       ...process.env,
