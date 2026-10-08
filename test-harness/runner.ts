@@ -703,7 +703,7 @@ function checkSourceTests(pluginDir: string): {
     // on its own. `install`, not `ci`: a non-workspace subdirectory usually
     // ships no lockfile. The budget is deliberately tighter than the root's:
     // this installs one package's devDependencies, and the whole matrix leg
-    // has 10 minutes for everything (see nightly.yml).
+    // has 15 minutes for everything (see nightly.yml).
     if (packageDir !== cloneRoot && !isWorkspaceLinked(cloneRoot, packageDir)) {
       console.error(
         "[runner] Subdirectory is not an npm workspace, installing it directly...",
