@@ -777,9 +777,10 @@ function checkSourceTests(pluginDir: string): {
     );
     // A declared test-command likewise gets a longer in-sandbox `timeout` — a
     // test-command that has to build a test bundle first won't finish in 60s on
-    // a slow slot.
+    // a slow slot. Webapp suites are the heavy case: Freeboard-SK's `ng test`
+    // (~135 jsdom spec files) takes ~175s on a 4-vCPU runner.
     const testCommand = declared.test ?? "npm test";
-    const testCap = declared.test ? 120 : 60;
+    const testCap = declared.test ? 240 : 60;
     console.error(`[runner] Running tests from source with ${testCommand}...`);
     const pass = runSandboxedStep(testCommand, testCap, packageDir, {
       ...process.env,
