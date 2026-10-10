@@ -1,0 +1,120 @@
+{
+  "name": "signalk-timezero-sync",
+  "versions": {
+    "0.2.1": {
+      "server@stable": {
+        "tested": "2026-10-10T07:49:01.973Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": true,
+        "activation_error": "Cannot read properties of undefined (reading 'then')",
+        "activates": false,
+        "activates_without_config": false,
+        "activation_without_config_error": "Cannot read properties of undefined (reading 'then')",
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "getCourse"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": true,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 80,
+        "badges": [
+          "compatible",
+          "loads",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      }
+    }
+  },
+  "stars": 1,
+  "open_issues": 0,
+  "contributors": 2,
+  "github_url": "https://github.com/dirkwa/signalk-timezero-sync",
+  "plugin_ci": {
+    "status": "ok",
+    "head_sha": "1638e9331f0ee168d3796d8ee2f0ca0682624ac9",
+    "commit_url": "https://github.com/dirkwa/signalk-timezero-sync/commit/1638e9331f0ee168d3796d8ee2f0ca0682624ac9",
+    "workflow_run_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230",
+    "tested_at": "2026-10-09T20:08:20Z",
+    "workflow_ref": "refs/heads/main",
+    "jobs": [
+      {
+        "platform": "macos",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821559"
+      },
+      {
+        "platform": "integration",
+        "node": 22,
+        "conclusion": "success",
+        "server_version": "latest",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821581"
+      },
+      {
+        "platform": "linux-x64",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821585"
+      },
+      {
+        "platform": "windows",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821597"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821618"
+      },
+      {
+        "platform": "windows",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821624"
+      },
+      {
+        "platform": "linux-x64",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821646"
+      },
+      {
+        "platform": "integration",
+        "node": 24,
+        "conclusion": "success",
+        "server_version": "latest",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821648"
+      },
+      {
+        "platform": "macos",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821671"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/dirkwa/signalk-timezero-sync/actions/runs/37984741230/job/114003821736"
+      }
+    ]
+  }
+}

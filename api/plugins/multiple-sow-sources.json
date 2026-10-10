@@ -1,0 +1,49 @@
+{
+  "name": "multiple-sow-sources",
+  "versions": {
+    "0.0.6": {
+      "server@stable": {
+        "tested": "2026-10-01T07:54:08.942Z",
+        "triggered_by": "schema_change",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": false,
+        "load_error": "detection failed: Cannot read properties of undefined (reading '_schema')",
+        "activates": false,
+        "activates_without_config": false,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": false,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [
+          {
+            "pkg": "baconjs",
+            "found": "^1.0.1",
+            "required": ">=3"
+          }
+        ],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 5,
+        "badges": [
+          "compatible",
+          "npm-audit-ok",
+          "legacy-baconjs",
+          "no-plugin-ci"
+        ],
+        "test_status": "none"
+      }
+    }
+  },
+  "plugin_ci": {
+    "status": "no-githead"
+  }
+}
