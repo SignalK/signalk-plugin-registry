@@ -501,9 +501,9 @@ const rateLimitState: RateLimitState = {
   budget_low: false
 }
 
-// Watch X-RateLimit-Remaining when GitHub responses pass through fetchJson
-// elsewhere. We probe the headers via a one-off fetch right before each
-// plugin-ci attempt so we can stop cleanly without exhausting the quota.
+// Reads the remaining core quota from /rate_limit. Called once, before the
+// workers start: with fewer than 100 requests left, every plugin-ci fetch
+// is skipped rather than run the quota dry.
 async function checkGithubRateLimit(): Promise<void> {
   try {
     const res = await fetch('https://api.github.com/rate_limit', {
