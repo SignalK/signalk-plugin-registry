@@ -474,59 +474,6 @@ async function fetchPluginCi(
   }
 }
 
-interface PluginCiCacheEntry {
-  head_sha: string
-  fetched_at: string
-  payload: PluginCi
-}
-
-interface PluginCiCache {
-  [pkgName: string]: PluginCiCacheEntry
-}
-
-const PLUGIN_CI_CACHE_TTL_HOURS = 24
-
-function loadPluginCiCache(rootDir: string): PluginCiCache {
-  const cachePath = path.join(rootDir, 'data', 'plugin-ci-cache.json')
-  try {
-    if (!fs.existsSync(cachePath)) return {}
-    return JSON.parse(fs.readFileSync(cachePath, 'utf-8')) as PluginCiCache
-  } catch (err) {
-    console.error(
-      `[build-api] failed to load plugin-ci cache: ${(err as Error).message}`
-    )
-    return {}
-  }
-}
-
-function savePluginCiCache(rootDir: string, cache: PluginCiCache): void {
-  const cachePath = path.join(rootDir, 'data', 'plugin-ci-cache.json')
-  try {
-    fs.mkdirSync(path.dirname(cachePath), { recursive: true })
-    fs.writeFileSync(
-      cachePath,
-      JSON.stringify(cache, null, 2) + '\n',
-      'utf-8'
-    )
-  } catch (err) {
-    console.error(
-      `[build-api] failed to save plugin-ci cache: ${(err as Error).message}`
-    )
-  }
-}
-
-function pluginCiCacheValid(
-  entry: PluginCiCacheEntry | undefined,
-  expectedSha: string | undefined
-): boolean {
-  if (!entry || !expectedSha) return false
-  if (entry.head_sha !== expectedSha) return false
-  const fetched = Date.parse(entry.fetched_at)
-  if (Number.isNaN(fetched)) return false
-  const ageHours = (Date.now() - fetched) / (1000 * 60 * 60)
-  return ageHours < PLUGIN_CI_CACHE_TTL_HOURS
-}
-
 interface RateLimitState {
   remaining: number
   budget_low: boolean
@@ -556,7 +503,7 @@ async function checkGithubRateLimit(): Promise<void> {
       if (rem < 100 && !rateLimitState.budget_low) {
         rateLimitState.budget_low = true
         console.warn(
-          `[build-api] GitHub rate-limit remaining ${rem} < 100 — stopping plugin-ci fetches; existing cache preserved`
+          `[build-api] GitHub rate-limit remaining ${rem} < 100 — stopping plugin-ci fetches`
         )
       }
     }
@@ -601,8 +548,7 @@ async function collectRawMetrics(
 }
 
 async function enrichSummariesWithMetrics(
-  summaries: PluginSummary[],
-  pluginCiCache: PluginCiCache
+  summaries: PluginSummary[]
 ): Promise<void> {
   if (process.env.SKIP_RAW_METRICS === 'true') {
     console.log('[build-api] SKIP_RAW_METRICS=true — skipping upstream fetches')
@@ -629,25 +575,12 @@ async function enrichSummariesWithMetrics(
         }
         if (m.github_url) s.github_url = m.github_url
 
-        // plugin-ci matrix. Cache by gitHead so a full-run that re-tests
-        // every plugin still only touches GitHub for plugins whose SHA
-        // moved since yesterday.
+        // plugin-ci matrix. Skipped when the rate-limit probe found the
+        // budget low; left unset, plugin_ci carries no penalty.
         const slug = parseGithubSlug(m.github_url)
         if (slug && m.git_head) {
-          const cached = pluginCiCache[s.name]
-          if (pluginCiCacheValid(cached, m.git_head)) {
-            s.plugin_ci = cached.payload
-          } else if (rateLimitState.budget_low) {
-            // honour previously-cached value when rate-limited
-            if (cached) s.plugin_ci = cached.payload
-          } else {
-            const ci = await fetchPluginCi(slug.owner, slug.repo, m.git_head)
-            s.plugin_ci = ci
-            pluginCiCache[s.name] = {
-              head_sha: m.git_head,
-              fetched_at: new Date().toISOString(),
-              payload: ci
-            }
+          if (!rateLimitState.budget_low) {
+            s.plugin_ci = await fetchPluginCi(slug.owner, slug.repo, m.git_head)
           }
         } else if (m.git_head) {
           // gitHead known but no GitHub repo (rare). Mark explicitly.
@@ -829,12 +762,7 @@ async function main() {
   // Fetch upstream metrics (GitHub + npm) once per plugin here, using the
   // CI GITHUB_TOKEN. See collectRawMetrics above for the methodology.
   console.log(`[build-api] fetching raw metrics for ${summaries.length} plugins...`)
-  const pluginCiCache = loadPluginCiCache(rootDir)
-  await enrichSummariesWithMetrics(summaries, pluginCiCache)
-  // Persist any newly-fetched plugin-ci entries so subsequent runs skip
-  // the GitHub fetch when gitHead hasn't changed (typical full-run is
-  // 5-10 plugins with new SHAs out of ~340 with GitHub repos).
-  savePluginCiCache(rootDir, pluginCiCache)
+  await enrichSummariesWithMetrics(summaries)
 
   // Apply the plugin-ci penalty on the summary scores. Per-version slot
   // scores in the detail JSON are adjusted in the per-plugin write loop
