@@ -52,15 +52,19 @@ function githubHeaders(): Record<string, string> {
   return headers
 }
 
+// Resolves undefined when the lookup fails. `notFound`, when given, is what
+// a 404 means instead: an answer rather than a failure.
 async function fetchJson<T>(
   url: string,
-  headers: Record<string, string> = {}
+  headers: Record<string, string> = {},
+  notFound?: T
 ): Promise<T | undefined> {
   try {
     const res = await fetch(url, {
       signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
       headers
     })
+    if (res.status === 404 && notFound !== undefined) return notFound
     if (!res.ok) {
       console.error(`[build-api] GET ${url} -> ${res.status}`)
       return undefined
@@ -356,13 +360,17 @@ async function fetchWorkflowRunsForSha(
   repo: string,
   sha: string
 ): Promise<GithubWorkflowRun[] | undefined> {
+  // A 404 is the same answer every night: the repository is gone or private,
+  // so nobody can see its runs. A later publish can't get a different one,
+  // so it counts as no runs rather than exempting the plugin for good.
   const body = await fetchJson<GithubWorkflowRunsResponse>(
     `https://api.github.com/repos/${encodeURIComponent(
       owner
     )}/${encodeURIComponent(repo)}/actions/runs?head_sha=${encodeURIComponent(
       sha
     )}&per_page=20`,
-    githubHeaders()
+    githubHeaders(),
+    { workflow_runs: [] }
   )
   if (!body) return undefined
   return body.workflow_runs ?? []
@@ -408,14 +416,23 @@ function pickPluginCiRun(
   )[0]
 }
 
-async function fetchPluginCi(
+/**
+ * The plugin-ci status of the commit a version was published from.
+ *
+ * Resolves undefined when a GitHub lookup fails. Like every check that
+ * depends on an external service, a failed lookup is indeterminate rather
+ * than a verdict: left unset, plugin_ci carries no penalty and shows no
+ * matrix.
+ */
+export async function fetchPluginCi(
   owner: string,
   repo: string,
   gitHead: string | undefined
-): Promise<PluginCi> {
+): Promise<PluginCi | undefined> {
   if (!gitHead) return { status: 'no-githead' }
   const runs = await fetchWorkflowRunsForSha(owner, repo, gitHead)
-  if (runs === undefined || runs.length === 0) {
+  if (runs === undefined) return undefined
+  if (runs.length === 0) {
     return {
       status: 'no-run',
       head_sha: gitHead,
@@ -445,8 +462,9 @@ async function fetchPluginCi(
     }
   }
   const ghJobs = await fetchRunJobs(owner, repo, run.id)
+  if (ghJobs === undefined) return undefined
   const jobs: PluginCiJob[] = []
-  for (const j of ghJobs ?? []) {
+  for (const j of ghJobs) {
     if (typeof j.name !== 'string') continue
     const parsed = parseJobName(j.name)
     if (!parsed) continue
