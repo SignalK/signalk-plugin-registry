@@ -247,7 +247,6 @@ interface GithubJob {
   html_url?: string
 }
 
-const PLUGIN_CI_PATH = '.github/workflows/plugin-ci.yml'
 const PLUGIN_CI_REUSABLE = 'SignalK/signalk-server/.github/workflows/plugin-ci.yml'
 
 // Reusable workflows exposed as "<callerJobKey> / <reusableJobName>"
