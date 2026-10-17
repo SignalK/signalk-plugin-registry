@@ -73,3 +73,21 @@ test("fetchPluginCi: answered lookups give the matrix", async (t) => {
   assert.ok(ci?.status === "ok");
   assert.deepEqual(ci.jobs, [{ platform: "linux-x64", node: 22, conclusion: "success" }]);
 });
+
+test("fetchPluginCi: finds a plugin-ci run past the first page", async (t) => {
+  const otherRun = { id: 1, html_url: "https://github.com/owner/repo/actions/runs/1" };
+  const runPages = [Array(100).fill(otherRun), [PLUGIN_CI_RUN]];
+  const requested: string[] = [];
+  t.mock.method(globalThis, "fetch", async (input: Parameters<typeof fetch>[0]) => {
+    const url = new URL(String(input));
+    if (url.pathname.endsWith("/jobs")) {
+      return new Response(JSON.stringify({ jobs: [] }), { status: 200 });
+    }
+    const page = Number(url.searchParams.get("page"));
+    requested.push(`${url.searchParams.get("per_page")}/${page}`);
+    return new Response(JSON.stringify({ workflow_runs: runPages[page - 1] }), { status: 200 });
+  });
+  const ci = await fetchPluginCi("owner", "repo", SHA);
+  assert.equal(ci?.status, "ok");
+  assert.deepEqual(requested, ["100/1", "100/2"]);
+});
