@@ -1,0 +1,175 @@
+{
+  "name": "signalk-instrument-light-plugin",
+  "versions": {
+    "0.5.2": {
+      "server@stable": {
+        "tested": "2026-10-06T08:19:47.969Z",
+        "triggered_by": "schema_change",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": false,
+        "load_error": "Could not locate the bindings file. Tried:\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/build/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/build/Debug/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/build/Release/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/out/Debug/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/Debug/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/out/Release/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/Release/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/build/default/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/compiled/24.21.0/linux/x64/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/addon-build/release/install-root/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/addon-build/debug/install-root/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/addon-build/default/install-root/bindings.node\n → /tmp/sk-registry-fBfbpA/node_modules/@serialport/bindings/lib/binding/node-v137-linux-x64/bindings.node",
+        "activates": false,
+        "activates_without_config": false,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": false,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 4,
+        "composite": 50,
+        "badges": [
+          "compatible",
+          "tested",
+          "audit-moderate"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "0.7.1": {
+      "server@stable": {
+        "tested": "2026-10-11T15:13:07.443Z",
+        "triggered_by": "manual",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "0.8.0": {
+      "server@stable": {
+        "tested": "2026-10-12T08:13:06.223Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
+    }
+  },
+  "stars": 0,
+  "open_issues": 0,
+  "contributors": 5,
+  "github_url": "https://github.com/joabakk/signalk-instrument-light-plugin",
+  "plugin_ci": {
+    "status": "ok",
+    "head_sha": "d79587e903573ed356ad69c7a2b7645a79629d77",
+    "commit_url": "https://github.com/joabakk/signalk-instrument-light-plugin/commit/d79587e903573ed356ad69c7a2b7645a79629d77",
+    "workflow_run_url": "https://github.com/joabakk/signalk-instrument-light-plugin/actions/runs/38168321536",
+    "tested_at": "2026-10-11T19:32:06Z",
+    "workflow_ref": "refs/heads/master",
+    "jobs": [
+      {
+        "platform": "linux-x64",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/joabakk/signalk-instrument-light-plugin/actions/runs/38168321536/job/114555446869"
+      },
+      {
+        "platform": "windows",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/joabakk/signalk-instrument-light-plugin/actions/runs/38168321536/job/114555446871"
+      },
+      {
+        "platform": "macos",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/joabakk/signalk-instrument-light-plugin/actions/runs/38168321536/job/114555446894"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/joabakk/signalk-instrument-light-plugin/actions/runs/38168321536/job/114555446914"
+      },
+      {
+        "platform": "linux-x64",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/joabakk/signalk-instrument-light-plugin/actions/runs/38168321536/job/114555446915"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/joabakk/signalk-instrument-light-plugin/actions/runs/38168321536/job/114555446922"
+      },
+      {
+        "platform": "windows",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/joabakk/signalk-instrument-light-plugin/actions/runs/38168321536/job/114555446935"
+      },
+      {
+        "platform": "macos",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/joabakk/signalk-instrument-light-plugin/actions/runs/38168321536/job/114555446941"
+      }
+    ]
+  }
+}

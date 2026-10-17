@@ -1,0 +1,155 @@
+{
+  "name": "signalk-ac42-autopilot",
+  "versions": {
+    "1.0.0": {
+      "server@stable": {
+        "tested": "2026-07-17T04:50:42.314Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.30.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 80,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "no-plugin-ci"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "1.1.0": {
+      "server@stable": {
+        "tested": "2026-09-02T06:32:14.886Z",
+        "triggered_by": "stale",
+        "node_version": "24",
+        "server_version": "2.31.1",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 80,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "no-plugin-ci"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "1.2.1": {
+      "server@stable": {
+        "tested": "2026-09-30T07:37:42.695Z",
+        "triggered_by": "schema_change",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 80,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "no-plugin-ci"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "1.3.0": {
+      "server@stable": {
+        "tested": "2026-10-06T08:14:16.105Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": false,
+        "load_error": "sandboxed detection failed: Command failed: firejail --quiet --noprofile --net=none --read-only=/home --read-only=/etc --read-only=/var -- timeout --kill-after=10s 30s node /home/runner/work/signalk-plugin-registry/signalk-plugin-registry/dist/test-harness/detect-sandboxed.js /tmp/sk-registry-8ecj3X/node_modules/signalk-ac42-a",
+        "activates": false,
+        "activates_without_config": false,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": false,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 45,
+        "badges": [
+          "compatible",
+          "tested",
+          "npm-audit-ok",
+          "no-plugin-ci"
+        ],
+        "test_status": "passing"
+      }
+    }
+  },
+  "stars": 1,
+  "open_issues": 0,
+  "contributors": 1,
+  "github_url": "https://github.com/CaptnOliv/signalk-ac42-autopilot",
+  "plugin_ci": {
+    "status": "no-plugin-ci",
+    "head_sha": "c425203ae2098541ddb287eb314904b9aaa1c304",
+    "workflow_run_url": "https://github.com/CaptnOliv/signalk-ac42-autopilot/actions/runs/37323629085"
+  }
+}
