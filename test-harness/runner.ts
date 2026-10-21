@@ -1,5 +1,8 @@
 import { detectProviders, DetectionResult } from "./detect-providers";
-import { parseDeclaredCiCommands } from "./plugin-ci-commands";
+import {
+  asSingleCommand,
+  parseDeclaredCiCommands,
+} from "./plugin-ci-commands";
 import { atomMentionsVersion } from "./atom-version";
 import {
   sanitizeRepoDirectory,
@@ -587,7 +590,9 @@ function runSandboxedStep(
 ): boolean {
   try {
     execSync(
-      sandboxCmd(`timeout --kill-after=10s ${capSeconds}s ${command} 2>&1`),
+      sandboxCmd(
+        `timeout --kill-after=10s ${capSeconds}s ${asSingleCommand(command)} 2>&1`,
+      ),
       {
         cwd,
         timeout: (capSeconds + 15) * 1000,

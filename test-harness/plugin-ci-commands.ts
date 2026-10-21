@@ -29,22 +29,37 @@ function parseScalar(raw: string): string {
 }
 
 // A declared command is interpolated into a shell, and plugin-ci's
-// build-command / test-command exist to invoke an npm script — so accept only
-// an `npm run <script>` (or `run-script`) invocation. The character allow-list
-// (word chars, spaces, and `.-:/=@`) rejects shell metacharacters, quotes,
-// globs, and a YAML flow sequence like `[npm, run, build]` (which parses to
-// that literal string); requiring the `npm run` shape additionally rejects
-// arbitrary programs (`curl …`) and `npm install`, whose lifecycle scripts
-// would sidestep the `--ignore-scripts` install boundary. Anything rejected
-// falls back to the heuristic.
-function isPlausibleCommand(value: string): boolean {
-  if (!/^[\w .\-:/=@]+$/.test(value)) return false;
-  const parts = value.split(/\s+/);
+// build-command / test-command exist to invoke npm scripts — so accept only
+// `npm run <script>` (or `run-script`) and `npm test` invocations, optionally
+// chained with `&&` (`npm run typecheck && npm run lint && npm test` is a
+// common test-command). The character allow-list (word chars, spaces, and
+// `.-:/=@`) rejects shell metacharacters, quotes, globs, and a YAML flow
+// sequence like `[npm, run, build]` (which parses to that literal string);
+// `&` is allowed only as the `&&` separator, so every segment must pass the
+// same allow-list on its own. Requiring the npm shape per segment additionally
+// rejects arbitrary programs (`curl …`) and `npm install`, whose lifecycle
+// scripts would sidestep the `--ignore-scripts` install boundary. Anything
+// rejected falls back to the heuristic.
+function isNpmScriptInvocation(segment: string): boolean {
+  if (!/^[\w .\-:/=@]+$/.test(segment)) return false;
+  const parts = segment.trim().split(/\s+/);
+  if (parts[0] !== "npm") return false;
+  if (parts[1] === "test") return true;
   return (
-    parts.length >= 3 &&
-    parts[0] === "npm" &&
-    (parts[1] === "run" || parts[1] === "run-script")
+    parts.length >= 3 && (parts[1] === "run" || parts[1] === "run-script")
   );
+}
+
+function isPlausibleCommand(value: string): boolean {
+  return value.split("&&").every(isNpmScriptInvocation);
+}
+
+// The runner prefixes a command with `timeout`, which bounds only the first
+// command of an `&&` chain; the rest would run past the cap. Wrapping the
+// chain in `sh -c` puts all of it under the one cap. Single quotes are safe:
+// a command that passed isPlausibleCommand contains no quotes.
+export function asSingleCommand(command: string): string {
+  return command.includes("&&") ? `sh -c '${command}'` : command;
 }
 
 // Parse the `build-command` / `test-command` a plugin declares to the reusable

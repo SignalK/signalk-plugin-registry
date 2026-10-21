@@ -3,7 +3,10 @@ import * as assert from "node:assert/strict";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
-import { parseDeclaredCiCommands } from "./plugin-ci-commands";
+import {
+  asSingleCommand,
+  parseDeclaredCiCommands,
+} from "./plugin-ci-commands";
 
 function withWorkflows(
   files: Record<string, string>,
@@ -207,4 +210,51 @@ test("skips commented-out command lines", () => {
   assert.deepEqual(withWorkflows({ "ci.yml": wf }), {
     build: "npm run build:all",
   });
+});
+
+test("accepts an && chain of npm script invocations (SignalK/tracks case)", () => {
+  const wf = `jobs:
+  test:
+    uses: SignalK/signalk-server/.github/workflows/plugin-ci.yml@master
+    with:
+      test-command: npm run typecheck && npm run lint && npm test
+`;
+  assert.deepEqual(withWorkflows({ "ci.yml": wf }), {
+    test: "npm run typecheck && npm run lint && npm test",
+  });
+});
+
+test("accepts plain npm test", () => {
+  const wf = `jobs:
+  test:
+    uses: SignalK/signalk-server/.github/workflows/plugin-ci.yml@master
+    with:
+      test-command: npm test
+`;
+  assert.deepEqual(withWorkflows({ "ci.yml": wf }), { test: "npm test" });
+});
+
+test("rejects a chain with a single &, an empty segment, or a non-npm segment", () => {
+  for (const command of [
+    "npm run build & curl evil.example",
+    "npm run build &&& npm test",
+    "npm run build &&",
+    "npm run build && npm install",
+  ]) {
+    const wf = `jobs:
+  test:
+    uses: SignalK/signalk-server/.github/workflows/plugin-ci.yml@master
+    with:
+      test-command: '${command}'
+`;
+    assert.deepEqual(withWorkflows({ "ci.yml": wf }), {}, command);
+  }
+});
+
+test("wraps only a chain in sh -c, so one timeout covers all of it", () => {
+  assert.equal(asSingleCommand("npm run test:ci"), "npm run test:ci");
+  assert.equal(
+    asSingleCommand("npm run lint && npm test"),
+    "sh -c 'npm run lint && npm test'",
+  );
 });
