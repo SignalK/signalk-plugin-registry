@@ -249,6 +249,10 @@ interface GithubJob {
 
 const PLUGIN_CI_REUSABLE = 'SignalK/signalk-server/.github/workflows/plugin-ci.yml'
 
+const RUNS_PER_PAGE = 100
+// GitHub returns at most 1,000 runs for a head_sha-filtered listing.
+const MAX_RUN_PAGES = 10
+
 // Reusable workflows exposed as "<callerJobKey> / <reusableJobName>"
 // (e.g. plugins call this with job key `test`, so all jobs come through
 // as "test / <name>"). Strip an optional leading "<word> / " prefix
@@ -357,7 +361,8 @@ function commitUrl(owner: string, repo: string, sha: string): string {
 async function fetchWorkflowRunsForSha(
   owner: string,
   repo: string,
-  sha: string
+  sha: string,
+  page: number
 ): Promise<GithubWorkflowRun[] | undefined> {
   // A 404 is the same answer every night: the repository is gone or private,
   // so nobody can see its runs. A later publish can't get a different one,
@@ -367,7 +372,7 @@ async function fetchWorkflowRunsForSha(
       owner
     )}/${encodeURIComponent(repo)}/actions/runs?head_sha=${encodeURIComponent(
       sha
-    )}&per_page=20`,
+    )}&per_page=${RUNS_PER_PAGE}&page=${page}`,
     githubHeaders(),
     { workflow_runs: [] }
   )
@@ -416,6 +421,33 @@ function pickPluginCiRun(
 }
 
 /**
+ * Reads the runs listing for a commit page by page until one holds a
+ * plugin-ci run. The listing is newest first, so scheduled and Dependabot
+ * runs that land on a release commit later push its plugin-ci run off the
+ * first page.
+ *
+ * Stops at the first page with a plugin-ci run (later pages only hold older
+ * runs), at a short page (the last one), or after MAX_RUN_PAGES. Resolves
+ * undefined when any page fails to load: partial data is no verdict.
+ * `firstRun` is the newest run on the commit.
+ */
+export async function findPluginCiRun(
+  fetchPage: (page: number) => Promise<GithubWorkflowRun[] | undefined>
+): Promise<
+  { run?: GithubWorkflowRun; firstRun?: GithubWorkflowRun } | undefined
+> {
+  let firstRun: GithubWorkflowRun | undefined
+  for (let page = 1; page <= MAX_RUN_PAGES; page++) {
+    const runs = await fetchPage(page)
+    if (runs === undefined) return undefined
+    firstRun ??= runs[0]
+    const run = pickPluginCiRun(runs)
+    if (run || runs.length < RUNS_PER_PAGE) return { run, firstRun }
+  }
+  return { firstRun }
+}
+
+/**
  * The plugin-ci status of the commit a version was published from.
  *
  * Resolves undefined when a GitHub lookup fails. Like every check that
@@ -429,26 +461,27 @@ export async function fetchPluginCi(
   gitHead: string | undefined
 ): Promise<PluginCi | undefined> {
   if (!gitHead) return { status: 'no-githead' }
-  const runs = await fetchWorkflowRunsForSha(owner, repo, gitHead)
-  if (runs === undefined) return undefined
-  if (runs.length === 0) {
+  const found = await findPluginCiRun((page) =>
+    fetchWorkflowRunsForSha(owner, repo, gitHead, page)
+  )
+  if (found === undefined) return undefined
+  const { run, firstRun } = found
+  if (!firstRun) {
     return {
       status: 'no-run',
       head_sha: gitHead,
       commit_url: commitUrl(owner, repo, gitHead)
     }
   }
-  const run = pickPluginCiRun(runs)
   if (!run) {
     // Some run exists for this SHA but none of them exercise the
     // SignalK plugin-ci workflow. Most likely the plugin author hasn't
     // adopted the upstream workflow.
-    const anyRun = runs[0]
     return {
       status: 'no-plugin-ci',
       head_sha: gitHead,
       workflow_run_url:
-        anyRun.html_url ?? commitUrl(owner, repo, gitHead)
+        firstRun.html_url ?? commitUrl(owner, repo, gitHead)
     }
   }
   const workflow_run_url = run.html_url ?? commitUrl(owner, repo, gitHead)
