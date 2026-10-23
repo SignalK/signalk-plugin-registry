@@ -64,6 +64,7 @@ function main() {
     has_own_tests: resultData.hasOwnTests,
     own_tests_pass: resultData.ownTestsPass,
     tests_runnable: resultData.testsRunnable,
+    source_test_ref: resultData.sourceTestRef,
     has_install_scripts: resultData.hasInstallScripts,
     has_changelog: resultData.hasChangelog,
     has_screenshots: resultData.hasScreenshots,
