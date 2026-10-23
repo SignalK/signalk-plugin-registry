@@ -256,6 +256,12 @@ jobs:
                     typeof dep.declared === 'string' &&
                     typeof dep.latest === 'string')
                 )) return false;
+                if (data.source_test_ref !== undefined && (
+                  !data.source_test_ref || typeof data.source_test_ref !== 'object' ||
+                  !['git-head', 'tag', 'default-branch'].includes(data.source_test_ref.kind) ||
+                  typeof data.source_test_ref.commit !== 'string' ||
+                  !/^[0-9a-f]{40}$/.test(data.source_test_ref.commit)
+                )) return false;
                 if (data.legacy_deps !== undefined && (
                   !Array.isArray(data.legacy_deps) ||
                   !data.legacy_deps.every(dep =>

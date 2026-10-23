@@ -698,6 +698,7 @@ interface SlotResult {
   has_schema?: boolean
   has_own_tests?: boolean
   own_tests_pass?: boolean
+  source_test_ref?: SourceTestRef
   has_install_scripts?: boolean
   has_changelog?: boolean
   has_screenshots?: boolean
@@ -709,6 +710,11 @@ interface SlotResult {
   activation_error?: string
   install_error?: string
   [key: string]: unknown
+}
+
+interface SourceTestRef {
+  kind: 'git-head' | 'tag' | 'default-branch'
+  commit: string
 }
 
 interface VersionData {
@@ -729,6 +735,8 @@ interface PluginSummary {
   composite_stable: number
   badges_stable: string[]
   test_status: string
+  // The commit the source-repo test fallback ran against, when it ran.
+  source_test_ref?: SourceTestRef
   composite_master?: number
   badges_master?: string[]
   last_tested: string
@@ -792,6 +800,7 @@ async function main() {
       composite_stable: stableResult.composite || 0,
       badges_stable: stableResult.badges || [],
       test_status: (stableResult.test_status as string) || 'none',
+      source_test_ref: stableResult.source_test_ref,
       last_tested: stableResult.tested || '',
       installs: stableResult.installs || false,
       loads: !!stableResult.loads,
@@ -977,9 +986,20 @@ async function main() {
     return `<span style="display:inline-block;padding:1px 6px;border-radius:3px;background:${bg};color:#fff;font-size:0.75em;margin:1px"${titleAttr}>${esc(badge)}</span>`
   }
 
-  function testStatusCell(status: string): string {
-    if (status === 'passing') return '<span style="color:#28a745">passing</span>'
-    if (status === 'failing') return '<span style="color:#dc3545">failing</span>'
+  const SOURCE_REF_LABELS: Record<SourceTestRef['kind'], string> = {
+    'git-head': 'the commit published as this version',
+    tag: 'the release tag of this version',
+    'default-branch': 'the default branch (no commit or tag found for this version)'
+  }
+
+  function sourceRefTitle(ref: SourceTestRef | undefined): string {
+    if (!ref) return ''
+    return ` title="Tested from source at ${esc(ref.commit.slice(0, 7))}, ${SOURCE_REF_LABELS[ref.kind]}"`
+  }
+
+  function testStatusCell(status: string, ref?: SourceTestRef): string {
+    if (status === 'passing') return `<span style="color:#28a745"${sourceRefTitle(ref)}>passing</span>`
+    if (status === 'failing') return `<span style="color:#dc3545"${sourceRefTitle(ref)}>failing</span>`
     if (status === 'not-runnable') return '<span style="color:#999" title="Tests exist in source but test runner (jest/mocha/etc) is a devDependency not included in the published package">has tests</span>'
     return '<span style="color:#999">none</span>'
   }
@@ -1004,7 +1024,7 @@ async function main() {
       <td style="text-align:center">${statusIcon(s.installs)}</td>
       <td style="text-align:center">${statusIcon(s.loads)}</td>
       <td style="text-align:center">${statusIcon(s.activates)}</td>
-      <td style="text-align:center">${testStatusCell(s.test_status)}</td>
+      <td style="text-align:center">${testStatusCell(s.test_status, s.source_test_ref)}</td>
       <td>${s.badges_stable.map(b => badgeSpan(b)).join(' ')}</td>
       <td>${providerCell}</td>
       <td>${errorCell}</td>

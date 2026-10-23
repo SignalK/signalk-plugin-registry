@@ -17,6 +17,7 @@ import {
   findHeldBackCoreDeps,
 } from "./core-deps";
 import { LegacyDep, checkLegacyDeps } from "./legacy-deps";
+import { SourceRef, sourceRefCandidates } from "./source-ref";
 import * as path from "path";
 import * as fs from "fs";
 import { execSync, execFileSync } from "child_process";
@@ -82,6 +83,7 @@ interface RunResult {
   hasOwnTests: boolean;
   ownTestsPass: boolean;
   testsRunnable: boolean;
+  sourceTestRef?: SourceRef;
   hasInstallScripts: boolean;
   hasChangelog: boolean;
   hasScreenshots: boolean;
@@ -618,10 +620,69 @@ function runSandboxedStep(
   }
 }
 
-function checkSourceTests(pluginDir: string): {
+// The commit npm recorded when this version was published. Metadata lookup
+// only; a failure leaves the release tags and the default branch to try.
+function fetchGitHead(pluginName: string, version: string): string | undefined {
+  try {
+    const out = execFileSync(
+      "npm",
+      ["view", `${pluginName}@${version}`, "gitHead", "--json"],
+      { timeout: 30_000, stdio: "pipe" },
+    )
+      .toString()
+      .trim();
+    const gitHead: unknown = out ? JSON.parse(out) : undefined;
+    return typeof gitHead === "string" ? gitHead : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+// Shallow-fetches the first candidate ref the repository has into an empty
+// `dir` and checks it out, so the source fallback tests the version being
+// scored rather than whatever the default branch holds today.
+function cloneSourceAtVersion(
+  url: string,
+  dir: string,
+  pluginName: string,
+  version: string,
+): SourceRef | null {
+  const git = (args: string[]) =>
+    execFileSync("git", args, { cwd: dir, timeout: 60_000, stdio: "pipe" })
+      .toString()
+      .trim();
+  try {
+    git(["init", "-q"]);
+    git(["remote", "add", "--", "origin", url]);
+  } catch (err: unknown) {
+    console.error(`[runner] Failed to init clone: ${formatExecError(err)}`);
+    return null;
+  }
+  const gitHead = fetchGitHead(pluginName, version);
+  for (const { kind, ref } of sourceRefCandidates(
+    pluginName,
+    version,
+    gitHead,
+  )) {
+    try {
+      git(["fetch", "-q", "--depth", "1", "origin", ref]);
+      git(["checkout", "-q", "FETCH_HEAD"]);
+      return { kind, commit: git(["rev-parse", "HEAD"]) };
+    } catch {
+      console.error(`[runner] Source ref ${ref} (${kind}) not fetchable`);
+    }
+  }
+  return null;
+}
+
+function checkSourceTests(
+  pluginDir: string,
+  pluginName: string,
+): {
   hasTests: boolean;
   pass: boolean;
   runnable: boolean;
+  sourceRef?: SourceRef;
 } {
   const repo = getGitHubRepoUrl(pluginDir);
   if (!repo) {
@@ -631,16 +692,25 @@ function checkSourceTests(pluginDir: string): {
 
   const sourceDir = fs.mkdtempSync(path.join(os.tmpdir(), "sk-source-"));
   try {
+    // The installed version, not the requested one: a manual run may ask
+    // for a dist-tag such as "latest", which names no commit or tag.
+    const { version } = JSON.parse(
+      fs.readFileSync(path.join(pluginDir, "package.json"), "utf-8"),
+    );
     console.error(`[runner] Cloning source from ${repo.url}...`);
-    try {
-      execSync(`git clone --depth 1 ${repo.url} ${sourceDir} 2>&1`, {
-        timeout: 60_000,
-        stdio: "pipe",
-      });
-    } catch (err: unknown) {
-      console.error(`[runner] Failed to clone repo: ${formatExecError(err)}`);
+    const sourceRef = cloneSourceAtVersion(
+      repo.url,
+      sourceDir,
+      pluginName,
+      version,
+    );
+    if (!sourceRef) {
+      console.error("[runner] Failed to clone repo");
       return { hasTests: true, pass: false, runnable: false };
     }
+    console.error(
+      `[runner] Testing source at ${sourceRef.commit} (${sourceRef.kind})`,
+    );
 
     // A monorepo package lives in a subdirectory of its repository. Its tests,
     // scripts and manifest are all down there, so everything except the clone
@@ -671,7 +741,7 @@ function checkSourceTests(pluginDir: string): {
       console.error(
         "[runner] No test files found in source repo, treating as no tests",
       );
-      return { hasTests: false, pass: false, runnable: false };
+      return { hasTests: false, pass: false, runnable: false, sourceRef };
     }
 
     console.error("[runner] Installing devDependencies...");
@@ -693,7 +763,7 @@ function checkSourceTests(pluginDir: string): {
         console.error(
           `[runner] npm install failed, tests not runnable: ${formatExecError(err)}`,
         );
-        return { hasTests: true, pass: false, runnable: false };
+        return { hasTests: true, pass: false, runnable: false, sourceRef };
       }
     }
 
@@ -723,7 +793,7 @@ function checkSourceTests(pluginDir: string): {
         console.error(
           `[runner] Subdirectory install failed, tests not runnable: ${formatExecError(err)}`,
         );
-        return { hasTests: true, pass: false, runnable: false };
+        return { hasTests: true, pass: false, runnable: false, sourceRef };
       }
     }
 
@@ -768,7 +838,7 @@ function checkSourceTests(pluginDir: string): {
       console.error(`[runner] Building with ${buildCommand}...`);
       if (!runSandboxedStep(buildCommand, buildCap, packageDir, process.env)) {
         console.error("[runner] Build failed, tests not runnable");
-        return { hasTests: true, pass: false, runnable: false };
+        return { hasTests: true, pass: false, runnable: false, sourceRef };
       }
     }
 
@@ -791,7 +861,7 @@ function checkSourceTests(pluginDir: string): {
       ...process.env,
       SIGNALK_REGISTRY_TEST: "1",
     });
-    return { hasTests: true, pass, runnable: true };
+    return { hasTests: true, pass, runnable: true, sourceRef };
   } catch (err: unknown) {
     // Safety net: this function must never crash the runner (see the
     // process-level handlers at the top). The sandboxed steps report failure
@@ -876,7 +946,7 @@ export async function runPluginTest(
   const detection = detectProviderssandboxed(pluginDir);
 
   console.error(`[runner] Checking own tests...`);
-  let ownTests = checkOwnTests(pluginDir);
+  let ownTests: ReturnType<typeof checkSourceTests> = checkOwnTests(pluginDir);
 
   // Plugins commonly exclude their compiled tests from the npm tarball
   // (e.g. via .npmignore) so the test command in the installed package
@@ -888,7 +958,7 @@ export async function runPluginTest(
     console.error(
       "[runner] Tests did not pass from npm package, trying source repo...",
     );
-    ownTests = checkSourceTests(pluginDir);
+    ownTests = checkSourceTests(pluginDir, pluginName);
   }
 
   console.error(`[runner] Checking changelog + screenshots...`);
@@ -933,6 +1003,7 @@ export async function runPluginTest(
     hasOwnTests: ownTests.hasTests,
     ownTestsPass: ownTests.pass,
     testsRunnable: ownTests.runnable,
+    sourceTestRef: ownTests.sourceRef,
     hasInstallScripts: install.hasInstallScripts,
     hasChangelog: changelog,
     hasScreenshots: shots,
