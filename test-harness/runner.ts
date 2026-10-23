@@ -653,7 +653,7 @@ function cloneSourceAtVersion(
       .trim();
   try {
     git(["init", "-q"]);
-    git(["remote", "add", "origin", url]);
+    git(["remote", "add", "--", "origin", url]);
   } catch (err: unknown) {
     console.error(`[runner] Failed to init clone: ${formatExecError(err)}`);
     return null;
