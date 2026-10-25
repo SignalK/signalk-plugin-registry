@@ -144,7 +144,7 @@ jobs:
         run: ${{ fromJson(needs.plan.outputs.runs) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    name: ${{ matrix.run.plugin }}@${{ matrix.run.pluginVersion }} x ${{ matrix.run.server }}
+    name: ${{ matrix.run.plugin }}@${{ matrix.run.pluginVersion }} x ${{ matrix.run.server }} x Node ${{ matrix.run.node }}
 
     steps:
       - uses: actions/checkout@v7
@@ -161,7 +161,7 @@ jobs:
         uses: ./.github/actions/setup-server
         with:
           server-slot: ${{ matrix.run.server }}
-          node-version: '24'
+          node-version: ${{ matrix.run.node }}
 
       - run: npm ci
 
@@ -181,6 +181,7 @@ jobs:
             --plugin '${{ matrix.run.plugin }}' \
             --plugin-version '${{ matrix.run.pluginVersion }}' \
             --server-slot '${{ matrix.run.server }}' \
+            --node '${{ matrix.run.node }}' \
             --server-version '${{ steps.server.outputs.server-version }}' \
             --result-file /tmp/result.json \
             --reason '${{ matrix.run.reason }}'

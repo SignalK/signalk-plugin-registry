@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { isExactVersion } from './npm-name'
+import { EXTRA_NODES, PRIMARY_NODE, ServerSlot, slotKeyFor } from './slots'
 
 interface PluginInfo {
   name: string
@@ -21,7 +22,7 @@ interface VersionResult {
   [serverSlot: string]: SlotResult | boolean | string | undefined
 }
 
-interface PluginResults {
+export interface PluginResults {
   [pluginName: string]: {
     [pluginVersion: string]: VersionResult
   }
@@ -32,30 +33,41 @@ type TriggerReason =
   | 'plugin_version_change'
   | 'server_version_change'
   | 'schema_change'
+  | 'node_added'
   | 'manual'
   | 'stale'
 
 interface PlannedRun {
   plugin: string
   pluginVersion: string
-  server: 'stable' | 'master'
+  server: ServerSlot
+  node: string
   serverVersion: string
   reason: TriggerReason
 }
 
-function shouldTest(
+export function shouldTest(
   pluginName: string,
   pluginVersion: string,
-  serverSlot: 'stable' | 'master',
+  serverSlot: ServerSlot,
+  node: string,
   serverVersion: string,
   results: PluginResults,
   force: boolean
 ): { run: boolean; reason?: TriggerReason } {
   if (force) return { run: true, reason: 'manual' }
 
-  const existing = results[pluginName]?.[pluginVersion]?.[`server@${serverSlot}`]
+  const versionResults = results[pluginName]?.[pluginVersion]
+  const existing = versionResults?.[slotKeyFor(serverSlot, node)]
 
   if (!existing || typeof existing === 'boolean' || typeof existing === 'string') {
+    // A plugin version already scored on the primary Node but never probed
+    // on an added one is backlog, not a change: it must not crowd new
+    // plugin versions out of the capped matrix.
+    const primary = versionResults?.[slotKeyFor(serverSlot, PRIMARY_NODE)]
+    if (node !== PRIMARY_NODE && primary && typeof primary === 'object') {
+      return { run: true, reason: 'node_added' }
+    }
     return { run: true, reason: 'plugin_version_change' }
   }
 
@@ -203,22 +215,26 @@ function main() {
 
     const testVersion = requestedVersion || plugin.version
 
-    const stableCheck = shouldTest(
-      plugin.name,
-      testVersion,
-      'stable',
-      args.stableVersion,
-      results,
-      force
-    )
-    if (stableCheck.run) {
-      runs.push({
-        plugin: plugin.name,
-        pluginVersion: testVersion,
-        server: 'stable',
-        serverVersion: args.stableVersion,
-        reason: stableCheck.reason!
-      })
+    for (const node of [PRIMARY_NODE, ...EXTRA_NODES]) {
+      const stableCheck = shouldTest(
+        plugin.name,
+        testVersion,
+        'stable',
+        node,
+        args.stableVersion,
+        results,
+        force
+      )
+      if (stableCheck.run) {
+        runs.push({
+          plugin: plugin.name,
+          pluginVersion: testVersion,
+          server: 'stable',
+          node,
+          serverVersion: args.stableVersion,
+          reason: stableCheck.reason!
+        })
+      }
     }
 
     if (args.includeMaster) {
@@ -226,6 +242,7 @@ function main() {
         plugin.name,
         testVersion,
         'master',
+        PRIMARY_NODE,
         args.masterSha,
         results,
         force
@@ -235,6 +252,7 @@ function main() {
           plugin: plugin.name,
           pluginVersion: testVersion,
           server: 'master',
+          node: PRIMARY_NODE,
           serverVersion: args.masterSha,
           reason: masterCheck.reason!
         })
@@ -261,8 +279,9 @@ function main() {
     plugin_version_change: 1,
     server_version_change: 2,
     schema_change: 3,
-    stale: 4,
-    nightly: 5
+    node_added: 4,
+    stale: 5,
+    nightly: 6
   }
   // Within a tier, retest the longest-untested slot first. Stale demand
   // (~460 plugins on a 7-day window) exceeds the nightly cap in steady state,
@@ -272,7 +291,7 @@ function main() {
   // round-robin bounded by capacity. Runs with no prior slot sort as epoch 0
   // and the stable sort keeps them in discovery order.
   const lastTested = (run: PlannedRun): number => {
-    const slot = results[run.plugin]?.[run.pluginVersion]?.[`server@${run.server}`]
+    const slot = results[run.plugin]?.[run.pluginVersion]?.[slotKeyFor(run.server, run.node)]
     return slot && typeof slot === 'object' ? new Date(slot.tested).getTime() : 0
   }
   runs.sort(
@@ -302,9 +321,11 @@ function main() {
   } else {
     console.log(`Planned ${runs.length} test runs:`)
     for (const run of runs) {
-      console.log(`  ${run.plugin}@${run.pluginVersion} x ${run.server} [${run.reason}]`)
+      console.log(`  ${run.plugin}@${run.pluginVersion} x ${run.server} x Node ${run.node} [${run.reason}]`)
     }
   }
 }
 
-main()
+if (require.main === module) {
+  main()
+}
