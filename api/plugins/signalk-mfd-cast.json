@@ -1,0 +1,59 @@
+{
+  "name": "signalk-mfd-cast",
+  "versions": {
+    "0.1.1": {
+      "server@stable": {
+        "tested": "2026-10-28T07:39:32.410Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.35.1",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "registerWebSocket"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "6a7e0550b6bc4700f3d638386b2e857053432ebd"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 60,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tests-failing",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots",
+          "no-plugin-ci"
+        ],
+        "test_status": "failing"
+      }
+    }
+  },
+  "stars": 0,
+  "open_issues": 0,
+  "contributors": 1,
+  "downloads_per_week": 460,
+  "github_url": "https://github.com/juansoler/signalk-mfd-cast",
+  "plugin_ci": {
+    "status": "no-run",
+    "head_sha": "6a7e0550b6bc4700f3d638386b2e857053432ebd",
+    "commit_url": "https://github.com/juansoler/signalk-mfd-cast/commit/6a7e0550b6bc4700f3d638386b2e857053432ebd"
+  }
+}

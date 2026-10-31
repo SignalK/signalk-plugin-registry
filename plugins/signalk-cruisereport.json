@@ -1,0 +1,207 @@
+{
+  "name": "signalk-cruisereport",
+  "versions": {
+    "1.0.1": {
+      "server@stable": {
+        "tested": "2026-06-23T06:00:02.926Z",
+        "triggered_by": "stale",
+        "node_version": "24",
+        "server_version": "2.28.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 60,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "has-changelog",
+          "no-plugin-ci"
+        ],
+        "test_status": "none"
+      }
+    },
+    "1.0.2": {
+      "server@stable": {
+        "tested": "2026-07-28T04:54:09.010Z",
+        "triggered_by": "schema_change",
+        "node_version": "24",
+        "server_version": "2.30.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 60,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "has-changelog",
+          "no-plugin-ci"
+        ],
+        "test_status": "none"
+      }
+    },
+    "1.0.3": {
+      "server@stable": {
+        "tested": "2026-09-27T07:21:37.321Z",
+        "triggered_by": "server_version_change",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 55,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "no-plugin-ci"
+        ],
+        "test_status": "none"
+      }
+    },
+    "1.0.4": {
+      "server@stable": {
+        "tested": "2026-10-10T07:48:56.457Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.33.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": true,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [
+          {
+            "pkg": "react",
+            "found": "16",
+            "required": ">=19"
+          }
+        ],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 40,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "legacy-react",
+          "no-plugin-ci"
+        ],
+        "test_status": "none"
+      }
+    },
+    "1.0.5": {
+      "server@stable": {
+        "tested": "2026-10-25T07:04:30.039Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.35.1",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "faeefab4717f5ea4a470f28cf7da9be4426f0c3d"
+        },
+        "has_install_scripts": true,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [
+          {
+            "pkg": "react",
+            "found": "16",
+            "required": ">=19"
+          }
+        ],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "legacy-react",
+          "no-plugin-ci"
+        ],
+        "test_status": "passing"
+      }
+    }
+  },
+  "stars": 0,
+  "open_issues": 0,
+  "contributors": 6,
+  "github_url": "https://github.com/dgplace/signalk-logbook-tm",
+  "plugin_ci": {
+    "status": "no-run",
+    "head_sha": "faeefab4717f5ea4a470f28cf7da9be4426f0c3d",
+    "commit_url": "https://github.com/dgplace/signalk-logbook-tm/commit/faeefab4717f5ea4a470f28cf7da9be4426f0c3d"
+  }
+}
