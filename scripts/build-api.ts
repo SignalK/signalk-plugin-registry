@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { isPrerelease } from './npm-name'
+import { EXTRA_NODES, slotKeyFor } from './slots'
 
 /**
  * The version a plugin is shown as on the published page.
@@ -739,6 +740,9 @@ interface PluginSummary {
   source_test_ref?: SourceTestRef
   composite_master?: number
   badges_master?: string[]
+  // Stable-server results on each Node version other than the primary,
+  // keyed by Node major. Informational: composite_stable is the score.
+  other_nodes?: Record<string, { composite: number; badges: string[]; test_status: string }>
   last_tested: string
   installs: boolean
   loads: boolean
@@ -814,6 +818,20 @@ async function main() {
       summary.badges_master = masterResult.badges || []
     }
 
+    for (const node of EXTRA_NODES) {
+      const nodeResult = versionData[slotKeyFor('stable', node)]
+      if (nodeResult && typeof nodeResult === 'object') {
+        summary.other_nodes = {
+          ...summary.other_nodes,
+          [node]: {
+            composite: nodeResult.composite || 0,
+            badges: nodeResult.badges || [],
+            test_status: (nodeResult.test_status as string) || 'none'
+          }
+        }
+      }
+    }
+
     summaries.push(summary)
     allVersionsByPlugin[pluginName] = versions
   }
@@ -842,6 +860,15 @@ async function main() {
       )
       summary.composite_master = masterAdjusted.composite
       summary.badges_master = masterAdjusted.badges
+    }
+    for (const result of Object.values(summary.other_nodes ?? {})) {
+      const adjusted = applyPluginCiPenalty(
+        result.composite,
+        result.badges,
+        summary.plugin_ci
+      )
+      result.composite = adjusted.composite
+      result.badges = adjusted.badges
     }
   }
 
