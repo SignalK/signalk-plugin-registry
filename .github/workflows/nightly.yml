@@ -21,9 +21,9 @@ on:
         type: boolean
         default: false
       max_jobs:
-        description: 'Max parallel test jobs (default 50, max 256)'
+        description: 'Max test jobs per run (default 100, max 256)'
         type: number
-        default: 50
+        default: 100
       plugin_version:
         description: >-
           Exact version to test (single_plugin mode only). Defaults to the
@@ -98,7 +98,7 @@ jobs:
       - name: Plan runs
         id: plan
         env:
-          MAX_MATRIX_JOBS: ${{ github.event.inputs.max_jobs || '50' }}
+          MAX_MATRIX_JOBS: ${{ github.event.inputs.max_jobs || '100' }}
           # Through the environment, never interpolated into the `run` script.
           # An expression is substituted as text before the shell parses the
           # line, so a single quote inside a workflow_dispatch input closes the
@@ -144,7 +144,7 @@ jobs:
         run: ${{ fromJson(needs.plan.outputs.runs) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    name: ${{ matrix.run.plugin }}@${{ matrix.run.pluginVersion }} x ${{ matrix.run.server }}
+    name: ${{ matrix.run.plugin }}@${{ matrix.run.pluginVersion }} x ${{ matrix.run.server }} x Node ${{ matrix.run.node }}
 
     steps:
       - uses: actions/checkout@v7
@@ -161,7 +161,7 @@ jobs:
         uses: ./.github/actions/setup-server
         with:
           server-slot: ${{ matrix.run.server }}
-          node-version: '24'
+          node-version: ${{ matrix.run.node }}
 
       - run: npm ci
 
@@ -181,6 +181,7 @@ jobs:
             --plugin '${{ matrix.run.plugin }}' \
             --plugin-version '${{ matrix.run.pluginVersion }}' \
             --server-slot '${{ matrix.run.server }}' \
+            --node '${{ matrix.run.node }}' \
             --server-version '${{ steps.server.outputs.server-version }}' \
             --result-file /tmp/result.json \
             --reason '${{ matrix.run.reason }}'

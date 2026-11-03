@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import { PRIMARY_NODE, ServerSlot, slotKeyFor } from './slots'
 
 function parseArgs() {
   const args = process.argv.slice(2)
@@ -11,7 +12,8 @@ function parseArgs() {
   return {
     plugin: get('--plugin'),
     pluginVersion: get('--plugin-version'),
-    serverSlot: get('--server-slot') as 'stable' | 'master',
+    serverSlot: get('--server-slot') as ServerSlot,
+    node: get('--node') || PRIMARY_NODE,
     serverVersion: get('--server-version'),
     result: get('--result'),
     resultFile: get('--result-file'),
@@ -42,7 +44,7 @@ function main() {
     process.exit(1)
   }
 
-  const slotKey = `server@${args.serverSlot}`
+  const slotKey = slotKeyFor(args.serverSlot, args.node)
   const slotResult: Record<string, unknown> = {
     tested: new Date().toISOString(),
     triggered_by: args.reason,

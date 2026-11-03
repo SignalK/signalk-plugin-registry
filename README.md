@@ -206,7 +206,7 @@ Plugins whose results are older than 7 days are automatically retested on the ni
 - `start()` is tested with schema defaults extracted from the plugin's `schema` property — this matches what the admin UI sends. Plugins that need external services (databases, credentials) will still fail activation.
 - `activates_without_config` is tracked as an informational field (not scored) showing whether `start({})` with empty config succeeds
 - The app shim logs unstubbed method accesses — check `unstubbed_accesses` in results to identify shim gaps
-- Plugins that load a native addon at require-time (`sharp`/libvips, `canvas`, prebuilt `better-sqlite3`, …) are supported — the sandbox lifts `noexec /tmp` so the addon binary can map (see Filesystem isolation above). They still need a prebuilt binary for `linux-x64`/Node 24; addons that compile from source at install time fail because installs run with `--ignore-scripts`.
+- Plugins that load a native addon at require-time (`sharp`/libvips, `canvas`, prebuilt `better-sqlite3`, …) are supported — the sandbox lifts `noexec /tmp` so the addon binary can map (see Filesystem isolation above). They still need a prebuilt binary for `linux-x64` on Node 24 and 26; addons that compile from source at install time fail because installs run with `--ignore-scripts`.
 
 ## Contributing
 
