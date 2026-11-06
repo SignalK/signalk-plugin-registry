@@ -82,7 +82,8 @@ export function shouldTest(
     'has_changelog',
     'has_screenshots',
     'held_back_core_deps',
-    'legacy_deps'
+    'legacy_deps',
+    'bundled_plugins'
   ]
   for (const field of REQUIRED_FIELDS) {
     if (slot[field] === undefined) {

@@ -17,6 +17,12 @@ import {
   findHeldBackCoreDeps,
 } from "./core-deps";
 import { LegacyDep, checkLegacyDeps } from "./legacy-deps";
+import {
+  BundledPlugin,
+  fetchKeywords,
+  findBundledPlugins,
+  runtimeDeps,
+} from "./bundled-plugins";
 import { SourceRef, sourceRefCandidates } from "./source-ref";
 import * as path from "path";
 import * as fs from "fs";
@@ -89,6 +95,7 @@ interface RunResult {
   hasScreenshots: boolean;
   heldBackCoreDeps: HeldBackCoreDep[];
   legacyDeps: LegacyDep[];
+  bundledPlugins: BundledPlugin[];
   composite: number;
   badges: string[];
   testStatus: string;
@@ -557,6 +564,27 @@ async function checkHeldBackCoreDeps(
   }
 }
 
+// Pure metadata check — reads the installed plugin's runtime dependencies and
+// asks the npm registry whether each is an App Store package. Runs no plugin
+// code, so no sandboxCmd(). A failed lookup or read is indeterminate, never a
+// penalty.
+async function checkBundledPlugins(
+  pluginDir: string,
+  pluginName: string,
+): Promise<BundledPlugin[]> {
+  try {
+    const pkg = JSON.parse(
+      fs.readFileSync(path.join(pluginDir, "package.json"), "utf-8"),
+    );
+    const declared = runtimeDeps(pkg);
+    if (declared.length === 0) return [];
+    const keywords = await fetchKeywords(declared.map((d) => d.pkg));
+    return findBundledPlugins(pluginName, declared, keywords);
+  } catch {
+    return [];
+  }
+}
+
 function hasTestFiles(dir: string): boolean {
   try {
     const output = execSync(
@@ -901,6 +929,7 @@ export async function runPluginTest(
       hasScreenshots: false,
       heldBackCoreDeps: [],
       legacyDeps: [],
+      bundledPlugins: [],
     });
 
     fs.rmSync(workDir, { recursive: true, force: true });
@@ -934,6 +963,7 @@ export async function runPluginTest(
       hasScreenshots: false,
       heldBackCoreDeps: [],
       legacyDeps: [],
+      bundledPlugins: [],
       ...score,
     };
   }
@@ -971,6 +1001,9 @@ export async function runPluginTest(
   console.error(`[runner] Checking legacy runtime deps (baconjs, React)...`);
   const legacy = checkLegacyDeps(pluginDir);
 
+  console.error(`[runner] Checking for bundled App Store plugins...`);
+  const bundled = await checkBundledPlugins(pluginDir, pluginName);
+
   const testResults: TestResults = {
     installs: true,
     loads: detection.loads,
@@ -988,6 +1021,7 @@ export async function runPluginTest(
     hasScreenshots: shots,
     heldBackCoreDeps: heldBack,
     legacyDeps: legacy,
+    bundledPlugins: bundled,
   };
 
   const { composite, badges, testStatus } = computeScore(testResults);
@@ -1009,6 +1043,7 @@ export async function runPluginTest(
     hasScreenshots: shots,
     heldBackCoreDeps: heldBack,
     legacyDeps: legacy,
+    bundledPlugins: bundled,
     composite,
     badges,
     testStatus,

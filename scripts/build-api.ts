@@ -705,6 +705,7 @@ interface SlotResult {
   has_screenshots?: boolean
   held_back_core_deps?: Array<{ pkg: string; declared: string; latest: string }>
   legacy_deps?: Array<{ pkg: string; found: string; required: string }>
+  bundled_plugins?: Array<{ pkg: string; declared: string; field: string }>
   audit_critical?: number
   audit_high?: number
   audit_moderate?: number
@@ -970,6 +971,7 @@ async function main() {
     'holds-back-core-deps': '#fd7e14',
     'legacy-baconjs': '#fd7e14',
     'legacy-react': '#fd7e14',
+    'bundles-plugins': '#fd7e14',
     'broken': '#dc3545'
   }
 
@@ -979,7 +981,9 @@ async function main() {
     'legacy-baconjs':
       'A dependencies/peerDependencies range for baconjs cannot resolve to 3.x; the server provides baconjs 3 and only bridges older copies through a compatibility shim slated for removal (-15)',
     'legacy-react':
-      'Embedded webapp built against React <19; the admin UI is React 19 and only bridges older remotes through a compatibility shim slated for removal (-15)'
+      'Embedded webapp built against React <19; the admin UI is React 19 and only bridges older remotes through a compatibility shim slated for removal (-15)',
+    'bundles-plugins':
+      'A runtime dependency is another App Store plugin or webapp; declare companions in signalk.requires / signalk.recommends instead (-30)'
   }
 
   function esc(s: string): string {
@@ -1176,6 +1180,7 @@ function generateGuide(apiDir: string) {
       <tr><td>Core dep freshness</td><td>&minus;80 if held back</td><td>Declare ranges (e.g. <code>^2.9.0</code>, not <code>~2.9.0</code> or <code>2.9.0</code>) that allow the latest same-major release of core Signal K packages such as <code>@signalk/server-api</code></td></tr>
       <tr><td>Legacy baconjs</td><td>&minus;15</td><td>Any <code>baconjs</code> range in <code>dependencies</code> / <code>peerDependencies</code> must allow 3.x (e.g. <code>^3.0.0</code>, not <code>^0.7.88</code> or <code>^1.0.1</code>) &mdash; the server provides baconjs 3 (<a href="https://github.com/SignalK/signalk-server/pull/2487" target="_blank">signalk-server#2487</a>); drop the dependency or move to <code>^3.0.0</code></td></tr>
       <tr><td>Legacy React</td><td>&minus;15</td><td>Build embedded webapps (<code>signalk-embeddable-webapp</code>, <code>signalk-plugin-configurator</code>, <code>signalk-node-server-addon</code>) against React 19 &mdash; the admin UI only bridges React 16 remotes through a temporary shim (<a href="https://github.com/SignalK/signalk-server/issues/2451" target="_blank">signalk-server#2451</a>)</td></tr>
+      <tr><td>Bundled plugins</td><td>&minus;30</td><td>Don&rsquo;t list other App Store plugins or webapps in <code>dependencies</code>, <code>optionalDependencies</code> or <code>peerDependencies</code> &mdash; npm then installs them at your range into the user&rsquo;s <code>~/.signalk</code>, outside the App Store. Declare them in <code>signalk.requires</code> (installed with your plugin) or <code>signalk.recommends</code> (suggested) instead (<a href="https://github.com/SignalK/signalk-server/blob/master/docs/develop/plugins/publishing.md#requires-and-recommends" target="_blank">publishing guide</a>)</td></tr>
     </tbody>
   </table>
 

@@ -29,6 +29,7 @@ Each plugin is scored out of **100 points**:
 | Core dep freshness | Declared ranges allow the latest same-major release of core Signal K packages | −80 if held back |
 | Legacy baconjs | Any `baconjs` range in `dependencies` / `peerDependencies` can resolve to 3.x | −15 if it cannot |
 | Legacy React | Embedded webapp bundles register React ≥19 | −15 if <19 |
+| Bundled plugins | No runtime dependency is another App Store plugin or webapp | −30 if one is |
 
 Security scoring breakdown: 20 points for a clean audit, 15 if only moderate vulnerabilities, 10 if high (no critical), 0 if any critical vulnerabilities.
 
@@ -43,6 +44,8 @@ A plugin published from a subdirectory of its repository is scored there rather 
 Core dep freshness checks the plugin's declared `dependencies` and `peerDependencies` (never `devDependencies` — those don't reach user installs) against the latest npm release of each core Signal K package: `@signalk/server-api`, `@canboat/canboatjs`, `@canboat/ts-pgns`, `@signalk/n2k-signalk`, `@signalk/nmea0183-signalk`, `@signalk/streams`. A range that targets the same major as the latest release but cannot resolve to it (e.g. `~2.9.0` or an exact `2.9.0` when latest is `2.30.0`) holds the package back in every user's `~/.signalk` install and costs −80. Ranges on an older major are not flagged (the plugin may legitimately not support the new major yet), and neither are git/file/URL specs, dist-tags, or invalid ranges. If the npm registry lookup fails, the check is skipped — a registry flake never costs points.
 
 Legacy runtime deps cover two libraries the server provides at a fixed major and only bridges for older plugin builds through temporary compatibility shims. **baconjs**: the server moved to 3.x in 2.24.0 and redirects every `require('baconjs')` to its own copy ([signalk-server#2487](https://github.com/SignalK/signalk-server/pull/2487)); a `dependencies` / `peerDependencies` range that cannot resolve to any 3.x release (e.g. `^0.7.88`, `^1.0.1`) costs −15. **React**: the admin UI is React 19 and renders Module Federation remotes built against React 16 through an isolated bridge ([signalk-server#2451](https://github.com/SignalK/signalk-server/issues/2451)); for plugins with an embedded-webapp keyword (`signalk-embeddable-webapp`, `signalk-plugin-configurator`, `signalk-node-server-addon`) the remote entry the server injects into the admin UI (`public/remoteEntry.js`, or `remoteEntry.js` at the package root without a `public/`) and the chunks reachable from it are scanned for the shared React version they register, and a major below 19 costs −15. Files nothing references — stale builds, unrelated entries — are not consulted, and remotes that consume the host's React without shipping their own are not flagged. Both checks are pure file inspection — no plugin code runs — and an unreadable package or bundle is indeterminate, never a penalty.
+
+Bundled plugins checks the plugin's `dependencies`, `optionalDependencies` and non-optional `peerDependencies` (npm installs all three) for packages the App Store lists — anything published with the `signalk-node-server-plugin`, `signalk-webapp` or `signalk-embeddable-webapp` keyword. npm installs such a dependency into the user's `~/.signalk` tree at the range this plugin chose, where the server loads it as a plugin of its own: an old major (`^2.0.2` when the plugin is at 3.x) runs there instead of the current release, the App Store offers it an update the bundling range can undo, and uninstalling the bundling plugin can take it away. Any such dependency costs −30, once per plugin. Declare companions in `signalk.requires` (the App Store installs them with the plugin, at their latest release) or `signalk.recommends` (suggested on the detail page) instead — see the [publishing guide](https://github.com/SignalK/signalk-server/blob/master/docs/develop/plugins/publishing.md#requires-and-recommends). A dependency on the plugin itself is not counted, and if the npm registry lookup fails the check is skipped.
 
 Provider detection (resources, weather, history, autopilot, radar) is tracked as an informational badge but does not affect the score — most plugins are not expected to register providers.
 
@@ -65,6 +68,7 @@ Provider detection (resources, weather, history, autopilot, radar) is tracked as
 | `holds-back-core-deps` | A declared range pins a core Signal K package below its latest same-major release (−80 penalty) |
 | `legacy-baconjs` | A `dependencies` / `peerDependencies` range for `baconjs` cannot resolve to 3.x (−15 penalty) |
 | `legacy-react` | Embedded webapp bundle registers React <19 (−15 penalty) |
+| `bundles-plugins` | A runtime dependency is another App Store plugin or webapp (−30 penalty) |
 | `broken` | Failed to install |
 
 ## API
