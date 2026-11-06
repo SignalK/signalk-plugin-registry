@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import { PLUGIN_KEYWORD, WEBAPP_KEYWORDS } from '../test-harness/package-kind'
 
 interface RegistryEntry {
   npm: string
@@ -34,7 +35,10 @@ export interface NpmPackument {
   versions?: Record<string, { version: string; description?: string; keywords?: string[] }>
 }
 
-export const PLUGIN_KEYWORD = 'signalk-node-server-plugin'
+export { PLUGIN_KEYWORD, isWebappOnly } from '../test-harness/package-kind'
+// The server's own admin UI carries signalk-webapp but ships with the server
+// and is not installable from the App Store.
+const NOT_LISTED = new Set(['@signalk/server-admin-ui'])
 const NPM_SEARCH_SIZE = 250
 // The /-/v1/search endpoint's index lags publishes by up to an hour. Use it
 // only to enumerate plugin *names*; resolve each package's authoritative
@@ -84,19 +88,21 @@ async function mapWithConcurrency<T, R>(
 }
 
 async function discoverNames(): Promise<string[]> {
-  const names: string[] = []
-  let from = 0
-  while (true) {
-    console.error(`[discover] Searching npm from=${from}...`)
-    const result = await searchNpm(PLUGIN_KEYWORD, from)
-    for (const obj of result.objects) {
-      names.push(obj.package.name)
+  const names = new Set<string>()
+  for (const keyword of [PLUGIN_KEYWORD, ...WEBAPP_KEYWORDS]) {
+    let from = 0
+    while (true) {
+      console.error(`[discover] Searching npm for ${keyword} from=${from}...`)
+      const result = await searchNpm(keyword, from)
+      for (const obj of result.objects) {
+        if (!NOT_LISTED.has(obj.package.name)) names.add(obj.package.name)
+      }
+      from += result.objects.length
+      if (from >= result.total || result.objects.length === 0) break
     }
-    from += result.objects.length
-    if (from >= result.total || result.objects.length === 0) break
   }
-  console.error(`[discover] Found ${names.length} plugin names on npm`)
-  return names
+  console.error(`[discover] Found ${names.size} plugin and webapp names on npm`)
+  return [...names]
 }
 
 export function packumentToPluginInfo(name: string, doc: NpmPackument): PluginInfo | null {

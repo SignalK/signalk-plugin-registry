@@ -187,3 +187,25 @@ test("plotter checks do not apply to plugins that register no extension", () => 
   assert.equal(composite, 100);
   assert.ok(!badges.includes("plotter-extension"));
 });
+
+test("a webapp gets the load, activate and schema tiers as not applicable", () => {
+  const results = fullMarks();
+  results.webapp = true;
+  results.loads = false;
+  results.activates = false;
+  results.hasSchema = false;
+  const { composite, badges } = computeScore(results);
+  assert.equal(composite, 100);
+  assert.ok(badges.includes("webapp"));
+  assert.ok(!badges.includes("loads"));
+  assert.ok(!badges.includes("activates"));
+});
+
+test("a webapp that fails to install still scores 0", () => {
+  const results = fullMarks();
+  results.webapp = true;
+  results.installs = false;
+  const { composite, badges } = computeScore(results);
+  assert.equal(composite, 0);
+  assert.deepEqual(badges, ["broken"]);
+});
