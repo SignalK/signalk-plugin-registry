@@ -1,3 +1,6 @@
+import * as fs from "fs";
+import * as path from "path";
+
 // The keywords the server's App Store lists packages by. A runtime dependency
 // carrying one of them is another App Store package: npm installs it into the
 // user's ~/.signalk tree behind the App Store's back, at whatever range this
@@ -28,17 +31,17 @@ interface PackageJson {
   peerDependenciesMeta?: Record<string, { optional?: unknown } | undefined>;
 }
 
-// "npm:other-name@^1" installs other-name under an alias.
-function aliasTarget(name: string, range: string): string {
-  if (!range.startsWith("npm:")) return name;
-  const spec = range.slice(4);
-  const at = spec.indexOf("@", 1);
-  return at === -1 ? spec : spec.slice(0, at);
+// What npm installed under a dependency key: for git, tarball, file and
+// npm: alias specs the key need not name the package.
+export interface InstalledManifest {
+  name: unknown;
+  keywords: unknown;
 }
 
 // The entries npm installs with the plugin: dependencies, optional
 // dependencies, and peers that are not marked optional (npm 7+ installs
-// those). devDependencies never reach a user install.
+// those). devDependencies never reach a user install. pkg is the key the
+// dependency is installed under.
 export function runtimeDeps(pkg: PackageJson): DeclaredDep[] {
   const deps: DeclaredDep[] = [];
   const fields: DependencyField[] = [
@@ -55,7 +58,7 @@ export function runtimeDeps(pkg: PackageJson): DeclaredDep[] {
       ) {
         continue;
       }
-      deps.push({ pkg: aliasTarget(name, range), declared: range, field });
+      deps.push({ pkg: name, declared: range, field });
     }
   }
   return deps;
@@ -68,64 +71,49 @@ export function isAppStorePackage(keywords: unknown): boolean {
   );
 }
 
-// keywordsByName: dependency name -> the keywords of its latest release, or
-// null when it is not on npm. A name missing from the map had a failed
-// lookup and is never flagged.
+// installed: dependency key -> the manifest npm installed under it. A key
+// missing from the map was not installed and is never flagged. A bundled
+// plugin is reported by the name of the package that was installed.
 export function findBundledPlugins(
   self: string,
   declared: DeclaredDep[],
-  keywordsByName: Record<string, unknown[] | null>,
+  installed: Record<string, InstalledManifest>,
 ): BundledPlugin[] {
   const bundled = new Map<string, BundledPlugin>();
   for (const dep of declared) {
-    if (dep.pkg === self || bundled.has(dep.pkg)) continue;
-    if (isAppStorePackage(keywordsByName[dep.pkg])) {
-      bundled.set(dep.pkg, dep);
+    const manifest = installed[dep.pkg];
+    if (!manifest || typeof manifest.name !== "string") continue;
+    if (manifest.name === self || bundled.has(manifest.name)) continue;
+    if (isAppStorePackage(manifest.keywords)) {
+      bundled.set(manifest.name, { ...dep, pkg: manifest.name });
     }
   }
   return [...bundled.values()];
 }
 
-const keywordsCache = new Map<string, unknown[] | null>();
-
-export async function fetchKeywords(
-  pkgs: string[],
-): Promise<Record<string, unknown[] | null>> {
-  const result: Record<string, unknown[] | null> = {};
-  for (const pkg of new Set(pkgs)) {
-    if (keywordsCache.has(pkg)) {
-      result[pkg] = keywordsCache.get(pkg) ?? null;
-      continue;
-    }
-    const keywords = await fetchLatestKeywords(pkg);
-    if (keywords !== undefined) {
-      keywordsCache.set(pkg, keywords);
-      result[pkg] = keywords;
-    }
-  }
-  return result;
-}
-
-// undefined: the registry could not be read (indeterminate). null: the
-// package is not published on npm, so it cannot be an App Store package.
-async function fetchLatestKeywords(
-  pkg: string,
-): Promise<unknown[] | null | undefined> {
-  const url = `https://registry.npmjs.org/${encodeURIComponent(pkg)}/latest`;
-  for (let attempt = 0; attempt < 2; attempt++) {
-    try {
-      const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });
-      if (res.status === 404) return null;
-      if (res.ok) {
-        const data = (await res.json()) as { keywords?: unknown };
-        return Array.isArray(data.keywords) ? data.keywords : [];
+// npm nests a dependency under the plugin when the hoisted copy conflicts,
+// otherwise hoists it, so look from the plugin directory up to the install
+// root.
+export function readInstalledManifests(
+  pluginDir: string,
+  installRoot: string,
+  keys: string[],
+): Record<string, InstalledManifest> {
+  const manifests: Record<string, InstalledManifest> = {};
+  for (const key of new Set(keys)) {
+    for (let dir = pluginDir; ; dir = path.dirname(dir)) {
+      const file = path.join(dir, "node_modules", key, "package.json");
+      if (fs.existsSync(file)) {
+        try {
+          const pkg = JSON.parse(fs.readFileSync(file, "utf-8"));
+          manifests[key] = { name: pkg?.name, keywords: pkg?.keywords };
+        } catch {
+          // unreadable manifest: indeterminate, not flagged
+        }
+        break;
       }
-    } catch {
-      // network error or timeout — transient; fall through to retry.
+      if (dir === installRoot || path.dirname(dir) === dir) break;
     }
   }
-  console.error(
-    `[runner] keyword lookup for ${pkg} failed after retries; not penalizing`,
-  );
-  return undefined;
+  return manifests;
 }

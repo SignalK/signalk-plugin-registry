@@ -19,8 +19,8 @@ import {
 import { LegacyDep, checkLegacyDeps } from "./legacy-deps";
 import {
   BundledPlugin,
-  fetchKeywords,
   findBundledPlugins,
+  readInstalledManifests,
   runtimeDeps,
 } from "./bundled-plugins";
 import { SourceRef, sourceRefCandidates } from "./source-ref";
@@ -564,22 +564,26 @@ async function checkHeldBackCoreDeps(
   }
 }
 
-// Pure metadata check — reads the installed plugin's runtime dependencies and
-// asks the npm registry whether each is an App Store package. Runs no plugin
-// code, so no sandboxCmd(). A failed lookup or read is indeterminate, never a
-// penalty.
-async function checkBundledPlugins(
+// Pure file inspection — reads the installed plugin's runtime dependencies and
+// the package.json npm installed for each. Runs no plugin code, so no
+// sandboxCmd(). An unreadable manifest is indeterminate, never a penalty.
+function checkBundledPlugins(
   pluginDir: string,
+  installRoot: string,
   pluginName: string,
-): Promise<BundledPlugin[]> {
+): BundledPlugin[] {
   try {
     const pkg = JSON.parse(
       fs.readFileSync(path.join(pluginDir, "package.json"), "utf-8"),
     );
     const declared = runtimeDeps(pkg);
     if (declared.length === 0) return [];
-    const keywords = await fetchKeywords(declared.map((d) => d.pkg));
-    return findBundledPlugins(pluginName, declared, keywords);
+    const installed = readInstalledManifests(
+      pluginDir,
+      installRoot,
+      declared.map((d) => d.pkg),
+    );
+    return findBundledPlugins(pluginName, declared, installed);
   } catch {
     return [];
   }
@@ -1002,7 +1006,7 @@ export async function runPluginTest(
   const legacy = checkLegacyDeps(pluginDir);
 
   console.error(`[runner] Checking for bundled App Store plugins...`);
-  const bundled = await checkBundledPlugins(pluginDir, pluginName);
+  const bundled = checkBundledPlugins(pluginDir, workDir, pluginName);
 
   const testResults: TestResults = {
     installs: true,
