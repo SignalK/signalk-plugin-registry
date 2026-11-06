@@ -6,7 +6,7 @@ Automated testing and quality scoring for Signal K server plugins.
 
 ## What It Does
 
-- Discovers Signal K plugins from npm (keyword: `signalk-node-server-plugin`)
+- Discovers Signal K plugins and webapps from npm (keywords: `signalk-node-server-plugin`, `signalk-webapp`, `signalk-embeddable-webapp` — the ones the App Store lists by)
 - Tests each plugin against Signal K server: install, load, activate, detect providers, security audit
 - Stores results persistently in `results.json` — only retests on version changes
 - Publishes a static JSON API via GitHub Pages
@@ -36,6 +36,8 @@ Changelog detection prefers a `CHANGELOG.md` (or `CHANGES.md` / `HISTORY.md`) in
 
 Screenshots detection requires at least one string entry under `signalk.screenshots` in `package.json`.
 
+A webapp without a server plugin — a package carrying only `signalk-webapp` or `signalk-embeddable-webapp`, not `signalk-node-server-plugin` — is scored on the same scale. It has nothing to load, activate or configure, so the Load, Activate and Schema tiers (35 points) are not applicable and count as passed, and it gets a `webapp` badge instead of `loads` / `activates`. Every other check applies as for a plugin. The plugin-ci penalty does not apply either, because `plugin-ci.yml` requires the plugin keyword. The server's own admin UI (`@signalk/server-admin-ui`) is not scored.
+
 Test scoring runs the plugin's suite from its published tarball, then falls back to a shallow clone of the source repo (devDependencies aren't published, so most suites only run from source). The clone checks out the version being scored: the commit npm recorded when it was published (`gitHead`), else its release tag (`v<version>`, `<version>` or `<name>@<version>`), and only when neither exists the default branch. The tested commit and which of the three it came from are recorded as `source_test_ref` in the plugin's results and shown when hovering the test status. In the source fallback the harness honors the build/test commands a plugin declares to the canonical [`plugin-ci.yml`](https://github.com/SignalK/signalk-server/blob/master/.github/workflows/plugin-ci.yml) reusable workflow, so it mirrors the CI it already tracks for the plugin-ci badge rather than guessing. This is what lets webapp-class plugins (Angular/React/Vue) be scored correctly — their plain build/test scripts are often a non-exiting bundler and a watch-mode runner, which a naive guess would score "not runnable". A declared command may be an npm script invocation (`npm run <script>`, `npm test`) or an `&&` chain of them, and the time limit covers the whole chain. When a plugin declares no such commands, or one of another shape, the harness falls back to its own heuristics.
 
 A plugin published from a subdirectory of its repository is scored there rather than at the repository root, provided it declares npm's standard [`repository.directory`](https://docs.npmjs.com/cli/configuring-npm/package-json#repository) field. Test discovery, the build and the test run all happen in that subdirectory, so a sibling package's tests are never mistaken for the plugin's. Dependencies install at the repository root — which is what npm workspaces expect — and the subdirectory is installed separately when it isn't a workspace. Note that such plugins currently cannot run the reusable `plugin-ci.yml` workflow (it has no working-directory input), so they still take the `no-plugin-ci` penalty; that fix belongs upstream.
@@ -52,6 +54,7 @@ Provider detection (resources, weather, history, autopilot, radar) is tracked as
 |-------|---------|
 | `compatible` | Installs successfully |
 | `loads` | Plugin constructor succeeds |
+| `webapp` | Webapp without a server plugin; Load, Activate and Schema do not apply |
 | `activates` | `start()` completes without error (with schema defaults) |
 | `has-providers` | Registers at least one provider (informational) |
 | `tested` | Plugin has its own test suite and it passes |
@@ -117,7 +120,8 @@ A bot validates the request, runs a single-plugin scan, comments the new score
 and badges on the issue, then closes it. This usually takes a few minutes.
 
 Your plugin must be published to npm and carry the `signalk-node-server-plugin`
-keyword (the same keyword the Signal K app store uses to discover plugins). If
+keyword, or `signalk-webapp` / `signalk-embeddable-webapp` for a webapp (the
+keywords the Signal K app store uses to discover packages). If
 it isn't a recognised plugin, the bot replies explaining why and closes the
 issue without running a scan.
 

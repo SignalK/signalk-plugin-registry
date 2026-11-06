@@ -10,6 +10,9 @@ export interface TestResults {
   hasOwnTests: boolean;
   ownTestsPass: boolean;
   testsRunnable?: boolean;
+  // A webapp without a server plugin: there is nothing to load, activate or
+  // configure, so those tiers are not applicable rather than failed.
+  webapp?: boolean;
   auditCritical: number;
   auditHigh: number;
   auditModerate: number;
@@ -25,6 +28,7 @@ export type Badge =
   | "loads"
   | "activates"
   | "has-providers"
+  | "webapp"
   | "tested"
   | "tests-failing"
   | "npm-audit-ok"
@@ -64,6 +68,11 @@ export function computeScore(r: TestResults): {
   // Install: 20 points
   score += 20;
   badges.push("compatible");
+
+  if (r.webapp) {
+    score += 15 + 15 + 5;
+    badges.push("webapp");
+  }
 
   // Loads (constructor succeeds): 15 points
   if (r.loads) {
@@ -166,6 +175,7 @@ if (require.main === module) {
     activates: get("--activates") === "true",
     detectedProviders: JSON.parse(get("--providers") || "[]"),
     hasSchema: get("--has-schema") === "true",
+    webapp: get("--webapp") === "true",
     hasOwnTests: get("--has-own-tests") === "true",
     ownTestsPass: get("--own-tests-pass") === "true",
     auditCritical: parseInt(get("--audit-critical") || "0", 10),
