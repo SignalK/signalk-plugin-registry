@@ -1,0 +1,170 @@
+{
+  "name": "@rhizomatics/signalk-ble-sensors-plugin",
+  "versions": {
+    "1.0.1": {
+      "server@stable": {
+        "tested": "2026-11-06T08:40:37.711Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.36.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "c19732e5f69aec4589c66ae568f120a2a6331f1a"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 95,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-06T08:43:45.686Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.36.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "c19732e5f69aec4589c66ae568f120a2a6331f1a"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 95,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      }
+    }
+  },
+  "stars": 0,
+  "open_issues": 2,
+  "contributors": 1,
+  "downloads_per_week": 488,
+  "github_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin",
+  "plugin_ci": {
+    "status": "ok",
+    "head_sha": "c19732e5f69aec4589c66ae568f120a2a6331f1a",
+    "commit_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/commit/c19732e5f69aec4589c66ae568f120a2a6331f1a",
+    "workflow_run_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368",
+    "tested_at": "2026-11-05T15:51:48Z",
+    "workflow_ref": "refs/heads/main",
+    "jobs": [
+      {
+        "platform": "linux-arm64",
+        "node": 26,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158130"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 24,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158167"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 22,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158223"
+      },
+      {
+        "platform": "windows",
+        "node": 22,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158245"
+      },
+      {
+        "platform": "linux-x64",
+        "node": 22,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158249"
+      },
+      {
+        "platform": "macos",
+        "node": 26,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158305"
+      },
+      {
+        "platform": "linux-x64",
+        "node": 26,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158367"
+      },
+      {
+        "platform": "macos",
+        "node": 22,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158394"
+      },
+      {
+        "platform": "windows",
+        "node": 24,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158396"
+      },
+      {
+        "platform": "windows",
+        "node": 26,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158432"
+      },
+      {
+        "platform": "macos",
+        "node": 24,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158561"
+      },
+      {
+        "platform": "linux-x64",
+        "node": 24,
+        "conclusion": "failure",
+        "job_url": "https://github.com/rhizomatics/signalk-ble-sensors-plugin/actions/runs/42058964368/job/127355158719"
+      }
+    ]
+  }
+}
