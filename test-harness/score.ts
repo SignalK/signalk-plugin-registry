@@ -1,5 +1,6 @@
 import { HeldBackCoreDep } from "./core-deps";
 import { LegacyDep } from "./legacy-deps";
+import { BundledPlugin } from "./bundled-plugins";
 
 export interface TestResults {
   installs: boolean;
@@ -18,6 +19,7 @@ export interface TestResults {
   hasScreenshots: boolean;
   heldBackCoreDeps: HeldBackCoreDep[];
   legacyDeps: LegacyDep[];
+  bundledPlugins: BundledPlugin[];
 }
 
 export type Badge =
@@ -36,6 +38,7 @@ export type Badge =
   | "holds-back-core-deps"
   | "legacy-baconjs"
   | "legacy-react"
+  | "bundles-plugins"
   | "broken";
 
 export type TestStatus = "passing" | "none" | "not-runnable" | "failing";
@@ -146,6 +149,15 @@ export function computeScore(r: TestResults): {
     badges.push(pkg === "baconjs" ? "legacy-baconjs" : "legacy-react");
   }
 
+  // Bundled App Store packages: -30 when a runtime dependency is another
+  // plugin or webapp from the App Store. npm installs it at this plugin's
+  // range, where the server loads it as a plugin of its own; companions
+  // belong in signalk.requires / signalk.recommends (see bundled-plugins.ts).
+  if (r.bundledPlugins.length > 0) {
+    score -= 30;
+    badges.push("bundles-plugins");
+  }
+
   return {
     composite: Math.max(0, Math.min(100, score)),
     badges,
@@ -176,6 +188,7 @@ if (require.main === module) {
     hasScreenshots: get("--has-screenshots") === "true",
     heldBackCoreDeps: JSON.parse(get("--held-back-core-deps") || "[]"),
     legacyDeps: JSON.parse(get("--legacy-deps") || "[]"),
+    bundledPlugins: JSON.parse(get("--bundled-plugins") || "[]"),
   };
 
   const { composite, badges } = computeScore(results);

@@ -21,6 +21,7 @@ function fullMarks(): TestResults {
     hasScreenshots: true,
     heldBackCoreDeps: [],
     legacyDeps: [],
+    bundledPlugins: [],
   };
 }
 
@@ -119,4 +120,33 @@ test("legacy deps do not apply to a broken install", () => {
   const { composite, badges } = computeScore(results);
   assert.equal(composite, 0);
   assert.deepEqual(badges, ["broken"]);
+});
+
+test("a bundled App Store plugin costs 30 and adds its badge", () => {
+  const results = fullMarks();
+  results.bundledPlugins = [
+    {
+      pkg: "@signalk/tracks-plugin",
+      declared: "^2.0.2",
+      field: "dependencies",
+    },
+  ];
+  const { composite, badges } = computeScore(results);
+  assert.equal(composite, 70);
+  assert.ok(badges.includes("bundles-plugins"));
+});
+
+test("bundled plugin penalty applies once, however many are bundled", () => {
+  const results = fullMarks();
+  results.bundledPlugins = [
+    { pkg: "sk-ais-status-plugin", declared: "^1.0.0", field: "dependencies" },
+    {
+      pkg: "@halos-org/skip-freeboard-panel",
+      declared: "^1.0.0",
+      field: "dependencies",
+    },
+  ];
+  const { composite, badges } = computeScore(results);
+  assert.equal(composite, 70);
+  assert.equal(badges.filter((b) => b === "bundles-plugins").length, 1);
 });

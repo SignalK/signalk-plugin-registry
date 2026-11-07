@@ -238,7 +238,8 @@ jobs:
                 'compatible','loads','activates','has-providers','tested',
                 'tests-failing','npm-audit-ok','audit-moderate','audit-high',
                 'audit-critical','has-changelog','has-screenshots',
-                'holds-back-core-deps','legacy-baconjs','legacy-react','broken'
+                'holds-back-core-deps','legacy-baconjs','legacy-react',
+                'bundles-plugins','broken'
               ]);
               function validSlot(data) {
                 if (!data || typeof data !== 'object') return false;
@@ -270,6 +271,14 @@ jobs:
                     (dep.pkg === 'baconjs' || dep.pkg === 'react') &&
                     typeof dep.found === 'string' &&
                     typeof dep.required === 'string')
+                )) return false;
+                if (data.bundled_plugins !== undefined && (
+                  !Array.isArray(data.bundled_plugins) ||
+                  !data.bundled_plugins.every(dep =>
+                    dep && typeof dep === 'object' &&
+                    typeof dep.pkg === 'string' &&
+                    typeof dep.declared === 'string' &&
+                    ['dependencies', 'optionalDependencies', 'peerDependencies'].includes(dep.field))
                 )) return false;
                 return true;
               }

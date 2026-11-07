@@ -17,6 +17,12 @@ import {
   findHeldBackCoreDeps,
 } from "./core-deps";
 import { LegacyDep, checkLegacyDeps } from "./legacy-deps";
+import {
+  BundledPlugin,
+  findBundledPlugins,
+  readInstalledManifests,
+  runtimeDeps,
+} from "./bundled-plugins";
 import { SourceRef, sourceRefCandidates } from "./source-ref";
 import * as path from "path";
 import * as fs from "fs";
@@ -89,6 +95,7 @@ interface RunResult {
   hasScreenshots: boolean;
   heldBackCoreDeps: HeldBackCoreDep[];
   legacyDeps: LegacyDep[];
+  bundledPlugins: BundledPlugin[];
   composite: number;
   badges: string[];
   testStatus: string;
@@ -557,6 +564,31 @@ async function checkHeldBackCoreDeps(
   }
 }
 
+// Pure file inspection — reads the installed plugin's runtime dependencies and
+// the package.json npm installed for each. Runs no plugin code, so no
+// sandboxCmd(). An unreadable manifest is indeterminate, never a penalty.
+function checkBundledPlugins(
+  pluginDir: string,
+  installRoot: string,
+  pluginName: string,
+): BundledPlugin[] {
+  try {
+    const pkg = JSON.parse(
+      fs.readFileSync(path.join(pluginDir, "package.json"), "utf-8"),
+    );
+    const declared = runtimeDeps(pkg);
+    if (declared.length === 0) return [];
+    const installed = readInstalledManifests(
+      pluginDir,
+      installRoot,
+      declared.map((d) => d.pkg),
+    );
+    return findBundledPlugins(pluginName, declared, installed);
+  } catch {
+    return [];
+  }
+}
+
 function hasTestFiles(dir: string): boolean {
   try {
     const output = execSync(
@@ -901,6 +933,7 @@ export async function runPluginTest(
       hasScreenshots: false,
       heldBackCoreDeps: [],
       legacyDeps: [],
+      bundledPlugins: [],
     });
 
     fs.rmSync(workDir, { recursive: true, force: true });
@@ -934,6 +967,7 @@ export async function runPluginTest(
       hasScreenshots: false,
       heldBackCoreDeps: [],
       legacyDeps: [],
+      bundledPlugins: [],
       ...score,
     };
   }
@@ -971,6 +1005,9 @@ export async function runPluginTest(
   console.error(`[runner] Checking legacy runtime deps (baconjs, React)...`);
   const legacy = checkLegacyDeps(pluginDir);
 
+  console.error(`[runner] Checking for bundled App Store plugins...`);
+  const bundled = checkBundledPlugins(pluginDir, workDir, pluginName);
+
   const testResults: TestResults = {
     installs: true,
     loads: detection.loads,
@@ -988,6 +1025,7 @@ export async function runPluginTest(
     hasScreenshots: shots,
     heldBackCoreDeps: heldBack,
     legacyDeps: legacy,
+    bundledPlugins: bundled,
   };
 
   const { composite, badges, testStatus } = computeScore(testResults);
@@ -1009,6 +1047,7 @@ export async function runPluginTest(
     hasScreenshots: shots,
     heldBackCoreDeps: heldBack,
     legacyDeps: legacy,
+    bundledPlugins: bundled,
     composite,
     badges,
     testStatus,

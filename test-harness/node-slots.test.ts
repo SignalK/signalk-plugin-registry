@@ -4,7 +4,8 @@ import { slotKeyFor } from "../scripts/slots";
 import { shouldTest, orderRuns, PluginResults, PlannedRun } from "../scripts/plan-runs";
 
 const fresh = { tested: new Date().toISOString(), server_version: "2.35.1",
-  has_changelog: true, has_screenshots: false, held_back_core_deps: [], legacy_deps: [] };
+  has_changelog: true, has_screenshots: false, held_back_core_deps: [], legacy_deps: [],
+  bundled_plugins: [] };
 
 test("slotKeyFor: primary Node keeps the plain slot key", () => {
   assert.equal(slotKeyFor("stable", "24"), "server@stable");

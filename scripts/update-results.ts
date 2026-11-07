@@ -72,6 +72,7 @@ function main() {
     has_screenshots: resultData.hasScreenshots,
     held_back_core_deps: resultData.heldBackCoreDeps,
     legacy_deps: resultData.legacyDeps,
+    bundled_plugins: resultData.bundledPlugins,
     audit_critical: resultData.auditCritical,
     audit_high: resultData.auditHigh,
     audit_moderate: resultData.auditModerate,
