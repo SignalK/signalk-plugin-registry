@@ -235,7 +235,7 @@ jobs:
               let updated = 0;
               let rejected = 0;
               const VALID_BADGES = new Set([
-                'compatible','loads','activates','has-providers','tested',
+                'compatible','loads','activates','has-providers','webapp','tested',
                 'tests-failing','npm-audit-ok','audit-moderate','audit-high',
                 'audit-critical','has-changelog','has-screenshots',
                 'holds-back-core-deps','legacy-baconjs','legacy-react','broken'
@@ -249,6 +249,7 @@ jobs:
                 if (!Array.isArray(data.badges) || !data.badges.every(b => VALID_BADGES.has(b))) return false;
                 if (typeof data.tested !== 'string' || isNaN(Date.parse(data.tested))) return false;
                 if (typeof data.installs !== 'boolean') return false;
+                if (data.webapp !== undefined && typeof data.webapp !== 'boolean') return false;
                 if (data.held_back_core_deps !== undefined && (
                   !Array.isArray(data.held_back_core_deps) ||
                   !data.held_back_core_deps.every(dep =>

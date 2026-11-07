@@ -668,6 +668,9 @@ async function enrichSummariesWithMetrics(
 // SignalK/signalk-server, not here: suppressing the penalty for a
 // self-declared, unverified npm field would both publish compatibility
 // data we don't have and hand out 10 points to anyone who adds the field.
+//
+// Webapps without a server plugin are exempt: plugin-ci requires the
+// signalk-node-server-plugin keyword, so they cannot run it.
 const PLUGIN_CI_PENALTY = 10
 
 function applyPluginCiPenalty(
@@ -675,7 +678,12 @@ function applyPluginCiPenalty(
   badges: string[],
   pluginCi: PluginCi | undefined
 ): { composite: number; badges: string[] } {
-  if (!pluginCi || pluginCi.status === 'ok' || pluginCi.status === 'in-progress') {
+  if (
+    !pluginCi ||
+    pluginCi.status === 'ok' ||
+    pluginCi.status === 'in-progress' ||
+    badges.includes('webapp')
+  ) {
     return { composite, badges }
   }
   const adjusted = Math.max(0, composite - PLUGIN_CI_PENALTY)
@@ -692,6 +700,7 @@ interface SlotResult {
   composite: number
   badges: string[]
   installs: boolean
+  webapp?: boolean
   loads?: boolean
   activates?: boolean
   detected_providers?: string[]
@@ -745,6 +754,7 @@ interface PluginSummary {
   other_nodes?: Record<string, { composite: number; badges: string[]; test_status: string }>
   last_tested: string
   installs: boolean
+  webapp: boolean
   loads: boolean
   activates: boolean
   providers: string[]
@@ -807,6 +817,7 @@ async function main() {
       source_test_ref: stableResult.source_test_ref,
       last_tested: stableResult.tested || '',
       installs: stableResult.installs || false,
+      webapp: !!stableResult.webapp,
       loads: !!stableResult.loads,
       activates: !!stableResult.activates,
       providers: (stableResult.detected_providers as string[]) || [],
@@ -959,6 +970,7 @@ async function main() {
     'loads': '#17a2b8',
     'activates': '#007bff',
     'has-providers': '#6f42c1',
+    'webapp': '#6f42c1',
     'tested': '#28a745',
     'tests-failing': '#dc3545',
     'npm-audit-ok': '#28a745',
@@ -974,6 +986,8 @@ async function main() {
   }
 
   const badgeTitles: Record<string, string> = {
+    'webapp':
+      'Webapp without a server plugin: the load, activate and schema tiers do not apply and count as passed, and the plugin-ci penalty does not apply',
     'holds-back-core-deps':
       'A declared dependency range pins a core Signal K package below its latest same-major release (-80)',
     'legacy-baconjs':
@@ -999,6 +1013,9 @@ async function main() {
     const color = score >= 80 ? '#28a745' : score >= 60 ? '#ffc107' : score >= 40 ? '#fd7e14' : '#dc3545'
     return `<div style="display:inline-block;width:60px;height:14px;background:#eee;border-radius:3px;overflow:hidden;vertical-align:middle" title="${score}/100"><div style="width:${score}%;height:100%;background:${color}"></div></div> <strong>${score}</strong>`
   }
+
+  const notApplicable =
+    '<span style="color:#999" title="Webapp without a server plugin: nothing to load or activate">n/a</span>'
 
   function statusIcon(ok: boolean | undefined): string {
     if (ok === true) return '<span style="color:#28a745">&#10003;</span>'
@@ -1049,8 +1066,8 @@ async function main() {
       <td>${scoreBar(s.composite_stable)}</td>
       <td><a href="${npmUrl(s.name)}" target="_blank">${esc(s.name)}</a><br><span style="color:#999;font-size:0.8em">${esc(s.version)}</span></td>
       <td style="text-align:center">${statusIcon(s.installs)}</td>
-      <td style="text-align:center">${statusIcon(s.loads)}</td>
-      <td style="text-align:center">${statusIcon(s.activates)}</td>
+      <td style="text-align:center">${s.webapp ? notApplicable : statusIcon(s.loads)}</td>
+      <td style="text-align:center">${s.webapp ? notApplicable : statusIcon(s.activates)}</td>
       <td style="text-align:center">${testStatusCell(s.test_status, s.source_test_ref)}</td>
       <td>${s.badges_stable.map(b => badgeSpan(b)).join(' ')}</td>
       <td>${providerCell}</td>
@@ -1169,6 +1186,7 @@ function generateGuide(apiDir: string) {
       <tr><td>Load</td><td>15</td><td>Module exports a function that returns <code>{id, name, start, stop}</code></td></tr>
       <tr><td>Activate</td><td>15</td><td><code>start(config)</code> completes without error &mdash; config is populated from your schema defaults</td></tr>
       <tr><td>Schema</td><td>5</td><td><code>plugin.schema</code> returns a JSON Schema object</td></tr>
+      <tr><td colspan="3">Webapps without a server plugin (only <code>signalk-webapp</code> / <code>signalk-embeddable-webapp</code>, no <code>signalk-node-server-plugin</code>) have nothing to load, activate or configure: they get these 35 points, and no plugin-ci penalty</td></tr>
       <tr><td>Tests</td><td>25</td><td><code>npm test</code> passes (biggest single tier &mdash; see below)</td></tr>
       <tr><td>Security</td><td>20</td><td><code>npm audit</code> finds no high or critical vulnerabilities</td></tr>
       <tr><td>Changelog</td><td>&minus;5 if missing</td><td>Ship a <code>CHANGELOG.md</code> or publish a <a href="https://github.com/SignalK/signalk-server/pull/2615" target="_blank">GitHub Release</a> matching the version tag</td></tr>
