@@ -22,6 +22,7 @@ function fullMarks(): TestResults {
     heldBackCoreDeps: [],
     legacyDeps: [],
     bundledPlugins: [],
+    plotterExtension: { registered: false, keyword: false, problems: [] },
   };
 }
 
@@ -149,4 +150,40 @@ test("bundled plugin penalty applies once, however many are bundled", () => {
   const { composite, badges } = computeScore(results);
   assert.equal(composite, 70);
   assert.equal(badges.filter((b) => b === "bundles-plugins").length, 1);
+});
+
+test("a plotter extension with keyword and valid manifest keeps full marks", () => {
+  const results = fullMarks();
+  results.plotterExtension = { registered: true, keyword: true, problems: [] };
+  const { composite, badges } = computeScore(results);
+  assert.equal(composite, 100);
+  assert.ok(badges.includes("plotter-extension"));
+});
+
+test("a plotter extension without its keyword costs 10", () => {
+  const results = fullMarks();
+  results.plotterExtension = { registered: true, keyword: false, problems: [] };
+  const { composite, badges } = computeScore(results);
+  assert.equal(composite, 90);
+  assert.ok(badges.includes("missing-plotter-keyword"));
+});
+
+test("an invalid plotter manifest costs 10, on top of a missing keyword", () => {
+  const results = fullMarks();
+  results.plotterExtension = {
+    registered: true,
+    keyword: false,
+    problems: ["poi: manifest contributes nothing"],
+  };
+  const { composite, badges } = computeScore(results);
+  assert.equal(composite, 80);
+  assert.ok(badges.includes("invalid-plotter-manifest"));
+});
+
+test("plotter checks do not apply to plugins that register no extension", () => {
+  const results = fullMarks();
+  results.plotterExtension = { registered: false, keyword: false, problems: [] };
+  const { composite, badges } = computeScore(results);
+  assert.equal(composite, 100);
+  assert.ok(!badges.includes("plotter-extension"));
 });

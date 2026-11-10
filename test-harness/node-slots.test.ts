@@ -5,7 +5,8 @@ import { shouldTest, orderRuns, PluginResults, PlannedRun } from "../scripts/pla
 
 const fresh = { tested: new Date().toISOString(), server_version: "2.35.1",
   has_changelog: true, has_screenshots: false, held_back_core_deps: [], legacy_deps: [],
-  bundled_plugins: [] };
+  bundled_plugins: [],
+  plotter_extension: { registered: false, keyword: false, problems: [] } };
 
 test("slotKeyFor: primary Node keeps the plain slot key", () => {
   assert.equal(slotKeyFor("stable", "24"), "server@stable");

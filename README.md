@@ -47,6 +47,8 @@ Legacy runtime deps cover two libraries the server provides at a fixed major and
 
 Bundled plugins checks the plugin's `dependencies`, `optionalDependencies` and non-optional `peerDependencies` (npm installs all three) for packages the App Store lists — anything published with the `signalk-node-server-plugin`, `signalk-webapp` or `signalk-embeddable-webapp` keyword. npm installs such a dependency into the user's `~/.signalk` tree at the range this plugin chose, where the server loads it as a plugin of its own: an old major (`^2.0.2` when the plugin is at 3.x) runs there instead of the current release, and uninstalling the bundling plugin can take it away. Any such dependency costs −30, once per plugin. Declare companions in `signalk.requires` (the App Store offers to install them together with the plugin) or `signalk.recommends` (suggested on the detail page) instead — see the [publishing guide](https://github.com/SignalK/signalk-server/blob/master/docs/develop/plugins/publishing.md#requires-and-recommends). The check reads the `package.json` npm installed for each dependency, so git, tarball and `npm:` alias specs are judged by the package they actually install. A dependency on the plugin itself is not counted, and one that was not installed or has an unreadable manifest is skipped.
 
+Plotter extensions — plugins that register a `plotterExtensions` resource provider to contribute widgets, panels, buttons and map layers to chart plotters such as Freeboard-SK — get the `plotter-extension` badge and two checks from the [provider guide](https://github.com/SignalK/freeboard-sk/blob/master/docs/api/plotter_extension_provider_plugins.md). A package without the `signalk-category-plotter-extensions` keyword costs −10: the keyword lists it in the App Store's Plotter Extensions category (server 2.36.0 and later) and is how plotters find installable extensions. While the plugin runs, the harness calls the provider's `listResources()` the way a host does and checks the manifests it returns; any of these costs −10 once: no manifest, a missing `name`, an `apiVersion` other than `"1"` (the host drops such a manifest), no contribution, a widget size other than `1x1`/`2x1`/`1x2`/`2x2`, a `configPanel`, button or action panel or image-overlay runtime the manifest does not declare, or an asset URL that is not server-relative or sits under `/plugins/`, which the server serves to admins only. A plugin whose `start()` fails is not checked further, since activation already accounts for that. The keyword without a registered manifest is not penalised.
+
 Provider detection (resources, weather, history, autopilot, radar) is tracked as an informational badge but does not affect the score — most plugins are not expected to register providers.
 
 ## Badges
@@ -69,6 +71,9 @@ Provider detection (resources, weather, history, autopilot, radar) is tracked as
 | `legacy-baconjs` | A `dependencies` / `peerDependencies` range for `baconjs` cannot resolve to 3.x (−15 penalty) |
 | `legacy-react` | Embedded webapp bundle registers React <19 (−15 penalty) |
 | `bundles-plugins` | A runtime dependency is another App Store plugin or webapp (−30 penalty) |
+| `plotter-extension` | Registers a `plotterExtensions` manifest (informational) |
+| `missing-plotter-keyword` | Registers a plotter extension without the `signalk-category-plotter-extensions` keyword (−10 penalty) |
+| `invalid-plotter-manifest` | The plotter extension manifest would be dropped by a host or names a panel, runtime or asset it cannot load (−10 penalty) |
 | `broken` | Failed to install |
 
 ## API

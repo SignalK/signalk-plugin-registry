@@ -1,6 +1,7 @@
 import * as path from 'path'
 import { createAppShim, CapturedRegistrations } from './app-shim'
 import { extractSchemaDefaults } from './schema-defaults'
+import { checkPlotterManifests } from './plotter-extension'
 
 // Mirrors upstream signalk-server's importOrRequire (src/modules.ts):
 // try require() first — Node 20.19+ handles ESM via require(esm) natively —
@@ -41,9 +42,36 @@ export interface DetectionResult {
   statusMessages: string[]
   errorMessages: string[]
   hasSchema: boolean
+  // Present only when start() registered a plotterExtensions resource
+  // provider. `problems` stays empty when the manifest could not be read
+  // because start() failed: activation already accounts for that.
+  plotterExtension?: { problems: string[] }
 }
 
 const START_TIMEOUT_MS = 10_000
+const LIST_RESOURCES_TIMEOUT_MS = 5_000
+
+// Asks the registered provider for its manifests the way a host does, while
+// the plugin is still running.
+async function readPlotterManifests(provider: unknown): Promise<string[]> {
+  try {
+    const methods = (provider as { methods?: { listResources?: unknown } }).methods
+    const listResources = methods?.listResources
+    if (typeof listResources !== 'function') {
+      return ['provider has no listResources() method']
+    }
+    const listed = await Promise.race([
+      Promise.resolve(listResources.call(methods, {})),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('timeout')), LIST_RESOURCES_TIMEOUT_MS)
+      )
+    ])
+    return checkPlotterManifests(listed)
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err)
+    return [`listResources() failed: ${msg}`.slice(0, 200)]
+  }
+}
 
 async function loadPlugin(
   pluginPath: string,
@@ -153,6 +181,10 @@ export async function detectProviders(pluginPath: string): Promise<DetectionResu
   }
 
   const activationError = await tryStart(defaults)
+  const plotterProblems =
+    !activationError && captured.plotterExtensions !== undefined
+      ? await readPlotterManifests(captured.plotterExtensions)
+      : []
   await tryStop()
 
   const activationWithoutConfigError = await tryStart({})
@@ -162,6 +194,9 @@ export async function detectProviders(pluginPath: string): Promise<DetectionResu
     shimPluginId, plugin, captured, true, undefined,
     activationError, activationWithoutConfigError
   )
+  if (captured.plotterExtensions !== undefined) {
+    result.plotterExtension = { problems: plotterProblems }
+  }
 
   cleanup()
   return result

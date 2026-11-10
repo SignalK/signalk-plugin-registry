@@ -73,6 +73,7 @@ function main() {
     held_back_core_deps: resultData.heldBackCoreDeps,
     legacy_deps: resultData.legacyDeps,
     bundled_plugins: resultData.bundledPlugins,
+    plotter_extension: resultData.plotterExtension,
     audit_critical: resultData.auditCritical,
     audit_high: resultData.auditHigh,
     audit_moderate: resultData.auditModerate,

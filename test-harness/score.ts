@@ -1,6 +1,7 @@
 import { HeldBackCoreDep } from "./core-deps";
 import { LegacyDep } from "./legacy-deps";
 import { BundledPlugin } from "./bundled-plugins";
+import { PlotterExtensionReport } from "./plotter-extension";
 
 export interface TestResults {
   installs: boolean;
@@ -20,6 +21,7 @@ export interface TestResults {
   heldBackCoreDeps: HeldBackCoreDep[];
   legacyDeps: LegacyDep[];
   bundledPlugins: BundledPlugin[];
+  plotterExtension: PlotterExtensionReport;
 }
 
 export type Badge =
@@ -39,6 +41,9 @@ export type Badge =
   | "legacy-baconjs"
   | "legacy-react"
   | "bundles-plugins"
+  | "plotter-extension"
+  | "missing-plotter-keyword"
+  | "invalid-plotter-manifest"
   | "broken";
 
 export type TestStatus = "passing" | "none" | "not-runnable" | "failing";
@@ -158,6 +163,22 @@ export function computeScore(r: TestResults): {
     badges.push("bundles-plugins");
   }
 
+  // Plotter extensions: informational badge, -10 when the package lacks the
+  // keyword the App Store category and host discovery both rely on, and -10
+  // when the manifest it serves is one a host would drop or cannot load
+  // (see plotter-extension.ts).
+  if (r.plotterExtension.registered) {
+    badges.push("plotter-extension");
+    if (!r.plotterExtension.keyword) {
+      score -= 10;
+      badges.push("missing-plotter-keyword");
+    }
+    if (r.plotterExtension.problems.length > 0) {
+      score -= 10;
+      badges.push("invalid-plotter-manifest");
+    }
+  }
+
   return {
     composite: Math.max(0, Math.min(100, score)),
     badges,
@@ -189,6 +210,10 @@ if (require.main === module) {
     heldBackCoreDeps: JSON.parse(get("--held-back-core-deps") || "[]"),
     legacyDeps: JSON.parse(get("--legacy-deps") || "[]"),
     bundledPlugins: JSON.parse(get("--bundled-plugins") || "[]"),
+    plotterExtension: JSON.parse(
+      get("--plotter-extension") ||
+        '{"registered":false,"keyword":false,"problems":[]}',
+    ),
   };
 
   const { composite, badges } = computeScore(results);
