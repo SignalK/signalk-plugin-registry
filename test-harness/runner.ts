@@ -10,6 +10,7 @@ import {
   isWorkspaceLinked,
 } from "./repo-directory";
 import { computeScore, TestResults } from "./score";
+import { isWebappOnly } from "./package-kind";
 import {
   CORE_PACKAGES,
   HeldBackCoreDep,
@@ -102,6 +103,7 @@ interface RunResult {
   legacyDeps: LegacyDep[];
   bundledPlugins: BundledPlugin[];
   plotterExtension: PlotterExtensionReport;
+  webapp: boolean;
   composite: number;
   badges: string[];
   testStatus: string;
@@ -605,6 +607,28 @@ function checkBundledPlugins(
   }
 }
 
+function isWebappPackage(pluginDir: string): boolean {
+  const keywords = readKeywords(pluginDir);
+  return Array.isArray(keywords) && isWebappOnly(keywords);
+}
+
+function webappDetection(pluginName: string): DetectionResult {
+  return {
+    pluginId: pluginName,
+    pluginName,
+    providers: [],
+    putHandlers: [],
+    httpRoutes: [],
+    unstubbedAccesses: [],
+    loads: false,
+    activates: false,
+    activatesWithoutConfig: false,
+    statusMessages: [],
+    errorMessages: [],
+    hasSchema: false,
+  };
+}
+
 function hasTestFiles(dir: string): boolean {
   try {
     const output = execSync(
@@ -986,6 +1010,7 @@ export async function runPluginTest(
       legacyDeps: [],
       bundledPlugins: [],
       plotterExtension: NOT_A_PLOTTER_EXTENSION,
+      webapp: false,
       ...score,
     };
   }
@@ -994,8 +1019,15 @@ export async function runPluginTest(
   const audit = runAudit(workDir);
 
   const pluginDir = path.join(workDir, "node_modules", pluginName);
-  console.error(`[runner] Detecting providers...`);
-  const detection = detectProviderssandboxed(pluginDir);
+  const webapp = isWebappPackage(pluginDir);
+  let detection: DetectionResult;
+  if (webapp) {
+    console.error(`[runner] Webapp without a server plugin, nothing to load`);
+    detection = webappDetection(pluginName);
+  } else {
+    console.error(`[runner] Detecting providers...`);
+    detection = detectProviderssandboxed(pluginDir);
+  }
 
   console.error(`[runner] Checking own tests...`);
   let ownTests: ReturnType<typeof checkSourceTests> = checkOwnTests(pluginDir);
@@ -1033,6 +1065,7 @@ export async function runPluginTest(
 
   const testResults: TestResults = {
     installs: true,
+    webapp,
     loads: detection.loads,
     activates: detection.activates,
     detectedProviders: detection.providers,
@@ -1073,6 +1106,7 @@ export async function runPluginTest(
     legacyDeps: legacy,
     bundledPlugins: bundled,
     plotterExtension,
+    webapp,
     composite,
     badges,
     testStatus,

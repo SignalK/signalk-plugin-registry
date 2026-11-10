@@ -45,6 +45,10 @@ function main() {
   }
 
   const slotKey = slotKeyFor(args.serverSlot, args.node)
+  // A webapp has no plugin to load, so it publishes no load/activate fields.
+  const detection = resultData.webapp
+    ? undefined
+    : (resultData.detection as Record<string, unknown> | undefined)
   const slotResult: Record<string, unknown> = {
     tested: new Date().toISOString(),
     triggered_by: args.reason,
@@ -53,16 +57,17 @@ function main() {
       ? { server_version: args.serverVersion }
       : { server_sha: args.serverVersion }),
     installs: resultData.installs,
+    webapp: resultData.webapp || undefined,
     install_error: resultData.installError,
-    loads: resultData.detection && (resultData.detection as Record<string, unknown>).loads,
-    load_error: resultData.detection && (resultData.detection as Record<string, unknown>).loadError,
-    activation_error: resultData.detection && (resultData.detection as Record<string, unknown>).activationError,
-    activates: resultData.detection && (resultData.detection as Record<string, unknown>).activates,
-    activates_without_config: resultData.detection && (resultData.detection as Record<string, unknown>).activatesWithoutConfig,
-    activation_without_config_error: resultData.detection && (resultData.detection as Record<string, unknown>).activationWithoutConfigError,
-    detected_providers: resultData.detection && (resultData.detection as Record<string, unknown>).providers,
-    unstubbed_accesses: resultData.detection && (resultData.detection as Record<string, unknown>).unstubbedAccesses,
-    has_schema: resultData.detection && (resultData.detection as Record<string, unknown>).hasSchema,
+    loads: detection && detection.loads,
+    load_error: detection && detection.loadError,
+    activation_error: detection && detection.activationError,
+    activates: detection && detection.activates,
+    activates_without_config: detection && detection.activatesWithoutConfig,
+    activation_without_config_error: detection && detection.activationWithoutConfigError,
+    detected_providers: detection && detection.providers,
+    unstubbed_accesses: detection && detection.unstubbedAccesses,
+    has_schema: detection && detection.hasSchema,
     has_own_tests: resultData.hasOwnTests,
     own_tests_pass: resultData.ownTestsPass,
     tests_runnable: resultData.testsRunnable,

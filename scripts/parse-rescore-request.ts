@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { fetchPackument, PLUGIN_KEYWORD } from './discover-plugins'
+import { fetchPackument, isWebappOnly, PLUGIN_KEYWORD } from './discover-plugins'
 import { isExactVersion, isValidNpmName } from './npm-name'
 
 // The trust boundary for the on-demand re-score path. Reads the requested npm
@@ -143,10 +143,11 @@ async function evaluate(rawRequest: string): Promise<ParseResult> {
 
   const versionDoc = doc.versions?.[version]
   const keywords = versionDoc?.keywords ?? []
-  const isPlugin = keywords.includes(PLUGIN_KEYWORD) || loadRegistryNames().has(rawName)
+  const isPlugin =
+    keywords.includes(PLUGIN_KEYWORD) || isWebappOnly(keywords) || loadRegistryNames().has(rawName)
   if (!isPlugin) {
     return fail(
-      `\`${rawName}\`@${version} does not carry the \`${PLUGIN_KEYWORD}\` keyword, so the registry does not treat it as a Signal K plugin. ` +
+      `\`${rawName}\`@${version} does not carry the \`${PLUGIN_KEYWORD}\` or a webapp keyword, so the registry does not treat it as a Signal K plugin or webapp. ` +
         `Add the keyword to package.json and republish, then try again.`
     )
   }
