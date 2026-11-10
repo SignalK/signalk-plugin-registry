@@ -83,7 +83,8 @@ export function shouldTest(
     'has_screenshots',
     'held_back_core_deps',
     'legacy_deps',
-    'bundled_plugins'
+    'bundled_plugins',
+    'plotter_extension'
   ]
   for (const field of REQUIRED_FIELDS) {
     if (slot[field] === undefined) {

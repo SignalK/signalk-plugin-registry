@@ -23,6 +23,11 @@ import {
   readInstalledManifests,
   runtimeDeps,
 } from "./bundled-plugins";
+import {
+  NOT_A_PLOTTER_EXTENSION,
+  PlotterExtensionReport,
+  plotterExtensionReport,
+} from "./plotter-extension";
 import { SourceRef, sourceRefCandidates } from "./source-ref";
 import * as path from "path";
 import * as fs from "fs";
@@ -96,6 +101,7 @@ interface RunResult {
   heldBackCoreDeps: HeldBackCoreDep[];
   legacyDeps: LegacyDep[];
   bundledPlugins: BundledPlugin[];
+  plotterExtension: PlotterExtensionReport;
   composite: number;
   badges: string[];
   testStatus: string;
@@ -564,6 +570,16 @@ async function checkHeldBackCoreDeps(
   }
 }
 
+function readKeywords(pluginDir: string): unknown {
+  try {
+    return JSON.parse(
+      fs.readFileSync(path.join(pluginDir, "package.json"), "utf-8"),
+    )?.keywords;
+  } catch {
+    return undefined;
+  }
+}
+
 // Pure file inspection — reads the installed plugin's runtime dependencies and
 // the package.json npm installed for each. Runs no plugin code, so no
 // sandboxCmd(). An unreadable manifest is indeterminate, never a penalty.
@@ -934,6 +950,7 @@ export async function runPluginTest(
       heldBackCoreDeps: [],
       legacyDeps: [],
       bundledPlugins: [],
+      plotterExtension: NOT_A_PLOTTER_EXTENSION,
     });
 
     fs.rmSync(workDir, { recursive: true, force: true });
@@ -968,6 +985,7 @@ export async function runPluginTest(
       heldBackCoreDeps: [],
       legacyDeps: [],
       bundledPlugins: [],
+      plotterExtension: NOT_A_PLOTTER_EXTENSION,
       ...score,
     };
   }
@@ -1008,6 +1026,11 @@ export async function runPluginTest(
   console.error(`[runner] Checking for bundled App Store plugins...`);
   const bundled = checkBundledPlugins(pluginDir, workDir, pluginName);
 
+  const plotterExtension = plotterExtensionReport(
+    detection.plotterExtension,
+    readKeywords(pluginDir),
+  );
+
   const testResults: TestResults = {
     installs: true,
     loads: detection.loads,
@@ -1026,6 +1049,7 @@ export async function runPluginTest(
     heldBackCoreDeps: heldBack,
     legacyDeps: legacy,
     bundledPlugins: bundled,
+    plotterExtension,
   };
 
   const { composite, badges, testStatus } = computeScore(testResults);
@@ -1048,6 +1072,7 @@ export async function runPluginTest(
     heldBackCoreDeps: heldBack,
     legacyDeps: legacy,
     bundledPlugins: bundled,
+    plotterExtension,
     composite,
     badges,
     testStatus,

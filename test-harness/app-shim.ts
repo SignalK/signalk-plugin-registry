@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
+import { isPlotterExtensionProvider } from './plotter-extension'
 
 export interface CapturedRegistrations {
   providers: {
@@ -11,6 +12,9 @@ export interface CapturedRegistrations {
     radar?: unknown
     ble?: unknown
   }
+  // Kept apart from `providers.resources`, which a later registration of
+  // another resource type overwrites.
+  plotterExtensions?: unknown
   putHandlers: Array<{ context: string; path: string }>
   httpRoutes: string[]
   unstubbedAccesses: string[]
@@ -211,6 +215,7 @@ export function createAppShim(
     },
     registerResourceProvider: (provider: unknown) => {
       captured.providers.resources = provider
+      if (isPlotterExtensionProvider(provider)) captured.plotterExtensions = provider
       onStopHandlers.push(() => { captured.providers.resources = undefined })
     },
     registerRadarProvider: (provider: unknown) => {
@@ -277,6 +282,7 @@ export function createAppShim(
     resourcesApi: {
       register: (_pluginId: string, provider: unknown) => {
         captured.providers.resources = provider
+        if (isPlotterExtensionProvider(provider)) captured.plotterExtensions = provider
       }
     },
     weatherApi: {

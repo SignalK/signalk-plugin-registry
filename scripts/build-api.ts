@@ -706,6 +706,7 @@ interface SlotResult {
   held_back_core_deps?: Array<{ pkg: string; declared: string; latest: string }>
   legacy_deps?: Array<{ pkg: string; found: string; required: string }>
   bundled_plugins?: Array<{ pkg: string; declared: string; field: string }>
+  plotter_extension?: { registered: boolean; keyword: boolean; problems: string[] }
   audit_critical?: number
   audit_high?: number
   audit_moderate?: number
@@ -972,6 +973,9 @@ async function main() {
     'legacy-baconjs': '#fd7e14',
     'legacy-react': '#fd7e14',
     'bundles-plugins': '#fd7e14',
+    'plotter-extension': '#6f42c1',
+    'missing-plotter-keyword': '#fd7e14',
+    'invalid-plotter-manifest': '#fd7e14',
     'broken': '#dc3545'
   }
 
@@ -983,7 +987,13 @@ async function main() {
     'legacy-react':
       'Embedded webapp built against React <19; the admin UI is React 19 and only bridges older remotes through a compatibility shim slated for removal (-15)',
     'bundles-plugins':
-      'A runtime dependency is another App Store plugin or webapp; declare companions in signalk.requires / signalk.recommends instead (-30)'
+      'A runtime dependency is another App Store plugin or webapp; declare companions in signalk.requires / signalk.recommends instead (-30)',
+    'plotter-extension':
+      'Registers a plotterExtensions manifest: contributes widgets, panels or other extensions to chart plotters such as Freeboard-SK',
+    'missing-plotter-keyword':
+      'Registers a plotter extension without the signalk-category-plotter-extensions keyword, so neither the App Store category nor plotters can find it (-10)',
+    'invalid-plotter-manifest':
+      'The plotter extension manifest is one a plotter drops, or names a panel, runtime or asset it cannot load (-10)'
   }
 
   function esc(s: string): string {
@@ -1181,6 +1191,8 @@ function generateGuide(apiDir: string) {
       <tr><td>Legacy baconjs</td><td>&minus;15</td><td>Any <code>baconjs</code> range in <code>dependencies</code> / <code>peerDependencies</code> must allow 3.x (e.g. <code>^3.0.0</code>, not <code>^0.7.88</code> or <code>^1.0.1</code>) &mdash; the server provides baconjs 3 (<a href="https://github.com/SignalK/signalk-server/pull/2487" target="_blank">signalk-server#2487</a>); drop the dependency or move to <code>^3.0.0</code></td></tr>
       <tr><td>Legacy React</td><td>&minus;15</td><td>Build embedded webapps (<code>signalk-embeddable-webapp</code>, <code>signalk-plugin-configurator</code>, <code>signalk-node-server-addon</code>) against React 19 &mdash; the admin UI only bridges React 16 remotes through a temporary shim (<a href="https://github.com/SignalK/signalk-server/issues/2451" target="_blank">signalk-server#2451</a>)</td></tr>
       <tr><td>Bundled plugins</td><td>&minus;30</td><td>Don&rsquo;t list other App Store plugins or webapps in <code>dependencies</code>, <code>optionalDependencies</code> or <code>peerDependencies</code> &mdash; npm then installs them at your range into the user&rsquo;s <code>~/.signalk</code>, outside the App Store. Declare them in <code>signalk.requires</code> (the App Store offers to install them with yours) or <code>signalk.recommends</code> (suggested) instead (<a href="https://github.com/SignalK/signalk-server/blob/master/docs/develop/plugins/publishing.md#requires-and-recommends" target="_blank">publishing guide</a>)</td></tr>
+      <tr><td>Plotter extension keyword</td><td>&minus;10</td><td>A plugin that registers a <code>plotterExtensions</code> manifest carries the <code>signalk-category-plotter-extensions</code> keyword: it lists the extension in the App Store&rsquo;s Plotter Extensions category and is how plotters find installable extensions. Keep one other <code>signalk-category-*</code> keyword for servers older than 2.36.0 (<a href="https://github.com/SignalK/freeboard-sk/blob/master/docs/api/plotter_extension_provider_plugins.md#package-keywords" target="_blank">provider guide</a>)</td></tr>
+      <tr><td>Plotter extension manifest</td><td>&minus;10</td><td><code>listResources()</code> returns at least one manifest with a <code>name</code>, <code>apiVersion</code> <code>"1"</code> and a contribution; widget sizes are <code>1x1</code>, <code>2x1</code>, <code>1x2</code> or <code>2x2</code>; every <code>configPanel</code>, button/action panel and image-overlay runtime names one the manifest declares; asset URLs are server-relative and not under <code>/plugins/</code>, which only admins can load (<a href="https://github.com/SignalK/freeboard-sk/blob/master/docs/api/plotter_extension_provider_plugins.md#the-manifest" target="_blank">provider guide</a>)</td></tr>
     </tbody>
   </table>
 

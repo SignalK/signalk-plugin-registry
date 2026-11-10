@@ -239,7 +239,8 @@ jobs:
                 'tests-failing','npm-audit-ok','audit-moderate','audit-high',
                 'audit-critical','has-changelog','has-screenshots',
                 'holds-back-core-deps','legacy-baconjs','legacy-react',
-                'bundles-plugins','broken'
+                'bundles-plugins','plotter-extension',
+                'missing-plotter-keyword','invalid-plotter-manifest','broken'
               ]);
               function validSlot(data) {
                 if (!data || typeof data !== 'object') return false;
@@ -279,6 +280,13 @@ jobs:
                     typeof dep.pkg === 'string' &&
                     typeof dep.declared === 'string' &&
                     ['dependencies', 'optionalDependencies', 'peerDependencies'].includes(dep.field))
+                )) return false;
+                if (data.plotter_extension !== undefined && (
+                  !data.plotter_extension || typeof data.plotter_extension !== 'object' ||
+                  typeof data.plotter_extension.registered !== 'boolean' ||
+                  typeof data.plotter_extension.keyword !== 'boolean' ||
+                  !Array.isArray(data.plotter_extension.problems) ||
+                  !data.plotter_extension.problems.every(p => typeof p === 'string')
                 )) return false;
                 return true;
               }
