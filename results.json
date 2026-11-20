@@ -837,6 +837,56 @@
           "has-screenshots"
         ],
         "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:35:43.187Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "get",
+          "post",
+          "put",
+          "delete"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "083c22b15a830f47edc1b774e7ec3700845cb31d"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tests-failing",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "failing"
       }
     }
   },
@@ -998,6 +1048,63 @@
         "tested": "2026-11-16T08:56:37.853Z",
         "triggered_by": "schema_change",
         "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "history"
+        ],
+        "unstubbed_accesses": [
+          "unregisterHistoryApiProvider"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "6bcc24f23b260961dc4daa7ec7450b261f0c5d5a"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [
+          {
+            "pkg": "sk-ais-status-plugin",
+            "declared": "^1.0.0",
+            "field": "dependencies"
+          }
+        ],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots",
+          "bundles-plugins"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:32:56.495Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
         "loads": true,
@@ -2104,8 +2211,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-10T09:00:20.299Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:31:57.054Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -2128,6 +2235,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -4209,6 +4321,102 @@
         ],
         "test_status": "passing"
       }
+    },
+    "2.22.0": {
+      "server@stable": {
+        "tested": "2026-11-20T09:19:29.992Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "getPluginsList"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "9e5e55daf3eeb0bd8cb61296c8b72bf8632e57d8"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:21:09.585Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "getPluginsList"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "9e5e55daf3eeb0bd8cb61296c8b72bf8632e57d8"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "bt-sensors-plugin-sk": {
@@ -5555,10 +5763,10 @@
     },
     "2.6.0": {
       "server@stable-node26": {
-        "tested": "2026-11-06T08:42:24.246Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:25:51.417Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -5578,6 +5786,12 @@
         "has_screenshots": true,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -5759,6 +5973,57 @@
         "tested": "2026-11-12T08:58:39.434Z",
         "triggered_by": "schema_change",
         "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "d9bf7e0241e4772c425597ab2fe37a7ae90763a3"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [
+          {
+            "pkg": "baconjs",
+            "found": "^0.7.88",
+            "required": ">=3"
+          }
+        ],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 50,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tests-failing",
+          "npm-audit-ok",
+          "has-changelog",
+          "legacy-baconjs"
+        ],
+        "test_status": "failing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:30:23.987Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
         "loads": true,
@@ -6237,13 +6502,13 @@
     },
     "2.3.0": {
       "server@stable": {
-        "tested": "2026-11-14T08:18:49.601Z",
+        "tested": "2026-11-20T09:25:39.338Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
         "installs": true,
         "loads": false,
-        "load_error": "EACCES, Permission denied: '/tmp/sk-source-kXH8Z0'",
+        "load_error": "EACCES, Permission denied: '/tmp/sk-source-Qpx7bA'",
         "activates": false,
         "detected_providers": [],
         "unstubbed_accesses": [],
@@ -6521,8 +6786,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-09T08:52:05.697Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:29:11.632Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -6545,6 +6810,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -6565,13 +6835,13 @@
   "signalk-dps310": {
     "1.0.3": {
       "server@stable": {
-        "tested": "2026-11-10T09:06:57.209Z",
+        "tested": "2026-11-20T09:22:41.915Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
         "installs": true,
         "loads": false,
-        "load_error": "Could not locate the bindings file. Tried:\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/build/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/build/Debug/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/build/Release/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/out/Debug/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/Debug/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/out/Release/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/Release/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/build/default/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/compiled/24.22.2/linux/x64/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/addon-build/release/install-root/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/addon-build/debug/install-root/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/addon-build/default/install-root/i2c.node\n → /tmp/sk-registry-ATVVZJ/node_modules/i2c-bus/lib/binding/node-v137-linux-x64/i2c.node",
+        "load_error": "Could not locate the bindings file. Tried:\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/build/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/build/Debug/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/build/Release/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/out/Debug/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/Debug/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/out/Release/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/Release/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/build/default/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/compiled/24.22.2/linux/x64/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/addon-build/release/install-root/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/addon-build/debug/install-root/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/addon-build/default/install-root/i2c.node\n → /tmp/sk-registry-71XMUf/node_modules/i2c-bus/lib/binding/node-v137-linux-x64/i2c.node",
         "activates": false,
         "activates_without_config": false,
         "detected_providers": [],
@@ -6586,6 +6856,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -7991,6 +8266,53 @@
           "has-screenshots"
         ],
         "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:33:47.039Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "registerTrackApiProvider"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "423c6e5cf42b4379e358fd7c05d1495a2c11cce7"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
       }
     }
   },
@@ -8263,8 +8585,8 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-07T07:55:40.207Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:27:05.351Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -8285,6 +8607,12 @@
         "has_screenshots": false,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -9400,8 +9728,8 @@
     },
     "1.10.3": {
       "server@stable-node26": {
-        "tested": "2026-11-08T08:13:12.823Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:27:46.581Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -9424,6 +9752,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -12007,6 +12340,44 @@
           "npm-audit-ok"
         ],
         "test_status": "none"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:29:53.989Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok"
+        ],
+        "test_status": "none"
       }
     }
   },
@@ -13119,7 +13490,7 @@
     },
     "0.7.1": {
       "server@stable": {
-        "tested": "2026-11-10T09:09:13.748Z",
+        "tested": "2026-11-20T09:24:13.354Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -13139,6 +13510,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -13873,6 +14249,51 @@
           "has-screenshots"
         ],
         "test_status": "failing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:30:42.880Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "c4b73a10ae389ab17bd9aaf9ed02aff7c93d0303"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tests-failing",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "failing"
       }
     }
   },
@@ -13916,6 +14337,45 @@
           "has-changelog"
         ],
         "test_status": "none"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:30:07.562Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "none"
       }
     }
   },
@@ -13925,6 +14385,50 @@
         "tested": "2026-11-12T08:59:27.791Z",
         "triggered_by": "schema_change",
         "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "95376aee1715986468099381e41ec782c5213298"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tests-failing",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "failing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:31:20.068Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
         "loads": true,
@@ -14125,8 +14629,8 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-07T07:55:41.797Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:26:47.848Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -14146,6 +14650,12 @@
         "has_screenshots": false,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -14168,6 +14678,44 @@
         "tested": "2026-11-14T08:24:16.522Z",
         "triggered_by": "schema_change",
         "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok"
+        ],
+        "test_status": "none"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:30:33.883Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
         "loads": true,
@@ -17202,10 +17750,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-06T08:42:49.396Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:26:09.055Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -17214,7 +17762,7 @@
         "unstubbed_accesses": [],
         "has_schema": true,
         "has_own_tests": true,
-        "own_tests_pass": false,
+        "own_tests_pass": true,
         "tests_runnable": true,
         "source_test_ref": {
           "kind": "git-head",
@@ -17225,19 +17773,25 @@
         "has_screenshots": false,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 65,
+        "composite": 95,
         "badges": [
           "compatible",
           "loads",
           "activates",
-          "tests-failing",
+          "tested",
           "npm-audit-ok",
           "has-changelog"
         ],
-        "test_status": "failing"
+        "test_status": "passing"
       }
     }
   },
@@ -18293,10 +18847,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-05T08:39:02.727Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:25:22.824Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activation_error": "app.resourcesApi.listResources is not a function",
@@ -18317,6 +18871,12 @@
         "has_screenshots": false,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 2,
@@ -18497,7 +19057,7 @@
     },
     "1.2.1": {
       "server@stable": {
-        "tested": "2026-11-10T09:08:21.031Z",
+        "tested": "2026-11-20T09:23:39.610Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -18517,6 +19077,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -19699,7 +20264,7 @@
     },
     "1.12.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:09:52.634Z",
+        "tested": "2026-11-20T09:26:05.015Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -19725,6 +20290,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -24867,7 +25437,7 @@
   "signalk-path-filter": {
     "1.0.1": {
       "server@stable": {
-        "tested": "2026-11-10T09:08:22.279Z",
+        "tested": "2026-11-20T09:23:49.357Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -24887,6 +25457,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -25743,8 +26318,8 @@
     },
     "0.9.0": {
       "server@stable-node26": {
-        "tested": "2026-11-07T07:56:28.163Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:27:04.951Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -25764,6 +26339,12 @@
         "has_screenshots": true,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -28506,7 +29087,7 @@
     },
     "1.15.1": {
       "server@stable": {
-        "tested": "2026-11-10T09:08:47.351Z",
+        "tested": "2026-11-20T09:24:35.069Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -28532,6 +29113,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -31998,8 +32584,8 @@
     },
     "0.1.6": {
       "server@stable-node26": {
-        "tested": "2026-11-07T07:56:38.278Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:26:52.517Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -32021,6 +32607,12 @@
         "has_screenshots": false,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -33890,7 +34482,7 @@
     },
     "0.2.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:07:53.809Z",
+        "tested": "2026-11-20T09:23:17.528Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -33912,6 +34504,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 2,
         "audit_moderate": 0,
@@ -34176,10 +34773,10 @@
     },
     "2.5.0": {
       "server@stable-node26": {
-        "tested": "2026-11-06T08:42:10.034Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:25:49.320Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -34204,10 +34801,16 @@
         "has_screenshots": false,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 65,
+        "composite": 55,
         "badges": [
           "compatible",
           "loads",
@@ -34215,7 +34818,9 @@
           "has-providers",
           "tests-failing",
           "npm-audit-ok",
-          "has-changelog"
+          "has-changelog",
+          "plotter-extension",
+          "missing-plotter-keyword"
         ],
         "test_status": "failing"
       },
@@ -35394,8 +35999,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-08T08:15:32.678Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:28:18.501Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -35418,6 +36023,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -35911,8 +36521,8 @@
     },
     "1.1.5": {
       "server@stable-node26": {
-        "tested": "2026-11-09T08:50:45.325Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:28:46.895Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -35937,6 +36547,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -37606,13 +38221,13 @@
   "@gpatsiaouras/signalk-raspberry-pi-mcp9808": {
     "1.0.2": {
       "server@stable": {
-        "tested": "2026-11-10T09:09:23.615Z",
+        "tested": "2026-11-20T09:24:22.736Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
         "installs": true,
         "loads": false,
-        "load_error": "Could not locate the bindings file. Tried:\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/build/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/build/Debug/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/build/Release/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/out/Debug/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/Debug/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/out/Release/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/Release/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/build/default/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/compiled/24.22.2/linux/x64/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/addon-build/release/install-root/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/addon-build/debug/install-root/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/addon-build/default/install-root/epoll.node\n → /tmp/sk-registry-6ltW5Q/node_modules/epoll/lib/binding/node-v137-linux-x64/epoll.node",
+        "load_error": "Could not locate the bindings file. Tried:\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/build/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/build/Debug/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/build/Release/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/out/Debug/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/Debug/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/out/Release/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/Release/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/build/default/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/compiled/24.22.2/linux/x64/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/addon-build/release/install-root/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/addon-build/debug/install-root/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/addon-build/default/install-root/epoll.node\n → /tmp/sk-registry-O6C8UB/node_modules/epoll/lib/binding/node-v137-linux-x64/epoll.node",
         "activates": false,
         "activates_without_config": false,
         "detected_providers": [],
@@ -37627,6 +38242,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -37691,7 +38311,7 @@
   "fuel-usage-calculator": {
     "0.1.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:06:27.280Z",
+        "tested": "2026-11-20T09:21:56.931Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -37712,6 +38332,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -38493,7 +39118,7 @@
   "@sail-cloud/sail-cloud": {
     "1.2.4": {
       "server@stable": {
-        "tested": "2026-11-10T09:06:39.770Z",
+        "tested": "2026-11-20T09:22:38.852Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -38515,9 +39140,14 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 19,
         "audit_high": 12,
-        "audit_moderate": 28,
+        "audit_moderate": 25,
         "composite": 30,
         "badges": [
           "compatible",
@@ -39073,7 +39703,7 @@
   "signalk-raspberry-pi-bmp180": {
     "0.0.6": {
       "server@stable": {
-        "tested": "2026-11-10T09:07:36.832Z",
+        "tested": "2026-11-20T09:23:08.154Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -39097,6 +39727,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -39517,7 +40152,7 @@
   "signalk-pushover-notification-relay": {
     "1.0.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:07:32.514Z",
+        "tested": "2026-11-20T09:22:44.491Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -39539,6 +40174,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -40010,7 +40650,7 @@
   "signalk-tado-integration": {
     "1.0.4": {
       "server@stable": {
-        "tested": "2026-11-10T09:06:35.556Z",
+        "tested": "2026-11-20T09:21:57.614Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -40030,6 +40670,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -40793,7 +41438,7 @@
   "sk-depth-gauge": {
     "1.2.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:08:25.600Z",
+        "tested": "2026-11-20T09:23:40.463Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -40813,6 +41458,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -41080,7 +41730,7 @@
     },
     "2.0.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:09:13.452Z",
+        "tested": "2026-11-20T09:24:20.207Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -41104,6 +41754,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -41240,7 +41895,7 @@
   "signalk-netgear-lte-status": {
     "1.1.1": {
       "server@stable": {
-        "tested": "2026-11-10T09:07:27.380Z",
+        "tested": "2026-11-20T09:22:27.845Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -41260,6 +41915,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -42574,7 +43234,7 @@
   "@meri-imperiumi/signalk-stardate": {
     "1.0.1": {
       "server@stable": {
-        "tested": "2026-11-10T09:06:34.668Z",
+        "tested": "2026-11-20T09:22:18.500Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -42598,6 +43258,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -51994,6 +52659,47 @@
           "npm-audit-ok"
         ],
         "test_status": "none"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:31:03.241Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "get",
+          "post"
+        ],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok"
+        ],
+        "test_status": "none"
       }
     }
   },
@@ -56956,6 +57662,98 @@
         ],
         "test_status": "passing"
       }
+    },
+    "1.1.0": {
+      "server@stable": {
+        "tested": "2026-11-20T09:19:26.843Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activation_error": "The name org.bluez was not provided by any .service files",
+        "activates": false,
+        "activates_without_config": false,
+        "activation_without_config_error": "The name org.bluez was not provided by any .service files",
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "d6209af94f9498a35df09ed0e63136d19c073408"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 3,
+        "audit_high": 1,
+        "audit_moderate": 7,
+        "composite": 60,
+        "badges": [
+          "compatible",
+          "loads",
+          "tested",
+          "audit-critical",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:21:35.716Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activation_error": "The name org.bluez was not provided by any .service files",
+        "activates": false,
+        "activates_without_config": false,
+        "activation_without_config_error": "The name org.bluez was not provided by any .service files",
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "d6209af94f9498a35df09ed0e63136d19c073408"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 3,
+        "audit_high": 1,
+        "audit_moderate": 7,
+        "composite": 60,
+        "badges": [
+          "compatible",
+          "loads",
+          "tested",
+          "audit-critical",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "noaa-storms": {
@@ -57645,7 +58443,7 @@
     },
     "0.8.2": {
       "server@stable": {
-        "tested": "2026-11-10T09:09:28.422Z",
+        "tested": "2026-11-20T09:25:38.836Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -57669,6 +58467,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -62018,8 +62821,8 @@
     },
     "0.6.1": {
       "server@stable-node26": {
-        "tested": "2026-11-09T08:49:46.096Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:28:31.250Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -62042,6 +62845,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -63017,8 +63825,8 @@
     },
     "2.2.3": {
       "server@stable-node26": {
-        "tested": "2026-11-09T08:49:55.357Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:28:27.554Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -63041,6 +63849,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -65571,7 +66384,7 @@
     },
     "2.0.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:09:30.198Z",
+        "tested": "2026-11-20T09:24:43.752Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -65595,6 +66408,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -66277,7 +67095,7 @@
     },
     "0.7.1": {
       "server@stable": {
-        "tested": "2026-11-10T09:09:40.779Z",
+        "tested": "2026-11-20T09:25:01.442Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -66301,6 +67119,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -67080,10 +67903,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-06T08:42:46.800Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:26:20.805Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -67103,6 +67926,12 @@
         "has_screenshots": true,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -67123,7 +67952,7 @@
   "sk-video": {
     "1.1.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:07:27.824Z",
+        "tested": "2026-11-20T09:23:21.650Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -67149,6 +67978,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 2,
         "audit_moderate": 0,
@@ -72182,8 +73016,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-07T09:58:28.137Z",
-        "triggered_by": "manual",
+        "tested": "2026-11-20T09:27:32.871Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -72208,6 +73042,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -72445,8 +73284,8 @@
     },
     "0.2.0": {
       "server@stable-node26": {
-        "tested": "2026-11-09T08:50:22.269Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:28:27.804Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -72471,6 +73310,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -79163,7 +80007,7 @@
   "signalk-whisper": {
     "0.2.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:07:23.050Z",
+        "tested": "2026-11-20T09:23:29.604Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -79189,6 +80033,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -79828,8 +80677,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-10T08:59:00.168Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:29:39.008Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -79852,6 +80701,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -80292,8 +81146,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-09T08:51:07.204Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:29:10.273Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -80316,6 +81170,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -81542,8 +82401,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-10T08:58:49.693Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:29:27.692Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -81566,6 +82425,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -82644,7 +83508,7 @@
     },
     "4.0.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:08:07.507Z",
+        "tested": "2026-11-20T09:23:32.088Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -82664,6 +83528,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 2,
@@ -86414,10 +87283,10 @@
     },
     "0.7.0": {
       "server@stable-node26": {
-        "tested": "2026-11-06T08:41:41.759Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:25:53.077Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -86437,6 +87306,12 @@
         "has_screenshots": true,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -88647,8 +89522,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-08T08:15:36.678Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:28:02.318Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -88673,10 +89548,17 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": true,
+          "problems": [
+            "signalk-status-tiles: manifest contributes nothing"
+          ]
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 100,
+        "composite": 90,
         "badges": [
           "compatible",
           "loads",
@@ -88685,7 +89567,9 @@
           "tested",
           "npm-audit-ok",
           "has-changelog",
-          "has-screenshots"
+          "has-screenshots",
+          "plotter-extension",
+          "invalid-plotter-manifest"
         ],
         "test_status": "passing"
       }
@@ -95388,7 +96272,7 @@
     },
     "0.4.0": {
       "server@stable": {
-        "tested": "2026-11-10T09:07:33.203Z",
+        "tested": "2026-11-20T09:22:52.919Z",
         "triggered_by": "schema_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -95416,10 +96300,15 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 100,
+        "composite": 90,
         "badges": [
           "compatible",
           "loads",
@@ -95428,7 +96317,9 @@
           "tested",
           "npm-audit-ok",
           "has-changelog",
-          "has-screenshots"
+          "has-screenshots",
+          "plotter-extension",
+          "missing-plotter-keyword"
         ],
         "test_status": "passing"
       }
@@ -95513,6 +96404,98 @@
           "loads",
           "tested",
           "audit-critical"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "1.0.4": {
+      "server@stable": {
+        "tested": "2026-11-20T09:19:11.158Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activation_error": "Cannot read properties of undefined (reading 'join')",
+        "activates": false,
+        "activates_without_config": false,
+        "activation_without_config_error": "Cannot read properties of undefined (reading 'join')",
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "087e03e51521b4b65b4c5491919f7c18da0b2ee4"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 2,
+        "audit_high": 0,
+        "audit_moderate": 7,
+        "composite": 60,
+        "badges": [
+          "compatible",
+          "loads",
+          "tested",
+          "audit-critical",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:21:40.080Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activation_error": "Cannot read properties of undefined (reading 'join')",
+        "activates": false,
+        "activates_without_config": false,
+        "activation_without_config_error": "Cannot read properties of undefined (reading 'join')",
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "087e03e51521b4b65b4c5491919f7c18da0b2ee4"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 2,
+        "audit_high": 0,
+        "audit_moderate": 7,
+        "composite": 60,
+        "badges": [
+          "compatible",
+          "loads",
+          "tested",
+          "audit-critical",
+          "has-changelog"
         ],
         "test_status": "passing"
       }
@@ -97599,8 +98582,8 @@
     },
     "0.16.2": {
       "server@stable-node26": {
-        "tested": "2026-11-08T08:13:08.547Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:28:03.630Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -97623,6 +98606,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": true,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -97635,7 +98623,8 @@
           "tested",
           "npm-audit-ok",
           "has-changelog",
-          "has-screenshots"
+          "has-screenshots",
+          "plotter-extension"
         ],
         "test_status": "passing"
       },
@@ -97816,8 +98805,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-10T08:59:02.217Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:29:47.718Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -97842,6 +98831,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -98658,8 +99652,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-07T07:57:19.440Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:27:18.389Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -98681,6 +99675,12 @@
         "has_screenshots": false,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -101030,6 +102030,98 @@
         ],
         "test_status": "passing"
       }
+    },
+    "0.10.1": {
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:20:39.858Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "8050020280dd199cd9b2c4cb12c1ef752543f0ce"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable": {
+        "tested": "2026-11-20T09:19:06.943Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "8050020280dd199cd9b2c4cb12c1ef752543f0ce"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-ext-companion-apps": {
@@ -101123,8 +102215,8 @@
     },
     "1.1.1": {
       "server@stable-node26": {
-        "tested": "2026-11-10T08:58:17.139Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:29:14.232Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -101151,6 +102243,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": true,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -101163,7 +102260,8 @@
           "tested",
           "npm-audit-ok",
           "has-changelog",
-          "has-screenshots"
+          "has-screenshots",
+          "plotter-extension"
         ],
         "test_status": "passing"
       },
@@ -101769,6 +102867,102 @@
         "source_test_ref": {
           "kind": "git-head",
           "commit": "2b12c7e94f0dc1b08cbb963fb6bac04a917a3a65"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "0.9.0": {
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:20:33.646Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "alerts"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "dc42ce120da2cf8855613c4ab09642fe6e586420"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable": {
+        "tested": "2026-11-20T09:18:33.589Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "alerts"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "dc42ce120da2cf8855613c4ab09642fe6e586420"
         },
         "has_install_scripts": false,
         "has_changelog": true,
@@ -103587,6 +104781,104 @@
         ],
         "test_status": "passing"
       }
+    },
+    "0.3.0-beta.25": {
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:20:26.636Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "isNmea2000OutAvailable",
+          "_czoneSpawn"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "default-branch",
+          "commit": "35f48b74b21b2e71e72cbebde744b0357b40d7fc"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 3,
+        "audit_high": 0,
+        "audit_moderate": 1,
+        "composite": 80,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "audit-critical",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable": {
+        "tested": "2026-11-20T09:18:24.453Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "isNmea2000OutAvailable",
+          "_czoneSpawn"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "default-branch",
+          "commit": "35f48b74b21b2e71e72cbebde744b0357b40d7fc"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 3,
+        "audit_high": 0,
+        "audit_moderate": 1,
+        "composite": 80,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "audit-critical",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-engine-hours-seren": {
@@ -103675,8 +104967,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-09T08:50:58.544Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:28:53.439Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -103699,6 +104991,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -106519,6 +107816,106 @@
         ],
         "test_status": "passing"
       }
+    },
+    "0.10.0": {
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:20:08.397Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "onPropertyValues",
+          "notifications",
+          "emitPropertyValue"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "23a5d2b4414cd0f6e4d0e8b4657aab36c9c82b12"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable": {
+        "tested": "2026-11-20T09:18:22.968Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "onPropertyValues",
+          "notifications",
+          "emitPropertyValue"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "23a5d2b4414cd0f6e4d0e8b4657aab36c9c82b12"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-universal-installer-rpi-mgmt": {
@@ -107261,8 +108658,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-09T08:49:12.234Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:28:11.477Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -107285,6 +108682,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -108018,6 +109420,58 @@
           "plotter-extension"
         ],
         "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:31:32.885Z",
+        "triggered_by": "node_added",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [
+          "getHistoryApi",
+          "setDefaultMetadata"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "2b56053e690c06842d464d015ec9202546b680f6"
+        },
+        "has_install_scripts": true,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": true,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots",
+          "plotter-extension"
+        ],
+        "test_status": "passing"
       }
     }
   },
@@ -108272,10 +109726,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-04T08:03:20.280Z",
-        "triggered_by": "manual",
+        "tested": "2026-11-20T09:25:19.976Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -108295,6 +109749,12 @@
         "has_screenshots": true,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -108431,10 +109891,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-06T08:43:44.760Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:26:36.655Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -108452,6 +109912,12 @@
         "has_screenshots": false,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -109363,10 +110829,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-06T08:43:43.123Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:26:53.881Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -109386,9 +110852,15 @@
         "has_screenshots": false,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
-        "audit_moderate": 19,
+        "audit_moderate": 21,
         "composite": 90,
         "badges": [
           "compatible",
@@ -109527,8 +110999,8 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-08T08:15:19.899Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-20T09:27:42.500Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
         "server_version": "2.37.0",
         "installs": true,
@@ -109551,6 +111023,11 @@
         "held_back_core_deps": [],
         "legacy_deps": [],
         "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
@@ -109651,6 +111128,98 @@
         ],
         "test_status": "passing"
       }
+    },
+    "0.1.2": {
+      "server@stable": {
+        "tested": "2026-11-20T09:19:13.972Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "default-branch",
+          "commit": "3dd21ec1b49568cab189104ae3ccf7c30f5108c4"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:21:29.575Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "default-branch",
+          "commit": "3dd21ec1b49568cab189104ae3ccf7c30f5108c4"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-wmo-gust": {
@@ -109734,6 +111303,98 @@
           "tested",
           "npm-audit-ok",
           "has-changelog"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "0.4.2": {
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:21:08.620Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "default-branch",
+          "commit": "3fada49eb1036b0ae364a1d63076e82a05954e6d"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable": {
+        "tested": "2026-11-20T09:19:02.404Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "default-branch",
+          "commit": "3fada49eb1036b0ae364a1d63076e82a05954e6d"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
         ],
         "test_status": "passing"
       }
@@ -109864,10 +111525,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-06T10:52:16.648Z",
-        "triggered_by": "manual",
+        "tested": "2026-11-20T09:26:35.344Z",
+        "triggered_by": "schema_change",
         "node_version": "26",
-        "server_version": "2.36.0",
+        "server_version": "2.37.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -109887,10 +111548,22 @@
         "has_screenshots": true,
         "held_back_core_deps": [],
         "legacy_deps": [],
+        "bundled_plugins": [
+          {
+            "pkg": "@meri-imperiumi/signalk-internet",
+            "declared": "^0.8.0",
+            "field": "dependencies"
+          }
+        ],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
         "audit_critical": 0,
         "audit_high": 0,
         "audit_moderate": 0,
-        "composite": 100,
+        "composite": 70,
         "badges": [
           "compatible",
           "loads",
@@ -109898,7 +111571,8 @@
           "tested",
           "npm-audit-ok",
           "has-changelog",
-          "has-screenshots"
+          "has-screenshots",
+          "bundles-plugins"
         ],
         "test_status": "passing"
       }
@@ -110869,6 +112543,96 @@
         ],
         "test_status": "passing"
       }
+    },
+    "1.2.0": {
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:20:56.166Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "51d0fbb22df103ba1c0fe532c608a634ddc937bb"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 95,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable": {
+        "tested": "2026-11-20T09:18:10.776Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "51d0fbb22df103ba1c0fe532c608a634ddc937bb"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 95,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-wiring": {
@@ -111523,6 +113287,102 @@
         ],
         "test_status": "failing"
       }
+    },
+    "0.9.6": {
+      "server@stable": {
+        "tested": "2026-11-20T09:18:08.481Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "abb94f66bba790773157da92d27095ef75b0d009"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tests-failing",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "failing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:20:10.113Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "abb94f66bba790773157da92d27095ef75b0d009"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tests-failing",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "failing"
+      }
     }
   },
   "nausto-signalk": {
@@ -111869,6 +113729,84 @@
       },
       "server@stable": {
         "tested": "2026-11-16T08:42:03.878Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok"
+        ],
+        "test_status": "none"
+      }
+    },
+    "0.9.0": {
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:20:34.534Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok"
+        ],
+        "test_status": "none"
+      },
+      "server@stable": {
+        "tested": "2026-11-20T09:17:56.068Z",
         "triggered_by": "plugin_version_change",
         "node_version": "24",
         "server_version": "2.37.0",
@@ -112819,6 +114757,76 @@
       },
       "server@stable-node26": {
         "tested": "2026-11-11T08:40:34.447Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "webapp": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 75,
+        "badges": [
+          "compatible",
+          "webapp",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "none"
+      }
+    },
+    "1.3.2": {
+      "server@stable": {
+        "tested": "2026-11-20T09:19:47.493Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "webapp": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 75,
+        "badges": [
+          "compatible",
+          "webapp",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "none"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:21:53.084Z",
         "triggered_by": "plugin_version_change",
         "node_version": "26",
         "server_version": "2.37.0",
@@ -116045,6 +118053,84 @@
         ],
         "test_status": "none"
       }
+    },
+    "1.1.50": {
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:21:04.915Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok"
+        ],
+        "test_status": "none"
+      },
+      "server@stable": {
+        "tested": "2026-11-20T09:18:53.425Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": false,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": false,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 65,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok"
+        ],
+        "test_status": "none"
+      }
     }
   },
   "signalk-app-launcher": {
@@ -116312,6 +118398,110 @@
           "npm-audit-ok",
           "has-changelog",
           "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
+    }
+  },
+  "signalk-anchor-mapper": {
+    "0.2.1": {
+      "server@stable": {
+        "tested": "2026-11-20T09:19:24.260Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [
+          "getTrackApi"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "7c77dd9a3a3066073b42c85a3b11dd2b85d01374"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": true,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 95,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "plotter-extension"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-20T09:21:35.254Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [
+          "getTrackApi"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "7c77dd9a3a3066073b42c85a3b11dd2b85d01374"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": true,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 95,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "plotter-extension"
         ],
         "test_status": "passing"
       }
