@@ -1,0 +1,195 @@
+{
+  "name": "autopilot-keypad",
+  "versions": {
+    "0.3.1": {
+      "server@stable": {
+        "tested": "2026-11-27T10:16:20.187Z",
+        "triggered_by": "server_version_change",
+        "node_version": "24",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [
+          "use"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "f1d522af2ea335ff20e330f6fa1d03a6d1783cb4"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": true,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots",
+          "plotter-extension"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-24T09:36:47.857Z",
+        "triggered_by": "manual",
+        "node_version": "26",
+        "server_version": "2.37.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [
+          "use"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "f1d522af2ea335ff20e330f6fa1d03a6d1783cb4"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": true,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots",
+          "plotter-extension"
+        ],
+        "test_status": "passing"
+      }
+    }
+  },
+  "stars": 0,
+  "open_issues": 0,
+  "contributors": 1,
+  "github_url": "https://github.com/Colug0/autopilot-keypad",
+  "plugin_ci": {
+    "status": "ok",
+    "head_sha": "f1d522af2ea335ff20e330f6fa1d03a6d1783cb4",
+    "commit_url": "https://github.com/Colug0/autopilot-keypad/commit/f1d522af2ea335ff20e330f6fa1d03a6d1783cb4",
+    "workflow_run_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068",
+    "tested_at": "2026-11-24T09:27:34Z",
+    "workflow_ref": "refs/heads/main",
+    "jobs": [
+      {
+        "platform": "linux-x64",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342641884"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342641927"
+      },
+      {
+        "platform": "windows",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342641958"
+      },
+      {
+        "platform": "windows",
+        "node": 26,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342641965"
+      },
+      {
+        "platform": "linux-x64",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342641969"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 26,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342641976"
+      },
+      {
+        "platform": "macos",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342641993"
+      },
+      {
+        "platform": "macos",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342642081"
+      },
+      {
+        "platform": "windows",
+        "node": 22,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342642086"
+      },
+      {
+        "platform": "macos",
+        "node": 26,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342642315"
+      },
+      {
+        "platform": "linux-arm64",
+        "node": 24,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342642371"
+      },
+      {
+        "platform": "linux-x64",
+        "node": 26,
+        "conclusion": "success",
+        "job_url": "https://github.com/Colug0/autopilot-keypad/actions/runs/45364469068/job/138342642972"
+      }
+    ]
+  }
+}
