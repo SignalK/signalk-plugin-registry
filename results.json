@@ -174,10 +174,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T08:59:19.314Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:34:29.154Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -4962,6 +4962,102 @@
         "source_test_ref": {
           "kind": "git-head",
           "commit": "2b8787c131fb19d8722532ffc52b86365af7fe98"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
+    },
+    "2.27.1": {
+      "server@stable": {
+        "tested": "2026-11-28T09:32:51.184Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "getPluginsList"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "9a0d0ed55d02da85d263805a9ef8bd139ba5308b"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-28T09:34:02.330Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "getPluginsList"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "9a0d0ed55d02da85d263805a9ef8bd139ba5308b"
         },
         "has_install_scripts": false,
         "has_changelog": true,
@@ -11239,10 +11335,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:01:02.890Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:36:37.709Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -13757,10 +13853,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:08:41.881Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:43:31.920Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -14571,10 +14667,10 @@
         "test_status": "failing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T08:59:22.083Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:34:50.241Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -14793,10 +14889,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T08:59:42.961Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:35:12.512Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -15004,10 +15100,10 @@
         "test_status": "not-runnable"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:03:04.714Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:38:39.712Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -15387,10 +15483,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:06:38.104Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:43:31.309Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -16693,10 +16789,10 @@
         "test_status": "failing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:11:25.027Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:46:13.110Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -18702,10 +18798,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T08:59:58.475Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:35:50.956Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activation_error": "start() timeout",
@@ -18948,10 +19044,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:08:45.362Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:43:44.762Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -19517,10 +19613,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:00:33.103Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:36:33.121Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -19757,10 +19853,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:02:37.895Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:38:07.330Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -19972,10 +20068,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:02:34.715Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:37:51.825Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activation_error": "Cannot read properties of undefined (reading 'includes')",
@@ -20384,10 +20480,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:07:08.380Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:42:08.732Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -21564,10 +21660,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:03:24.445Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:38:25.914Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -24229,10 +24325,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:10:33.946Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:45:16.737Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -25101,10 +25197,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:05:29.467Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:40:27.530Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activation_error": "Cannot read properties of undefined (reading 'trackProp')",
@@ -26671,6 +26767,120 @@
         ],
         "test_status": "passing"
       }
+    },
+    "1.11.0": {
+      "server@stable-node26": {
+        "tested": "2026-11-28T09:33:50.377Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [
+          "onPropertyValues",
+          "radarApi"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "67bbdde00b73da315176351434853ea26811f277"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": false,
+          "problems": [
+            "mayara-server-signalk-plugin: panel ppi url /plugins/mayara-server-signalk-plugin/gui/viewer.html is under /plugins/, which only admins can load"
+          ]
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 80,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots",
+          "plotter-extension",
+          "missing-plotter-keyword",
+          "invalid-plotter-manifest"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable": {
+        "tested": "2026-11-28T09:32:28.207Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [
+          "resources"
+        ],
+        "unstubbed_accesses": [
+          "onPropertyValues",
+          "radarApi"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "67bbdde00b73da315176351434853ea26811f277"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": true,
+          "keyword": false,
+          "problems": [
+            "mayara-server-signalk-plugin: panel ppi url /plugins/mayara-server-signalk-plugin/gui/viewer.html is under /plugins/, which only admins can load"
+          ]
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 80,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "has-providers",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots",
+          "plotter-extension",
+          "missing-plotter-keyword",
+          "invalid-plotter-manifest"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-windjs-plugin": {
@@ -27221,10 +27431,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:04:53.697Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:39:31.020Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -29200,10 +29410,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:04:48.392Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:39:42.740Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -29798,10 +30008,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:01:21.364Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:36:34.641Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -37320,10 +37530,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:11:00.474Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:45:56.868Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -38470,10 +38680,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:10:52.593Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:46:00.091Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activation_error": "start() timeout",
@@ -40308,10 +40518,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:02:31.532Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:37:46.696Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -40922,10 +41132,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:09:49.167Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:44:46.122Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -41845,10 +42055,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:08:10.033Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:43:13.061Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -44976,10 +45186,10 @@
         "test_status": "not-runnable"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:00:31.191Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:35:46.261Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -46159,10 +46369,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:10:25.047Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:45:10.249Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -46513,10 +46723,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:07:54.870Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:42:58.740Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -47372,10 +47582,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:10:31.609Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:44:57.406Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -48177,10 +48387,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:03:50.832Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:38:47.839Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -53250,10 +53460,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:09:32.959Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:44:22.969Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -57703,10 +57913,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:09:26.455Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:44:06.483Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -66508,6 +66718,86 @@
         ],
         "test_status": "not-runnable"
       }
+    },
+    "0.14.1": {
+      "server@stable-node26": {
+        "tested": "2026-11-28T09:33:21.626Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "not-runnable"
+      },
+      "server@stable": {
+        "tested": "2026-11-28T09:31:59.268Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "not-runnable"
+      }
     }
   },
   "signalk-sealink-cloud": {
@@ -66789,6 +67079,86 @@
           "has-changelog"
         ],
         "test_status": "none"
+      }
+    },
+    "0.14.1": {
+      "server@stable-node26": {
+        "tested": "2026-11-28T09:33:50.126Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "not-runnable"
+      },
+      "server@stable": {
+        "tested": "2026-11-28T09:31:57.027Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": false,
+        "tests_runnable": false,
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": false,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 70,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "npm-audit-ok",
+          "has-changelog"
+        ],
+        "test_status": "not-runnable"
       }
     }
   },
@@ -68533,10 +68903,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:08:37.541Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:43:45.707Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -69333,10 +69703,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:07:49.897Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:42:35.401Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -70109,10 +70479,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:01:34.528Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:37:00.943Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -73227,10 +73597,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:04:54.311Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:40:05.958Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -73596,10 +73966,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:02:59.040Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:38:47.152Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -74854,10 +75224,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:07:11.237Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:42:35.678Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -76132,10 +76502,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:09:11.103Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:44:00.698Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -76548,10 +76918,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:06:15.113Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:41:04.527Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -77034,10 +77404,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:03:47.370Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:38:41.814Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -78264,10 +78634,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T08:57:18.427Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-28T09:34:11.207Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -78884,10 +79254,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T08:59:47.923Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:35:46.847Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -80239,10 +80609,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:01:53.402Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:37:23.372Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -81413,13 +81783,13 @@
         "test_status": "failing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:08:07.165Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:42:58.323Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": false,
-        "load_error": "ENOENT: no such file or directory, copyfile '/tmp/sk-registry-NJDHAw/node_modules/@kristianwiklund/wr-gdal-linux-x64/binding/node-v147-linux-x64/gdal.node' -> '/tmp/sk-registry-NJDHAw/node_modules/gdal-async/lib/binding/node-v147-linux-x64/gdal.node'",
+        "load_error": "ENOENT: no such file or directory, copyfile '/tmp/sk-registry-PLOJfT/node_modules/@kristianwiklund/wr-gdal-linux-x64/binding/node-v147-linux-x64/gdal.node' -> '/tmp/sk-registry-PLOJfT/node_modules/gdal-async/lib/binding/node-v147-linux-x64/gdal.node'",
         "activates": false,
         "activates_without_config": false,
         "detected_providers": [],
@@ -81960,10 +82330,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:11:22.616Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:46:03.039Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -82385,10 +82755,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:10:42.681Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:45:36.794Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -84409,10 +84779,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:01:34.396Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:36:37.289Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -85511,10 +85881,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:01:24.687Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:36:56.581Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -85758,10 +86128,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:00:41.274Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:35:39.377Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -86355,10 +86725,10 @@
         "test_status": "not-runnable"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T08:59:43.328Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-28T09:37:22.011Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -86598,10 +86968,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:07:40.784Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:42:37.682Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -87595,10 +87965,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:04:36.831Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:40:45.217Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -87728,10 +88098,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:10:14.916Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:44:53.881Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -91217,10 +91587,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:02:21.410Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:37:44.545Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -93004,10 +93374,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:10:49.028Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:45:49.068Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -93777,10 +94147,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:05:37.831Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:40:36.667Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -93984,10 +94354,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:01:33.532Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:37:39.197Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -94512,10 +94882,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:04:06.330Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:39:39.845Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -97808,10 +98178,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:01:02.247Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:36:03.765Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -98507,10 +98877,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:06:07.640Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:40:43.434Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -98637,10 +99007,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:04:21.017Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:40:04.460Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -99239,10 +99609,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:06:10.083Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:41:52.282Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -102414,10 +102784,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:06:59.115Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:41:27.047Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -102668,10 +103038,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:05:46.753Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:41:01.454Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -103211,10 +103581,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:05:14.257Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:39:42.163Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -103440,10 +103810,10 @@
         "test_status": "failing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:04:37.035Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:39:32.909Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -105665,6 +106035,104 @@
         ],
         "test_status": "passing"
       }
+    },
+    "3.19.0": {
+      "server@stable": {
+        "tested": "2026-11-28T09:33:31.078Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "_pypilotNewuiKeepAlive",
+          "_pypilotNewuiWatchdogTimer"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "7c2786455fa4f95e266462bb0b54e874bfa13cc6"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-28T09:33:31.057Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "_pypilotNewuiKeepAlive",
+          "_pypilotNewuiWatchdogTimer"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "7c2786455fa4f95e266462bb0b54e874bfa13cc6"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-race-control": {
@@ -107551,10 +108019,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:06:37.984Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:42:14.587Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -107765,10 +108233,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:09:10.569Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:43:55.537Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -107932,10 +108400,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:09:31.590Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:45:16.372Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -108270,10 +108738,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:09:55.998Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:45:44.469Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -110339,10 +110807,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:03:32.380Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:38:40.943Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -111698,10 +112166,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:06:06.594Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:40:41.743Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -112807,10 +113275,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:10:04.044Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:44:49.961Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -112941,10 +113409,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:07:07.263Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:41:44.413Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -113865,10 +114333,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:00:19.396Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:35:25.768Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -118315,10 +118783,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:06:43.184Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:41:35.922Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -119122,10 +119590,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:02:26.310Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:37:37.435Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -119583,10 +120051,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:03:27.217Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:38:37.764Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -121052,10 +121520,10 @@
     },
     "1.1.0": {
       "server@stable-node26": {
-        "tested": "2026-11-22T08:58:17.465Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-28T09:34:28.382Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -125161,10 +125629,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:02:26.762Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:37:16.473Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -125944,6 +126412,102 @@
         ],
         "test_status": "passing"
       }
+    },
+    "0.11.0": {
+      "server@stable-node26": {
+        "tested": "2026-11-28T09:33:43.406Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "alerts"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "8f1625daca673317b92dae69f6520b2e871962f0"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable": {
+        "tested": "2026-11-28T09:32:36.300Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "alerts"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "8f1625daca673317b92dae69f6520b2e871962f0"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-kshana-trust": {
@@ -126363,10 +126927,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T09:08:58.720Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:43:56.136Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -129945,10 +130509,10 @@
         "test_status": "none"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T08:59:35.259Z",
-        "triggered_by": "node_added",
+        "tested": "2026-11-28T09:34:51.466Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -136762,6 +137326,106 @@
         ],
         "test_status": "passing"
       }
+    },
+    "0.11.0": {
+      "server@stable": {
+        "tested": "2026-11-28T09:32:26.996Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "24",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "emitPropertyValue",
+          "unregisterHistoryApiProvider",
+          "notifications"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "b204873dd3a3750bc6703f338bead1a6bf56d020"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      },
+      "server@stable-node26": {
+        "tested": "2026-11-28T09:33:13.588Z",
+        "triggered_by": "plugin_version_change",
+        "node_version": "26",
+        "server_version": "2.38.0",
+        "installs": true,
+        "loads": true,
+        "activates": true,
+        "activates_without_config": true,
+        "detected_providers": [],
+        "unstubbed_accesses": [
+          "emitPropertyValue",
+          "unregisterHistoryApiProvider",
+          "notifications"
+        ],
+        "has_schema": true,
+        "has_own_tests": true,
+        "own_tests_pass": true,
+        "tests_runnable": true,
+        "source_test_ref": {
+          "kind": "git-head",
+          "commit": "b204873dd3a3750bc6703f338bead1a6bf56d020"
+        },
+        "has_install_scripts": false,
+        "has_changelog": true,
+        "has_screenshots": true,
+        "held_back_core_deps": [],
+        "legacy_deps": [],
+        "bundled_plugins": [],
+        "plotter_extension": {
+          "registered": false,
+          "keyword": false,
+          "problems": []
+        },
+        "audit_critical": 0,
+        "audit_high": 0,
+        "audit_moderate": 0,
+        "composite": 100,
+        "badges": [
+          "compatible",
+          "loads",
+          "activates",
+          "tested",
+          "npm-audit-ok",
+          "has-changelog",
+          "has-screenshots"
+        ],
+        "test_status": "passing"
+      }
     }
   },
   "signalk-starlink-xz": {
@@ -137829,10 +138493,10 @@
         "test_status": "failing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-23T09:55:05.897Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-28T09:46:15.115Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -143712,10 +144376,10 @@
         "test_status": "passing"
       },
       "server@stable-node26": {
-        "tested": "2026-11-22T08:58:08.345Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-28T09:34:33.673Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
@@ -143760,10 +144424,10 @@
   "signalk-raymarine-pilot-bridge": {
     "0.2.0": {
       "server@stable-node26": {
-        "tested": "2026-11-22T08:58:15.794Z",
-        "triggered_by": "plugin_version_change",
+        "tested": "2026-11-28T09:34:29.762Z",
+        "triggered_by": "server_version_change",
         "node_version": "26",
-        "server_version": "2.37.0",
+        "server_version": "2.38.0",
         "installs": true,
         "loads": true,
         "activates": true,
